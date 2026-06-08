@@ -127,7 +127,7 @@ app.use((req, res, next) => {
     
     if (p === "/api" || p === "/") return true;
     if (p === "/api/auth/me") return true;
-    if (p === "/api/auth" || p === "/api/auth/email" || p === "/api/auth/google" || p === "/api/auth/google/callback" || p === "/api/logout") return true;
+    if (p === "/api/auth" || p === "/api/auth/email" || p === "/api/logout") return true;
     
     if (p === "/api/events" && m === "GET") return true;
     if (p === "/api/team" && m === "GET") return true;
