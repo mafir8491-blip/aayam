@@ -142,6 +142,12 @@ app.use(adminRoutes);
 /* HOME */
 app.get("/", homeController.getHome);
 
+/* GLOBAL ERROR HANDLER */
+app.use((err, req, res, next) => {
+  console.error("🔥 Global Error Handler Caught:", err);
+  res.status(500).send(`<h3>Internal Server Error</h3><pre>${err.message}\n${err.stack}</pre>`);
+});
+
 /* ===============================
    SERVER
 ================================ */
