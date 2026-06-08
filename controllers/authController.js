@@ -5,7 +5,17 @@ const bcrypt = require("bcryptjs");
    AUTH PAGE
 =================================*/
 exports.authPage = (req, res) => {
-  res.render("auth/index", { error: null });
+  res.json({ message: "Auth page payload" });
+};
+
+/* ===============================
+   GET CURRENT USER SESSION
+=================================*/
+exports.getMe = (req, res) => {
+  if (req.session && req.session.user) {
+    return res.json({ user: req.session.user });
+  }
+  return res.json({ user: null });
 };
 
 
@@ -20,7 +30,7 @@ exports.emailAuth = async (req, res) => {
     if (mode === "register") {
       const existing = await User.findOne({ email });
       if (existing) {
-        return res.render("auth/index", { error: "Email already registered" });
+        return res.status(400).json({ error: "Email already registered" });
       }
 
       const hashed = await bcrypt.hash(password, 10);
@@ -40,22 +50,22 @@ exports.emailAuth = async (req, res) => {
         isActive: true,
       };
 
-      return res.redirect("/");
+      return res.status(201).json({ success: true, redirect: "/" });
     }
 
     /* ================= LOGIN ================= */
     const user = await User.findOne({ email });
     if (!user) {
-      return res.render("auth/index", { error: "Invalid credentials" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
     if (!user.isActive) {
-      return res.render("auth/index", { error: "Account disabled" });
+      return res.status(403).json({ error: "Account disabled" });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.render("auth/index", { error: "Invalid credentials" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
     // 🔥 KEEP ORIGINAL ROLE (admin, superadmin, user)
@@ -67,10 +77,10 @@ exports.emailAuth = async (req, res) => {
       isActive: user.isActive,
     };
 
-    req.session.save(() => res.redirect("/"));
+    req.session.save(() => res.json({ success: true, redirect: "/" }));
   } catch (error) {
     console.error(error);
-    res.redirect("/auth");
+    res.status(500).json({ error: error.message, redirect: "/auth" });
   }
 };
 
@@ -79,5 +89,6 @@ exports.emailAuth = async (req, res) => {
    LOGOUT
 =================================*/
 exports.logout = (req, res) => {
-  req.session.destroy(() => res.redirect("/auth"));
+  req.session.destroy(() => res.json({ success: true, redirect: "/auth" }));
 };
+

@@ -4,8 +4,8 @@ const ReachOut = require("../models/ReachOut");
    SHOW FORM (PUBLIC)
 ================================ */
 exports.getReachOutForm = (req, res) => {
-  res.render("reachout/index", {
-    success: req.query.success || false,
+  res.json({
+    success: req.query.success === "true" || req.query.success === true,
   });
 };
 
@@ -19,10 +19,10 @@ exports.submitReachOutForm = async (req, res) => {
     const { name, email, contact, purpose, subject, heardFrom, message } = req.body;
 
     if (!name || !email || !purpose || !message) {
-      return res.redirect("/reachout");
+      return res.status(400).json({ error: "Missing required fields (name, email, purpose, or message)", redirect: "/reachout" });
     }
 
-    await ReachOut.create({
+    const newReachOut = await ReachOut.create({
       name,
       email,
       contact,
@@ -32,10 +32,10 @@ exports.submitReachOutForm = async (req, res) => {
       message,
     });
 
-    res.redirect("/reachout?success=true");
+    res.status(201).json({ success: true, reachout: newReachOut, redirect: "/reachout?success=true" });
   } catch (error) {
     console.error("ReachOut Submit Error:", error);
-    res.redirect("/reachout");
+    res.status(500).json({ error: error.message, redirect: "/reachout" });
   }
 };
 
@@ -49,10 +49,10 @@ exports.getAllReachOuts = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    res.render("admin/reachout/index", { reachouts });
+    res.json({ reachouts });
   } catch (error) {
     console.error("Admin ReachOut Error:", error);
-    res.redirect("/");
+    res.status(500).json({ error: error.message, redirect: "/" });
   }
 };
 
@@ -62,15 +62,15 @@ exports.getAllReachOuts = async (req, res) => {
 exports.toggleReadStatus = async (req, res) => {
   try {
     const item = await ReachOut.findById(req.params.id);
-    if (!item) return res.redirect(req.headers.referer || "/admin/reachout");
+    if (!item) return res.status(404).json({ error: "Item not found", redirect: req.headers.referer || "/admin/reachout" });
 
     item.isRead = !item.isRead;
     await item.save();
 
-    res.redirect(req.headers.referer || "/admin/reachout");
+    res.json({ success: true, reachout: item, redirect: req.headers.referer || "/admin/reachout" });
   } catch (error) {
     console.error("Toggle Read Error:", error);
-    res.redirect(req.headers.referer || "/admin/reachout");
+    res.status(500).json({ error: error.message, redirect: req.headers.referer || "/admin/reachout" });
   }
 };
 
@@ -80,9 +80,9 @@ exports.toggleReadStatus = async (req, res) => {
 exports.deleteReachOut = async (req, res) => {
   try {
     await ReachOut.findByIdAndDelete(req.params.id);
-    res.redirect(req.headers.referer || "/admin/reachout");
+    res.json({ success: true, redirect: req.headers.referer || "/admin/reachout" });
   } catch (error) {
     console.error("Delete ReachOut Error:", error);
-    res.redirect(req.headers.referer || "/admin/reachout");
+    res.status(500).json({ error: error.message, redirect: req.headers.referer || "/admin/reachout" });
   }
 };

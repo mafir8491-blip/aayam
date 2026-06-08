@@ -37,44 +37,49 @@ function parseEventMeta(event) {
 }
 
 exports.getHome = async (req, res) => {
-  const whatWeDoImages = await HomeGallery.find({ section: "what_we_do" }).limit(4);
-  const eventImages    = await HomeGallery.find({ section: "events" }).limit(4);
-  const promo          = await HomePromo.findOne({ isActive: true }).sort({ createdAt: -1 }).lean();
-  const upcomingEvents = await Event.find({ type: "upcoming" }).sort({ startDate: 1 }).limit(4);
+  try {
+    const whatWeDoImages = await HomeGallery.find({ section: "what_we_do" }).limit(4);
+    const eventImages    = await HomeGallery.find({ section: "events" }).limit(4);
+    const promo          = await HomePromo.findOne({ isActive: true }).sort({ createdAt: -1 }).lean();
+    const upcomingEvents = await Event.find({ type: "upcoming" }).sort({ startDate: 1 }).limit(4);
 
-  upcomingEvents.forEach(e => {
-    parseEventMeta(e);
-    if (e.bannerImage) {
-      if (!e.bannerImage.startsWith("http://") && !e.bannerImage.startsWith("https://")) {
-        if (!e.bannerImage.startsWith("/")) e.bannerImage = "/" + e.bannerImage;
+    upcomingEvents.forEach(e => {
+      parseEventMeta(e);
+      if (e.bannerImage) {
+        if (!e.bannerImage.startsWith("http://") && !e.bannerImage.startsWith("https://")) {
+          if (!e.bannerImage.startsWith("/")) e.bannerImage = "/" + e.bannerImage;
+        }
       }
-    }
-  });
+    });
 
-  res.render("home", { whatWeDoImages, eventImages, promo: promo || null, upcomingEvents });
+    res.json({ whatWeDoImages, eventImages, promo: promo || null, upcomingEvents });
+  } catch (err) {
+    console.error("Get Home Error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.addImage = async (req, res) => {
   try {
     const { section } = req.body;
-    if (!req.file || !section) return res.redirect(req.headers.referer || "/");
+    if (!req.file || !section) return res.status(400).json({ error: "Missing image file or section", redirect: req.headers.referer || "/" });
     const count = await HomeGallery.countDocuments({ section });
-    if (count >= 4) return res.redirect(req.headers.referer || "/");
-    await HomeGallery.create({ image: req.file.path, section });
-    res.redirect(req.headers.referer || "/");
+    if (count >= 4) return res.status(400).json({ error: "Cannot upload more than 4 images per section", redirect: req.headers.referer || "/" });
+    const newImage = await HomeGallery.create({ image: req.file.path, section });
+    res.status(201).json({ success: true, image: newImage, redirect: req.headers.referer || "/" });
   } catch (err) {
     console.error("Add Image Error:", err.message);
-    res.status(500).send("Error uploading image");
+    res.status(500).json({ error: "Error uploading image" });
   }
 };
 
 exports.deleteImage = async (req, res) => {
   try {
     await HomeGallery.findByIdAndDelete(req.params.id);
-    res.redirect(req.headers.referer || "/");
+    res.json({ success: true, redirect: req.headers.referer || "/" });
   } catch (err) {
     console.error("Delete Image Error:", err.message);
-    res.redirect(req.headers.referer || "/");
+    res.status(500).json({ error: err.message, redirect: req.headers.referer || "/" });
   }
 };
 
@@ -83,9 +88,9 @@ exports.deleteImage = async (req, res) => {
 exports.addPromo = async (req, res) => {
   try {
     const { label, title, heading, description, link, eventDate } = req.body;
-    if (!title) return res.redirect(req.headers.referer || "/");
+    if (!title) return res.status(400).json({ error: "Title is required", redirect: req.headers.referer || "/" });
     await HomePromo.updateMany({}, { isActive: false });
-    await HomePromo.create({
+    const newPromo = await HomePromo.create({
       label:       label       || "Register Now",
       title,
       heading:     heading     || "",
@@ -94,20 +99,20 @@ exports.addPromo = async (req, res) => {
       eventDate:   eventDate   || null,
       isActive:    true,
     });
-    res.redirect(req.headers.referer || "/");
+    res.status(201).json({ success: true, promo: newPromo, redirect: req.headers.referer || "/" });
   } catch (err) {
     console.error("Add Promo Error:", err.message);
-    res.redirect(req.headers.referer || "/");
+    res.status(500).json({ error: err.message, redirect: req.headers.referer || "/" });
   }
 };
 
 exports.deletePromo = async (req, res) => {
   try {
     await HomePromo.findByIdAndDelete(req.params.id);
-    res.redirect(req.headers.referer || "/");
+    res.json({ success: true, redirect: req.headers.referer || "/" });
   } catch (err) {
     console.error("Delete Promo Error:", err.message);
-    res.redirect(req.headers.referer || "/");
+    res.status(500).json({ error: err.message, redirect: req.headers.referer || "/" });
   }
 };
 
@@ -115,10 +120,10 @@ exports.togglePromo = async (req, res) => {
   try {
     const promo = await HomePromo.findById(req.params.id);
     if (promo) { promo.isActive = !promo.isActive; await promo.save(); }
-    res.redirect(req.headers.referer || "/");
+    res.json({ success: true, promo, redirect: req.headers.referer || "/" });
   } catch (err) {
     console.error("Toggle Promo Error:", err.message);
-    res.redirect(req.headers.referer || "/");
+    res.status(500).json({ error: err.message, redirect: req.headers.referer || "/" });
   }
 };
 
@@ -155,9 +160,9 @@ exports.getGalleryPage = async (req, res) => {
       }
     });
 
-    res.render("gallery", { generalImages, eventImages });
+    res.json({ generalImages, eventImages });
   } catch (error) {
     console.error("Gallery Page Error:", error.message);
-    res.redirect("/");
+    res.status(500).json({ error: error.message, redirect: "/" });
   }
 };

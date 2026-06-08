@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 });
 
 /* ===============================
-   EJS + LAYOUT SETUP
+   EJS + LAYOUT SETUP (kept for backwards compatibility/assets, not used by controllers)
 ================================ */
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -108,44 +108,80 @@ const adminRoutes = require("./routes/adminRoutes");
    GLOBAL AUTHENTICATION GUARD
 ================================ */
 app.use((req, res, next) => {
-  const publicPaths = [
-    "/auth",
-    "/auth/email",
-    "/auth/google",
-    "/auth/google/callback",
-    "/logout"
-  ];
-
   const isStatic = req.path.startsWith("/css/") || 
                    req.path.startsWith("/images/") || 
                    req.path.startsWith("/js/") || 
-                   req.path.startsWith("/uploads/");
+                   req.path.startsWith("/uploads/") ||
+                   req.path.startsWith("/assets/") ||
+                   req.path === "/index.html" || 
+                   req.path === "/favicon.ico";
 
-  if (publicPaths.includes(req.path) || isStatic) {
+  if (isStatic) {
+    return next();
+  }
+
+  // Helper to determine if endpoint is public
+  const isPublicRoute = (r) => {
+    const p = r.path;
+    const m = r.method;
+    
+    if (p === "/api" || p === "/") return true;
+    if (p === "/api/auth/me") return true;
+    if (p === "/api/auth" || p === "/api/auth/email" || p === "/api/auth/google" || p === "/api/auth/google/callback" || p === "/api/logout") return true;
+    
+    if (p === "/api/events" && m === "GET") return true;
+    if (p === "/api/team" && m === "GET") return true;
+    if (p === "/api/gallery" && m === "GET") return true;
+    if (p === "/api/reachout") return true; // GET/POST both public
+    
+    if (p.startsWith("/api/events/") && m === "GET") {
+      const sub = p.substring(12);
+      if (sub === "add") return false;
+      if (sub.startsWith("edit/")) return false;
+      if (sub.startsWith("delete/")) return false;
+      if (sub.includes("/register")) return false; // Needs auth to register
+      return true;
+    }
+    
+    if (p.startsWith("/api/events/") && p.endsWith("/reviews") && m === "POST") {
+      return true;
+    }
+    
+    return false;
+  };
+
+  if (isPublicRoute(req)) {
     return next();
   }
 
   if (!req.session || !req.session.user) {
-    return res.redirect("/auth");
+    return res.status(401).json({ error: "Unauthorized", redirect: "/auth" });
   }
 
   next();
 });
 
-app.use(authRoutes);
-app.use(homeRoutes);
-app.use(teamRoutes);
-app.use(eventRoutes);
-app.use(reachOutRoutes);
-app.use(adminRoutes);
+/* Prefix route middlewares with /api */
+app.use("/api", authRoutes);
+app.use("/api", homeRoutes);
+app.use("/api", teamRoutes);
+app.use("/api", eventRoutes);
+app.use("/api", reachOutRoutes);
+app.use("/api", adminRoutes);
 
 /* HOME */
-app.get("/", homeController.getHome);
+app.get("/api", homeController.getHome);
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to Aayam API", version: "1.0.0", redirect: "/api" });
+});
 
 /* GLOBAL ERROR HANDLER */
 app.use((err, req, res, next) => {
   console.error("🔥 Global Error Handler Caught:", err);
-  res.status(500).send(`<h3>Internal Server Error</h3><pre>${err.message}\n${err.stack}</pre>`);
+  res.status(err.status || 500).json({
+    success: false,
+    error: err.message || "Internal Server Error"
+  });
 });
 
 /* ===============================
@@ -159,4 +195,3 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = app;
-// Trigger nodemon reload for .env config update

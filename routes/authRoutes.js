@@ -7,6 +7,7 @@ const passport = require("passport");
    AUTH PAGE (Login + Signup UI)
 ================================ */
 router.get("/auth", auth.authPage);
+router.get("/auth/me", auth.getMe);
 
 /* ===============================
    EMAIL LOGIN / SIGNUP
@@ -30,7 +31,7 @@ router.get(
 router.get("/auth/google/callback", (req, res, next) => {
   // ✅ Prevent duplicate callback hits (double-fire on Render deploys)
   if (req.session.oauthProcessing) {
-    return res.redirect("/");
+    return res.json({ redirect: "/" });
   }
   req.session.oauthProcessing = true;
 
@@ -39,7 +40,7 @@ router.get("/auth/google/callback", (req, res, next) => {
 
     if (err || !user) {
       console.error("OAuth error:", err?.message || "No user returned");
-      return res.redirect("/auth?error=google_failed");
+      return res.json({ redirect: "/auth?error=google_failed" });
     }
 
     req.session.user = {
@@ -50,7 +51,7 @@ router.get("/auth/google/callback", (req, res, next) => {
       isActive: user.isActive,
     };
 
-    req.session.save(() => res.redirect("/"));
+    req.session.save(() => res.json({ redirect: "/" }));
   })(req, res, next);
 });
 

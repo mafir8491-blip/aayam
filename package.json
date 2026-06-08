@@ -7,7 +7,9 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "dev-local": "node start-dev.js",
-    "seed-supabase": "node seed-supabase.js"
+    "seed-supabase": "node seed-supabase.js",
+    "build": "vite build",
+    "client": "vite"
   },
   "keywords": [],
   "author": "",
@@ -30,10 +32,19 @@
     "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "pg": "^8.21.0"
+    "pg": "^8.21.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "chart.js": "^4.4.7",
+    "react-chartjs-2": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
-    "nodemon": "^3.1.11"
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "nodemon": "^3.1.11",
+    "vite": "^5.4.11"
   }
 }

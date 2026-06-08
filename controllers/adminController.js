@@ -87,8 +87,7 @@ exports.getAdminDashboard = async (req, res) => {
       regularUsers = await User.find({ role: "user" }).lean();
     }
 
-    res.render("admin/index", {
-      layout: false,
+    res.json({
       tab,
       admins,
       regularUsers,
@@ -113,7 +112,7 @@ exports.getAdminDashboard = async (req, res) => {
     });
   } catch (error) {
     console.error("Admin Dashboard Error:", error);
-    res.redirect("/");
+    res.status(500).json({ error: error.message, redirect: "/" });
   }
 };
 
@@ -123,7 +122,7 @@ exports.getAdminDashboard = async (req, res) => {
 exports.inviteAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.redirect("/admin");
+    if (!email || !password) return res.status(400).json({ error: "Email and password are required", redirect: "/admin" });
 
     // Limit only ACTIVE admins
     const count = await User.countDocuments({
@@ -131,7 +130,7 @@ exports.inviteAdmin = async (req, res) => {
       isActive: true
     });
 
-    if (count >= 10) return res.redirect("/admin");
+    if (count >= 10) return res.status(400).json({ error: "Maximum limit of 10 admins reached", redirect: "/admin" });
 
     const existing = await User.findOne({ email });
 
@@ -140,24 +139,24 @@ exports.inviteAdmin = async (req, res) => {
       existing.role = "admin";
       existing.isActive = true;
       await existing.save();
-      return res.redirect("/admin");
+      return res.json({ success: true, user: existing, redirect: "/admin" });
     }
 
     // 🟢 NEW ADMIN CREATION
     const hashed = await bcrypt.hash(password, 10);
 
-    await User.create({
+    const newAdmin = await User.create({
       email,
       password: hashed,
       role: "admin",
       isActive: true,
     });
 
-    res.redirect("/admin");
+    res.status(201).json({ success: true, user: newAdmin, redirect: "/admin" });
 
   } catch (error) {
     console.error("Invite Admin Error:", error);
-    res.redirect("/admin");
+    res.status(500).json({ error: error.message, redirect: "/admin" });
   }
 };
 
@@ -168,46 +167,39 @@ exports.inviteAdmin = async (req, res) => {
 exports.toggleAdminStatus = async (req, res) => {
   try {
     const admin = await User.findById(req.params.id);
-    if (!admin) return res.redirect("/admin");
+    if (!admin) return res.status(404).json({ error: "Admin not found", redirect: "/admin" });
 
     // ❌ Superadmin cannot be deactivated
-    if (admin.role === "superadmin") return res.redirect("/admin");
+    if (admin.role === "superadmin") return res.status(400).json({ error: "Superadmin cannot be deactivated", redirect: "/admin" });
 
     admin.isActive = !admin.isActive;
     await admin.save();
 
-    res.redirect("/admin");
+    res.json({ success: true, user: admin, redirect: "/admin" });
   } catch (error) {
     console.error("Toggle Admin Error:", error);
-    res.redirect("/admin");
+    res.status(500).json({ error: error.message, redirect: "/admin" });
   }
 };
 
 /* =================================
    DELETE ADMIN
 ================================= */
-/* ===============================
-   DELETE ADMIN
-================================ */
-
-/* ===============================
-   DELETE ADMIN (SUPERADMIN)
-================================ */
 exports.deleteAdmin = async (req, res) => {
   try {
     const admin = await User.findById(req.params.id);
 
     // Safety — cannot delete superadmin
     if (!admin || admin.role === "superadmin") {
-      return res.redirect("/admin");
+      return res.status(400).json({ error: "Admin not found or is superadmin", redirect: "/admin" });
     }
 
     await User.findByIdAndDelete(req.params.id);
 
-    res.redirect("/admin");
+    res.json({ success: true, redirect: "/admin" });
   } catch (error) {
     console.error("Delete Admin Error:", error);
-    res.redirect("/admin");
+    res.status(500).json({ error: error.message, redirect: "/admin" });
   }
 };
 
@@ -220,10 +212,10 @@ exports.deleteAdmin = async (req, res) => {
 exports.makeSuperAdmin = async (req, res) => {
   try {
     const newSuperAdmin = await User.findById(req.params.id);
-    if (!newSuperAdmin) return res.redirect("/admin");
+    if (!newSuperAdmin) return res.status(404).json({ error: "Admin not found", redirect: "/admin" });
 
     // Already superadmin
-    if (newSuperAdmin.role === "superadmin") return res.redirect("/admin");
+    if (newSuperAdmin.role === "superadmin") return res.status(400).json({ error: "Already superadmin", redirect: "/admin" });
 
     // Demote current superadmin
     await User.updateMany(
@@ -236,10 +228,10 @@ exports.makeSuperAdmin = async (req, res) => {
     newSuperAdmin.isActive = true; // ensure active
     await newSuperAdmin.save();
 
-    res.redirect("/admin");
+    res.json({ success: true, user: newSuperAdmin, redirect: "/admin" });
   } catch (error) {
     console.error("Make Super Admin Error:", error);
-    res.redirect("/admin");
+    res.status(500).json({ error: error.message, redirect: "/admin" });
   }
 };
 
@@ -253,14 +245,14 @@ exports.updateProfile = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.redirect("/admin?tab=settings&error=User+not+found");
+      return res.status(404).json({ error: "User not found", redirect: "/admin?tab=settings&error=User+not+found" });
     }
 
     // Update email if changed
     if (email && email !== user.email) {
       const existing = await User.findOne({ email });
       if (existing && existing.id !== user.id) {
-        return res.redirect("/admin?tab=settings&error=Email+already+in+use");
+        return res.status(400).json({ error: "Email already in use", redirect: "/admin?tab=settings&error=Email+already+in+use" });
       }
       user.email = email;
       req.session.user.email = email; // sync session
@@ -270,10 +262,10 @@ exports.updateProfile = async (req, res) => {
     if (password && newPassword) {
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.redirect("/admin?tab=settings&error=Incorrect+current+password");
+        return res.status(400).json({ error: "Incorrect current password", redirect: "/admin?tab=settings&error=Incorrect+current+password" });
       }
       if (newPassword !== confirmPassword) {
-        return res.redirect("/admin?tab=settings&error=New+passwords+do+not+match");
+        return res.status(400).json({ error: "New passwords do not match", redirect: "/admin?tab=settings&error=New+passwords+do+not+match" });
       }
       user.password = await bcrypt.hash(newPassword, 10);
     }
@@ -284,10 +276,10 @@ exports.updateProfile = async (req, res) => {
     req.session.user.role = user.role;
     req.session.user.isActive = user.isActive;
 
-    res.redirect("/admin?tab=settings&success=Profile+updated+successfully");
+    res.json({ success: true, user, redirect: "/admin?tab=settings&success=Profile+updated+successfully" });
   } catch (error) {
     console.error("Update Profile Error:", error);
-    res.redirect("/admin?tab=settings&error=An+error+occurred+while+updating+profile");
+    res.status(500).json({ error: error.message, redirect: "/admin?tab=settings&error=An+error+occurred+while+updating+profile" });
   }
 };
 
