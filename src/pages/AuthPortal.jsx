@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 export default function AuthPortal() {
   const navigate = useNavigate();
@@ -42,7 +43,6 @@ export default function AuthPortal() {
 
       // Success - save user details to local storage and redirect
       if (json.success) {
-        // Fetch fresh user payload to store in local storage
         const meRes = await fetch('/api/auth/me');
         if (meRes.ok) {
           const meJson = await meRes.json();
@@ -51,7 +51,6 @@ export default function AuthPortal() {
           }
         }
         
-        // Use window location redirect to make sure all components reload their state
         window.location.href = '/';
       }
     } catch (err) {
@@ -62,100 +61,288 @@ export default function AuthPortal() {
   };
 
   return (
-    <div className="auth-wrapper d-flex justify-content-center align-items-center min-vh-100" style={{ background: '#120c08', padding: '20px' }}>
-      <div className="auth-card p-4 text-center" style={{ maxWidth: '400px', width: '100%', background: 'rgba(30, 21, 14, 0.7)', border: '1.5px solid rgba(166, 124, 82, 0.25)', borderRadius: '16px', position: 'relative' }}>
-        <div style={{ height: '4px', background: 'var(--br)', position: 'absolute', top: 0, left: 0, right: 0, borderRadius: '16px 16px 0 0' }}></div>
+    <div className="auth-page-wrapper d-flex flex-column min-vh-100" style={{ background: '#fdfaf2', position: 'relative', overflow: 'hidden', fontFamily: 'var(--font-body, "DM Sans", sans-serif)' }}>
+      <Navbar />
+      
+      {/* Huge Watermark Background */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: '55%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '750px',
+          height: '750px',
+          backgroundImage: 'url("/images/aayam_img.jpg")',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          opacity: 0.035,
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
 
-        <div className="mb-4">
-          <img
-            src="/images/aayam_img.jpg"
-            alt="AAYAM"
-            width="52"
-            height="52"
-            style={{ borderRadius: '14px', border: '2px solid rgba(166,124,82,0.4)', marginBottom: '12px' }}
-          />
-          <h2 className="text-white" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.55rem', fontWeight: 800 }}>Welcome</h2>
-          <p className="small text-muted mb-0">AAYAM Committee Portal</p>
-        </div>
+      <style>{`
+        .auth-card-custom {
+          max-width: 440px;
+          width: 100%;
+          background: #f5ede0;
+          border: 1.5px solid rgba(166, 124, 82, 0.35);
+          border-radius: 28px;
+          position: relative;
+          padding: 40px 32px;
+          box-shadow: 0 16px 40px rgba(166, 124, 82, 0.1);
+          z-index: 1;
+        }
 
-        {error && (
-          <div className="alert alert-danger p-2 small mb-3" style={{ background: 'rgba(192,57,43,0.09)', border: '1px solid rgba(192,57,43,0.22)', color: '#c0392b', fontWeight: 600 }}>
-            {error}
+        .auth-accent-bar {
+          height: 6px;
+          background: #6c4f37;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          border-radius: 28px 28px 0 0;
+        }
+
+        .auth-logo-box {
+          display: inline-block;
+          border: 1.5px solid rgba(166, 124, 82, 0.35);
+          border-radius: 14px;
+          padding: 6px;
+          background: transparent;
+          margin-bottom: 16px;
+        }
+
+        .auth-logo-img {
+          width: 52px;
+          height: 52px;
+          border-radius: 10px;
+          object-fit: cover;
+        }
+
+        .auth-title {
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 1.9rem;
+          font-weight: 700;
+          color: #3a2818;
+          margin-bottom: 4px;
+        }
+
+        .auth-subtitle {
+          font-size: 0.9rem;
+          color: #8c7355;
+          margin-bottom: 24px;
+        }
+
+        .auth-error-box {
+          background: #f8ded7;
+          border: 1px solid #eba896;
+          border-radius: 10px;
+          padding: 8px 12px;
+          margin-bottom: 20px;
+          color: #b03a2e;
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-align: center;
+          min-height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .auth-tabs-pill {
+          background: #ece0ca;
+          border-radius: 50px;
+          padding: 4px;
+          display: flex;
+          gap: 4px;
+          border: 1.5px solid rgba(166, 124, 82, 0.25);
+          margin-bottom: 28px;
+        }
+
+        .auth-tab-btn {
+          flex: 1;
+          border: none;
+          background: transparent;
+          color: #6c4f37;
+          font-size: 0.92rem;
+          font-weight: 700;
+          padding: 10px 24px;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .auth-tab-btn.active {
+          background: #6c4f37;
+          color: #ffffff;
+          box-shadow: 0 4px 10px rgba(108, 79, 55, 0.2);
+        }
+
+        .form-label-custom-new {
+          font-size: 0.76rem;
+          font-weight: 800;
+          color: #85664a;
+          text-transform: uppercase;
+          margin-bottom: 6px;
+          letter-spacing: 0.06em;
+          display: block;
+        }
+
+        .form-input-custom-new {
+          background: #fffcf7;
+          border: 1.5px solid rgba(166, 124, 82, 0.25);
+          border-radius: 12px;
+          padding: 12px 16px;
+          color: #3a2818;
+          width: 100%;
+          font-size: 0.95rem;
+          margin-bottom: 20px;
+          transition: all 0.25s ease;
+        }
+
+        .form-input-custom-new::placeholder {
+          color: #c2b5a3;
+        }
+
+        .form-input-custom-new:focus {
+          border-color: #6c4f37;
+          outline: none;
+          background: #ffffff;
+          box-shadow: 0 0 0 3px rgba(108, 79, 55, 0.15);
+        }
+
+        .btn-continue-new {
+          background: #6c4f37;
+          color: #ffffff;
+          border-radius: 50px;
+          border: none;
+          font-weight: 700;
+          padding: 14px;
+          width: 100%;
+          font-size: 0.98rem;
+          margin-top: 10px;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          box-shadow: 0 6px 18px rgba(108, 79, 55, 0.18);
+        }
+
+        .btn-continue-new:hover {
+          background: #563f2c;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 24px rgba(108, 79, 55, 0.25);
+        }
+
+        .btn-continue-new:disabled {
+          background: #a39386;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+      `}</style>
+
+      {/* Main container centering the card */}
+      <div className="flex-fill d-flex align-items-center justify-content-center" style={{ zIndex: 1, padding: '60px 20px 80px 20px' }}>
+        <div className="auth-card-custom">
+          <div className="auth-accent-bar"></div>
+          
+          <div className="auth-logo-box">
+            <img
+              src="/images/aayam_img.jpg"
+              alt="AAYAM Logo"
+              className="auth-logo-img"
+            />
           </div>
-        )}
 
-        {/* Tabs */}
-        <div className="auth-tabs d-flex justify-content-center gap-2 mb-4">
-          <button
-            className={`auth-tab px-4 py-2 small fw-bold border-0 ${mode === 'login' ? 'active text-dark bg-warning' : 'text-white bg-dark'}`}
-            onClick={() => {
-              setMode('login');
-              setError(null);
-            }}
-            style={{ borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.2s' }}
-          >
-            Login
-          </button>
-          <button
-            className={`auth-tab px-4 py-2 small fw-bold border-0 ${mode === 'register' ? 'active text-dark bg-warning' : 'text-white bg-dark'}`}
-            onClick={() => {
-              setMode('register');
-              setError(null);
-            }}
-            style={{ borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.2s' }}
-          >
-            Sign Up
-          </button>
-        </div>
+          <h2 className="auth-title">Welcome</h2>
+          <p className="auth-subtitle">AAYAM Committee Portal</p>
 
-        <form onSubmit={handleSubmit} className="text-start">
-          {mode === 'register' && (
-            <div className="mb-3">
-              <label className="form-label-custom">Full Name</label>
+          {/* Conditional Error message rendering matching red/pink banner style */}
+          {error ? (
+            <div className="auth-error-box">
+              {error}
+            </div>
+          ) : (
+            /* Empty pink/red styled spacer bar matching user screenshots */
+            <div style={{ background: '#f8ded7', border: '1px solid #eba896', borderRadius: '10px', height: '36px', marginBottom: '20px' }}></div>
+          )}
+
+          {/* Toggle Tabs */}
+          <div className="auth-tabs-pill">
+            <button
+              className={`auth-tab-btn ${mode === 'login' ? 'active' : ''}`}
+              type="button"
+              onClick={() => {
+                setMode('login');
+                setError(null);
+              }}
+            >
+              Login
+            </button>
+            <button
+              className={`auth-tab-btn ${mode === 'register' ? 'active' : ''}`}
+              type="button"
+              onClick={() => {
+                setMode('register');
+                setError(null);
+              }}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="text-start">
+            {mode === 'register' && (
+              <div>
+                <label className="form-label-custom-new">Full Name</label>
+                <input
+                  type="text"
+                  className="form-input-custom-new"
+                  placeholder="Your full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="form-label-custom-new">Email *</label>
               <input
-                type="text"
-                className="form-control-custom"
-                placeholder="Your full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                type="email"
+                className="form-input-custom-new"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-          )}
 
-          <div className="mb-3">
-            <label className="form-label-custom">Email Address</label>
-            <input
-              type="email"
-              className="form-control-custom"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+            <div>
+              <label className="form-label-custom-new">Password *</label>
+              <input
+                type="password"
+                className="form-input-custom-new"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <label className="form-label-custom">Password</label>
-            <input
-              type="password"
-              className="form-control-custom"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="btn-register w-100 py-2 fw-bold mb-3"
-            style={{ borderRadius: '8px' }}
-          >
-            {submitting ? 'Please wait...' : 'Continue'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="btn-continue-new"
+            >
+              {submitting ? 'Please wait...' : 'Continue'}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
