@@ -59,7 +59,7 @@ const sessionStore = pool
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "aayam_committee_session_secret_default_fallback_12345",
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
