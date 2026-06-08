@@ -1,9 +1,15 @@
 // controllers/eventController.js
 const Event = require("../models/Event");
-const mongoose = require("mongoose");
 const Review = require("../models/Review");
 const SubEvent = require("../models/SubEvent");
 const Registration = require("../models/Registration");
+
+function isValidId(val) {
+  if (typeof val !== "string") return false;
+  const isObjectId = /^[0-9a-fA-F]{24}$/.test(val);
+  const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(val);
+  return isObjectId || isUUID;
+}
 const { uploadDocToCloud } = require("../middlewares/uploadEvent");
 const ExcelJS = require("exceljs");
 const crypto = require("crypto");
@@ -155,7 +161,7 @@ exports.getEventsPage = async (req, res) => {
 ================================ */
 exports.getEventDetail = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.redirect("/events");
+    if (!isValidId(req.params.id)) return res.redirect("/events");
 
     const event = await Event.findById(req.params.id).lean();
     if (!event) return res.redirect("/events");
@@ -225,7 +231,7 @@ exports.getEventDetail = async (req, res) => {
 ================================ */
 exports.getSubEventsPage = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.eventId)) return res.redirect("/events");
+    if (!isValidId(req.params.eventId)) return res.redirect("/events");
 
     const event = await Event.findById(req.params.eventId).lean();
     if (!event) return res.redirect("/events");

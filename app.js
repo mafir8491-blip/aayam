@@ -6,21 +6,7 @@ const express = require("express");
 const path = require("path");
 const passport = require("passport");
 
-// Global override to support both MongoDB ObjectIds and PostgreSQL UUIDs in validations
-const mongoose = require("mongoose");
-const OriginalObjectId = mongoose.Types.ObjectId;
-mongoose.Types.ObjectId = function(val) {
-  if (typeof val === "string" && (val.length === 24 || val.length === 12)) {
-    return new OriginalObjectId(val);
-  }
-  return val;
-};
-mongoose.Types.ObjectId.isValid = function(val) {
-  if (typeof val !== "string") return false;
-  const isObjectId = /^[0-9a-fA-F]{24}$/.test(val);
-  const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(val);
-  return isObjectId || isUUID;
-};
+
 
 require("./config/passport");
 
