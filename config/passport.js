@@ -7,45 +7,49 @@ const BASE_URL =
   process.env.RENDER_EXTERNAL_URL ||
   "http://localhost:5000";
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${BASE_URL}/auth/google/callback`,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        // ✅ Guard: profile must have emails
-        if (!profile.emails || profile.emails.length === 0) {
-          return done(null, false, { message: "No email from Google" });
-        }
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${BASE_URL}/auth/google/callback`,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          // ✅ Guard: profile must have emails
+          if (!profile.emails || profile.emails.length === 0) {
+            return done(null, false, { message: "No email from Google" });
+          }
 
-        const email = profile.emails[0].value;
+          const email = profile.emails[0].value;
 
-        // ✅ Guard: email must exist
-        if (!email) {
-          return done(null, false, { message: "Empty email from Google" });
-        }
+          // ✅ Guard: email must exist
+          if (!email) {
+            return done(null, false, { message: "Empty email from Google" });
+          }
 
-        let user = await User.findOne({ email });
-        if (!user) {
-          user = await User.create({
-            name: profile.displayName,
-            email,
-            password: "google-auth",
-            role: "user",
-            isActive: true,
-          });
+          let user = await User.findOne({ email });
+          if (!user) {
+            user = await User.create({
+              name: profile.displayName,
+              email,
+              password: "google-auth",
+              role: "user",
+              isActive: true,
+            });
+          }
+          return done(null, user);
+        } catch (err) {
+          console.error("Google OAuth Strategy Error:", err.message);
+          return done(err, null);
         }
-        return done(null, user);
-      } catch (err) {
-        console.error("Google OAuth Strategy Error:", err.message);
-        return done(err, null);
       }
-    }
-  )
-);
+    )
+  );
+} else {
+  console.warn("⚠️  Google OAuth environment variables (GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET) are missing. Google Sign-In is disabled.");
+}
 
 passport.serializeUser((user, done) => done(null, user.id));
 
