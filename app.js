@@ -53,7 +53,7 @@ const sessionStore = pool
   ? new PgSession({
       pool: pool,
       tableName: "session",
-      createTableIfMissing: false
+      createTableIfMissing: true
     })
   : undefined;
 
