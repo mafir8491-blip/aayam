@@ -26,8 +26,12 @@ if (hasCloudinary) {
 } else {
   console.log("ℹ️ Cloudinary credentials not found. Using local disk storage fallback for registration uploads.");
   const uploadDir = path.join(__dirname, "../uploads/registrations");
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn("⚠️ Failed to create local registrations directory (read-only filesystem on Vercel):", err.message);
   }
 
   storage = multer.diskStorage({

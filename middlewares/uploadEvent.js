@@ -21,8 +21,12 @@ if (hasCloudinary) {
 } else {
   console.log("ℹ️ Cloudinary credentials not found. Using local disk storage fallback for event uploads.");
   const uploadDir = path.join(__dirname, "../uploads/events");
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn("⚠️ Failed to create local events uploads directory (read-only filesystem on Vercel):", err.message);
   }
 
   imageStorage = multer.diskStorage({
@@ -96,8 +100,12 @@ const uploadDocToCloud = (buffer, originalname) => {
     return new Promise((resolve, reject) => {
       try {
         const uploadDir = path.join(__dirname, "../uploads/events");
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
+        try {
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+        } catch (err) {
+          console.warn("⚠️ Failed to create directory for raw documents:", err.message);
         }
         const nameWithoutExt = originalname
           .replace(/\s+/g, "_")

@@ -19,8 +19,12 @@ if (hasCloudinary) {
 } else {
   console.log("ℹ️ Cloudinary credentials not found. Using local disk storage fallback for team uploads.");
   const uploadDir = path.join(__dirname, "../uploads/team");
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn("⚠️ Failed to create local team uploads directory (read-only filesystem on Vercel):", err.message);
   }
 
   storage = multer.diskStorage({

@@ -4,8 +4,12 @@ const fs = require("fs");
 
 const uploadPath = path.join(__dirname, "..", "uploads", "reachout");
 
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
+try {
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+  }
+} catch (err) {
+  console.warn("⚠️ Failed to create local reachout directory:", err.message);
 }
 
 const storage = multer.diskStorage({
