@@ -1,0 +1,73 @@
+<!-- views/admin/panels/settings.ejs -->
+<div class="row g-4 justify-content-center">
+  <div class="col-xl-6" data-aos="fade-up">
+    <div class="dashboard-block">
+      <div class="block-header">
+        <h2 class="block-title">Admin Account Settings</h2>
+      </div>
+
+      <!-- Success/Error Alert Container -->
+      <div id="settingsAlertContainer" class="mt-3"></div>
+
+      <form action="/admin/settings/profile" method="POST" class="mt-4">
+        <!-- Current Email -->
+        <div class="mb-4">
+          <label class="form-label text-muted small fw-bold">Admin Email Address</label>
+          <input type="email" name="email" class="form-control form-control-custom" value="<%= user.email %>" placeholder="email@address.com" required>
+          <div class="form-text text-muted" style="font-size: 0.75rem;">This email is used to log into the administrative control panel.</div>
+        </div>
+
+        <hr style="border-color: var(--db-border); margin: 25px 0;">
+
+        <div class="fw-bold text-warning small mb-3"><i class="bi bi-shield-lock"></i> Change Password</div>
+
+        <!-- Current Password -->
+        <div class="mb-3">
+          <label class="form-label text-muted small">Current Password</label>
+          <input type="password" name="password" class="form-control form-control-custom" placeholder="••••••••">
+          <div class="form-text text-muted" style="font-size: 0.75rem;">Required only if you wish to change your password.</div>
+        </div>
+
+        <!-- New Password -->
+        <div class="row g-2 mb-4">
+          <div class="col-6">
+            <label class="form-label text-muted small">New Password</label>
+            <input type="password" name="newPassword" class="form-control form-control-custom" placeholder="Min. 6 characters">
+          </div>
+          <div class="col-6">
+            <label class="form-label text-muted small">Confirm New Password</label>
+            <input type="password" name="confirmPassword" class="form-control form-control-custom" placeholder="Confirm password">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-gold w-100 py-2 mt-2">Save Settings Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+    const success = params.get('success');
+    const container = document.getElementById('settingsAlertContainer');
+
+    if (error) {
+      container.innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show p-3" role="alert" style="background: rgba(192, 57, 43, 0.12); color: #e74c3c; border: 1px solid rgba(192, 57, 43, 0.25); border-radius: 12px;">
+          <strong>Error:</strong> ${decodeURIComponent(error.replace(/\+/g, ' '))}
+          <button type="button" class="btn-close btn-close-white small" data-bs-dismiss="alert" aria-label="Close" style="font-size:0.75rem; padding: 1.25rem;"></button>
+        </div>
+      `;
+    } else if (success) {
+      container.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show p-3" role="alert" style="background: rgba(39, 174, 96, 0.12); color: #2ecc71; border: 1px solid rgba(39, 174, 96, 0.25); border-radius: 12px;">
+          <strong>Success:</strong> ${decodeURIComponent(success.replace(/\+/g, ' '))}
+          <button type="button" class="btn-close btn-close-white small" data-bs-dismiss="alert" aria-label="Close" style="font-size:0.75rem; padding: 1.25rem;"></button>
+        </div>
+      `;
+    }
+  })();
+</script>

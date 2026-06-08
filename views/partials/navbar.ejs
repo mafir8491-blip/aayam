@@ -1,0 +1,284 @@
+<!-- partials/navbar.ejs -->
+<nav class="glass-navbar" id="mainNav">
+  <div class="nav-container">
+
+    <!-- Brand -->
+    <a class="nav-brand" href="/">
+      <div class="brand-logos-group">
+        <div class="brand-logo-wrap">
+          <img src="/images/karnavati_logo.png" alt="KUAND NACC" class="brand-logo brand-logo-rect" width="150" height="80" loading="eager" style="max-width:82px;height:56px;object-fit:contain;">
+        </div>
+        <div class="brand-logo-wrap">
+          <img src="/images/uit_logo.png" alt="UIT" class="brand-logo brand-logo-rect" width="54" height="36" loading="eager">
+        </div>
+        <div class="brand-logo-wrap brand-logo-wrap-main">
+          <img src="/images/aayam_img.jpg" alt="AAYAM" class="brand-logo brand-logo-square" width="46" height="46" loading="eager">
+        </div>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">AAYAM</span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="nav-links" role="list">
+      <li><a class="nav-link" href="/">Home</a></li>
+      <li><a class="nav-link" href="/team">Teams</a></li>
+      <li><a class="nav-link" href="/events">Events</a></li>
+      <li><a class="nav-link" href="/reachout">Reach Out</a></li>
+      <li><a class="nav-link" href="/gallery">Gallery</a></li>
+    </ul>
+
+    <!-- Desktop Actions -->
+    <div class="nav-actions">
+      <% if (user) { %>
+        <div class="user-dropdown" id="userDropdown">
+          <button class="user-btn" id="userDropBtn" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+            <span class="user-name"><%= user.email.split('@')[0] %></span>
+            <i class="bi bi-chevron-down drop-chevron"></i>
+          </button>
+          <div class="dropdown-panel" role="menu">
+            <div class="dropdown-inner">
+              <% if (user.role === "admin" || user.role === "superadmin") { %>
+                <a class="drop-item" href="/admin" role="menuitem">
+                  <i class="bi bi-shield-lock-fill"></i><span>Admin Dashboard</span>
+                </a>
+                <div class="drop-divider"></div>
+              <% } %>
+              <a class="drop-item drop-danger" href="/logout" role="menuitem">
+                <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <a class="login-btn" href="/auth">
+          <i class="bi bi-person" style="margin-right:4px;"></i>
+          <span>User Login</span>
+        </a>
+      <% } %>
+
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-track"><span class="theme-thumb">
+          <i class="bi bi-sun-fill sun-icon"></i>
+          <i class="bi bi-moon-fill moon-icon"></i>
+        </span></span>
+      </button>
+    </div>
+
+    <!-- Mobile cluster: hamburger only -->
+    <div class="mobile-cluster">
+      <button class="ham-btn" id="hamBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="ham-bar bar-1"></span>
+        <span class="ham-bar bar-2"></span>
+        <span class="ham-bar bar-3"></span>
+      </button>
+    </div>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <nav class="menu-drawer">
+    <div class="drawer-header">
+      <a class="drawer-brand" href="/">
+        <img src="/images/aayam_img.jpg" alt="AAYAM" width="34" height="34" class="drawer-logo">
+        <span class="drawer-title">AAYAM COMMITTEE</span>
+      </a>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <ul class="drawer-nav" role="list">
+      <li class="drawer-item" style="--i:0"><a class="drawer-link" href="/"><span class="drawer-icon"><i class="bi bi-house-fill"></i></span><span class="drawer-label">Home</span><span class="drawer-arrow"><i class="bi bi-chevron-right"></i></span></a></li>
+      <li class="drawer-item" style="--i:1"><a class="drawer-link" href="/team"><span class="drawer-icon"><i class="bi bi-people-fill"></i></span><span class="drawer-label">Teams</span><span class="drawer-arrow"><i class="bi bi-chevron-right"></i></span></a></li>
+      <li class="drawer-item" style="--i:2"><a class="drawer-link" href="/events"><span class="drawer-icon"><i class="bi bi-calendar-event-fill"></i></span><span class="drawer-label">Events</span><span class="drawer-arrow"><i class="bi bi-chevron-right"></i></span></a></li>
+      <li class="drawer-item" style="--i:3"><a class="drawer-link" href="/reachout"><span class="drawer-icon"><i class="bi bi-envelope-paper-fill"></i></span><span class="drawer-label">Reach Out</span><span class="drawer-arrow"><i class="bi bi-chevron-right"></i></span></a></li>
+      <li class="drawer-item" style="--i:4"><a class="drawer-link" href="/gallery"><span class="drawer-icon"><i class="bi bi-images"></i></span><span class="drawer-label">Gallery</span><span class="drawer-arrow"><i class="bi bi-chevron-right"></i></span></a></li>
+      <!-- Theme toggle below Reach Out in mobile drawer -->
+      <li class="drawer-item drawer-theme-item" style="--i:6">
+        <div class="drawer-theme-row">
+          <span class="drawer-icon"><i class="bi bi-circle-half"></i></span>
+          <span class="drawer-label">Toggle Theme</span>
+          <button class="theme-btn theme-btn-mobile" onclick="toggleTheme(); syncIconsExternal();" aria-label="Toggle theme">
+            <span class="theme-track"><span class="theme-thumb">
+              <i class="bi bi-sun-fill sun-icon"></i>
+              <i class="bi bi-moon-fill moon-icon"></i>
+            </span></span>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="drawer-footer">
+      <% if (user) { %>
+        <div class="drawer-user">
+          <div class="drawer-user-avatar"><i class="bi bi-person-fill"></i></div>
+          <div class="drawer-user-info">
+            <span class="drawer-user-name"><%= user.email.split('@')[0] %></span>
+            <span class="drawer-user-role"><%= user.role %></span>
+          </div>
+        </div>
+        <% if (user.role === "admin" || user.role === "superadmin") { %>
+          <a class="drawer-action-btn admin-btn" href="/admin"><i class="bi bi-shield-lock-fill"></i> Admin Dashboard</a>
+        <% } %>
+        <a class="drawer-action-btn logout-btn" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+      <% } else { %>
+        <a class="drawer-action-btn login-action-btn" href="/auth"><i class="bi bi-person-fill"></i> Login to Account</a>
+      <% } %>
+    </div>
+  </nav>
+</div>
+
+<style>
+/* ══ Individual logo hover — isolate each wrap, kill group-level effects ══ */
+
+/* 1. Neutralise the group-level hover that was lighting up all logos at once */
+.brand-logo-wrap:first-child img {
+  width: 130px !important;
+  height: 80px !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
+
+/* ── Mobile: shrink karnavati logo so "AAYAM" text stays visible ── */
+@media (max-width: 768px) {
+  .brand-logo-wrap:first-child img {
+    width: 100px !important;
+    height: 80px !important;
+  }
+}
+.nav-brand:hover .brand-logo-square,
+.nav-brand:hover .brand-logo-rect {
+  transform: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.nav-brand:hover .brand-logo-ring { opacity: 0 !important; }
+
+/* 2. Each logo wrap is the new hover parent */
+.brand-logo-wrap { position: relative; flex-shrink: 0; }
+
+.brand-logo-wrap img {
+  transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s ease;
+  border-color: transparent !important;
+}
+
+/* 3. Only the hovered wrap's image moves — others stay still */
+.brand-logo-wrap:hover .brand-logo-square,
+.brand-logo-wrap:hover .brand-logo-rect {
+  transform: translateY(-4px) scale(1.1) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.15) !important;
+  border-color: transparent !important;
+}
+
+/* ══ Remove brown/tan border from all logo images globally ══ */
+.brand-logo,
+.brand-logo-rect,
+.brand-logo-square {
+  border-color: transparent !important;
+  outline: none !important;
+}
+
+/* ══ Desktop theme toggle — thumb slide fix ══ */
+#themeBtn .theme-thumb {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+body.dark-mode #themeBtn .theme-thumb  { transform: translateX(25px) !important; }
+body.light-mode #themeBtn .theme-thumb { transform: translateX(0px)  !important; }
+</style>
+
+<script>
+(function(){
+  const nav       = document.getElementById('mainNav');
+  const hamBtn    = document.getElementById('hamBtn');
+  const mobileMenu= document.getElementById('mobileMenu');
+  const backdrop  = document.getElementById('menuBackdrop');
+  const closeBtn  = document.getElementById('drawerClose');
+  const progress  = document.getElementById('scrollProgress');
+  const userDropBtn  = document.getElementById('userDropBtn');
+  const userDropdown = document.getElementById('userDropdown');
+
+  // ── Scroll progress ──
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        nav.classList.toggle('nav-scrolled', window.scrollY > 60);
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        if (progress) progress.style.transform = `scaleX(${docH > 0 ? window.scrollY / docH : 0})`;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ── Active link ──
+  const path = window.location.pathname;
+  document.querySelectorAll('.nav-link, .drawer-link').forEach(l => {
+    if (l.getAttribute('href') === path) l.classList.add('active');
+  });
+
+  // ── Mobile menu ──
+  function openMenu() {
+    mobileMenu.classList.add('menu-open');
+    mobileMenu.setAttribute('aria-hidden','false');
+    hamBtn.setAttribute('aria-expanded','true');
+    hamBtn.classList.add('ham-open');
+    document.body.classList.add('menu-lock');
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove('menu-open');
+    mobileMenu.setAttribute('aria-hidden','true');
+    hamBtn.setAttribute('aria-expanded','false');
+    hamBtn.classList.remove('ham-open');
+    document.body.classList.remove('menu-lock');
+  }
+  if (hamBtn)   hamBtn.addEventListener('click', () => mobileMenu.classList.contains('menu-open') ? closeMenu() : openMenu());
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('.drawer-link, .drawer-action-btn').forEach(l => l.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => e.key === 'Escape' && closeMenu());
+
+  // ── User dropdown ──
+  if (userDropBtn && userDropdown) {
+    userDropBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = userDropdown.classList.toggle('drop-open');
+      userDropBtn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', e => {
+      if (!userDropdown.contains(e.target)) userDropdown.classList.remove('drop-open');
+    });
+  }
+
+  // ── Theme sync — fixes the desktop thumb not moving ──
+  function syncIcons() {
+    const dark = document.body.classList.contains('dark-mode');
+
+    // Sync the .theme-dark class used by CSS for icon visibility
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('theme-dark', dark));
+
+    // Directly set the desktop thumb position via inline style
+    const desktopThumb = document.querySelector('#themeBtn .theme-thumb');
+    if (desktopThumb) {
+      desktopThumb.style.transform = dark ? 'translateX(25px)' : 'translateX(0px)';
+    }
+  }
+
+  window.syncIconsExternal = syncIcons;
+
+  // Run immediately on page load to reflect persisted theme
+  syncIcons();
+
+  // Wrap toggleTheme so we always sync after it runs
+  const _orig = window.toggleTheme;
+  window.toggleTheme = function() {
+    if (typeof _orig === 'function') _orig();
+    syncIcons();
+  };
+
+  nav.classList.add('nav-ready');
+})();
+</script>

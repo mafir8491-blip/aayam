@@ -1,0 +1,127 @@
+<!-- views/admin/panels/teams.ejs -->
+<div class="row g-4">
+  <!-- Add Section -->
+  <div class="col-xl-4" data-aos="fade-right">
+    <div class="dashboard-block mb-4">
+      <div class="block-header">
+        <h2 class="block-title">Create New Section</h2>
+      </div>
+      <form action="/team/section/add" method="POST" class="mt-2">
+        <div class="mb-3">
+          <label class="form-label text-muted small">Section Title</label>
+          <input type="text" name="title" class="form-control form-control-custom" placeholder="e.g. Media Team, Technical & Creatives" required>
+        </div>
+        <button type="submit" class="btn-gold w-100 py-2">Create Section</button>
+      </form>
+    </div>
+
+    <!-- Active Sections list for quick reference / edit -->
+    <div class="dashboard-block">
+      <div class="block-header">
+        <h2 class="block-title">All Sections (<%= sections.length %>)</h2>
+      </div>
+      <div class="mt-3" style="max-height: 400px; overflow-y: auto;">
+        <% if (sections && sections.length > 0) { %>
+          <div class="list-group list-group-flush">
+            <% sections.forEach(sec => { %>
+              <div class="list-group-item bg-transparent border-bottom border-light py-3 px-0 d-flex justify-content-between align-items-center">
+                <div>
+                  <div style="font-weight: 600; color: var(--cream-light);"><%= sec.title %></div>
+                  <div class="small text-muted"><%= sec.members ? sec.members.length : 0 %> Members</div>
+                </div>
+                <div class="d-flex gap-2">
+                  <a href="/team/section/edit/<%= sec._id %>" class="btn btn-sm btn-outline-warning" style="font-size: 0.75rem;">Edit Title</a>
+                  <form action="/team/section/delete/<%= sec._id %>" method="POST" onsubmit="return confirm('Delete section & members?')">
+                    <button class="btn btn-sm btn-admin-danger" style="font-size: 0.75rem;">✕</button>
+                  </form>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p class="text-muted small italic mt-2">No sections created yet.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections with Member Add & List -->
+  <div class="col-xl-8" data-aos="fade-left">
+    <div class="dashboard-block">
+      <div class="block-header">
+        <h2 class="block-title">Manage Section Members</h2>
+      </div>
+
+      <% if (sections && sections.length > 0) { %>
+        <div class="accordion accordion-flush mt-3" id="teamSectionsAccordion">
+          <% sections.forEach((sec, idx) => { %>
+            <div class="accordion-item bg-transparent border-bottom border-light mb-3" style="border: 1px solid var(--db-border); border-radius: 12px; overflow: hidden;">
+              <h2 class="accordion-header" id="heading<%= idx %>">
+                <button class="accordion-button collapsed bg-transparent fw-bold d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= idx %>" aria-expanded="false" aria-controls="collapse<%= idx %>" style="border: none; box-shadow: none; color: var(--cream-light);">
+                  <span class="text-warning"><%= sec.title %></span>
+                  <span class="badge bg-secondary ms-2 text-white font-monospace"><%= sec.members ? sec.members.length : 0 %> Members</span>
+                </button>
+              </h2>
+              <div id="collapse<%= idx %>" class="accordion-collapse collapse" aria-labelledby="heading<%= idx %>" data-bs-parent="#teamSectionsAccordion">
+                <div class="accordion-body" style="background: rgba(166, 124, 82, 0.02);">
+                  
+                  <!-- Add member form inside accordion -->
+                  <div class="mb-4 p-3" style="border: 1px dashed var(--db-border); border-radius: 8px; background: var(--db-surface-alt);">
+                    <div class="fw-bold mb-2 small" style="color: var(--cream-light);"><i class="bi bi-person-plus-fill text-warning"></i> Add Member to <%= sec.title %></div>
+                    <form action="/team/member/add" method="POST" enctype="multipart/form-data" class="row g-2 align-items-end">
+                      <input type="hidden" name="sectionId" value="<%= sec._id %>">
+                      <div class="col-md-4">
+                        <input type="text" name="name" placeholder="Member Name" class="form-control form-control-custom form-control-sm" required>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" name="position" placeholder="Position (e.g. Media Head)" class="form-control form-control-custom form-control-sm">
+                      </div>
+                      <div class="col-md-3">
+                        <input type="file" name="image" class="form-control form-control-custom form-control-sm" accept="image/*" required>
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" class="btn-gold w-100 py-1" style="font-size: 0.82rem;">Upload</button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Member Listing -->
+                  <div class="row g-3">
+                    <% if (sec.members && sec.members.length > 0) { %>
+                      <% sec.members.forEach(member => { %>
+                        <div class="col-md-6 col-lg-4">
+                          <div class="d-flex align-items-center gap-3 p-2" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--db-border); border-radius: 8px;">
+                            <img src="<%= member.image.startsWith('/') ? member.image : '/' + member.image %>" alt="<%= member.name %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 1.5px solid var(--gold);">
+                            <div class="flex-fill min-w-0">
+                              <div style="font-weight: 600; color: var(--cream-light); font-size: 0.9rem;" class="text-truncate"><%= member.name %></div>
+                              <div style="font-size: 0.75rem; color: var(--text-muted);" class="text-truncate"><%= member.position || 'Member' %></div>
+                            </div>
+                            <div class="d-flex flex-column gap-1">
+                              <a href="/team/member/edit/<%= member._id %>" class="btn btn-sm btn-outline-warning p-1" style="font-size: 0.72rem; line-height: 1;" title="Edit Member">
+                                <i class="bi bi-pencil"></i>
+                              </a>
+                              <form action="/team/member/delete/<%= member._id %>" method="POST" onsubmit="return confirm('Delete member?')">
+                                <button class="btn btn-sm btn-admin-danger p-1" style="font-size: 0.72rem; line-height: 1;" title="Delete Member">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      <% }) %>
+                    <% } else { %>
+                      <p class="text-muted small italic text-center col-12 py-3">No members in this section yet.</p>
+                    <% } %>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-muted small italic mt-3">No sections created yet. Create a section using the left-hand form.</p>
+      <% } %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,957 @@
+<!-- views/events/show.ejs -->
+
+<%
+function generateTimeOptions(selected) {
+  var out = '';
+  for (var h = 0; h < 24; h++) {
+    for (var m = 0; m < 60; m += 30) {
+      var suffix = h < 12 ? 'AM' : 'PM';
+      var h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+      var label = (h12 < 10 ? '0' : '') + h12 + ':' + (m === 0 ? '00' : '30') + ' ' + suffix;
+      out += '<option value="' + label + '"' + (label === selected ? ' selected' : '') + '>' + label + '</option>';
+    }
+  }
+  return out;
+}
+%>
+<div class="container my-5">
+  <div class="event-detail-content">
+
+    <!-- ══════════════════════════
+         POSTER SLIDESHOW
+    ══════════════════════════ -->
+    <%
+      var allSlides = [];
+      if (event.bannerImage) allSlides.push(event.bannerImage);
+      if (event.posterSlides && event.posterSlides.length > 0) {
+        event.posterSlides.forEach(function(s){ allSlides.push(s); });
+      }
+    %>
+    <% if (allSlides.length > 0) { %>
+      <div class="slideshow-wrap" data-aos="fade-down">
+        <div class="slideshow-track" id="slideshowTrack">
+          <% allSlides.forEach(function(slide, si) { %>
+            <div class="slide-item" style="display:<%= si === 0 ? 'block' : 'none' %>;">
+              <img src="<%= slide %>" alt="<%= event.title %> poster <%= si+1 %>" class="slide-img" loading="<%= si === 0 ? 'eager' : 'lazy' %>">
+              <% if (si === 0 && isPast) { %>
+                <div style="position:absolute;top:16px;right:16px;">
+                  <span class="badge-completed" style="font-size:0.8rem;padding:6px 14px;">Completed</span>
+                </div>
+              <% } %>
+              <% if (si === 0 && event.isPublic === false && user && (user.role === 'admin' || user.role === 'superadmin')) { %>
+                <div style="position:absolute;top:16px;left:16px;">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:var(--r-full);background:rgba(0,0,0,0.65);color:#ffd700;font-size:0.72rem;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,215,0,0.35);backdrop-filter:blur(6px);">
+                    🔒 Private — Admin View
+                  </span>
+                </div>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+        <% if (allSlides.length > 1) { %>
+          <button class="slide-btn slide-prev" onclick="slideMove(-1)" aria-label="Previous">&#8249;</button>
+          <button class="slide-btn slide-next" onclick="slideMove(1)" aria-label="Next">&#8250;</button>
+          <div class="slide-dots" id="slideDots">
+            <% allSlides.forEach(function(_, si) { %>
+              <span class="slide-dot <%= si === 0 ? 'active' : '' %>" onclick="slideTo(<%= si %>)"></span>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+
+
+    <!-- Admin action bar -->
+    <% if (user && (user.role === 'admin' || user.role === 'superadmin')) { %>
+      <div class="admin-action-bar" data-aos="fade-up">
+        <a href="/events/edit/<%= event._id %>" class="btn-details admin-bar-btn">
+          <i class="bi bi-pencil-square"></i> Edit Event
+        </a>
+        <form action="/events/toggle-visibility/<%= event._id %>" method="POST" style="margin:0;flex:1 1 auto;">
+          <button type="submit" class="<%= event.isPublic === false ? 'btn-register' : 'btn-admin-warn' %> admin-bar-btn" style="font-size:0.82rem;width:100%;">
+            <%= event.isPublic === false ? '🌐 Make Public' : '🔒 Make Private' %>
+          </button>
+        </form>
+      </div>
+    <% } %>
+
+
+    <!-- Title & meta -->
+    <div data-aos="fade-up" data-aos-delay="60" style="margin-bottom:28px;">
+      <h1 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:var(--tx);line-height:1.12;margin-bottom:14px;letter-spacing:-0.5px;">
+        <%= event.title %>
+      </h1>
+      <% if (event.startDate && event.endDate) { %>
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(166,124,82,0.08);border:1px solid rgba(166,124,82,0.2);border-radius:var(--r-full);margin-bottom:20px;">
+          <i class="bi bi-calendar3" style="color:var(--br);"></i>
+          <span style="font-size:0.88rem;font-weight:600;color:var(--tx-mid);">
+            <%
+            const _s = new Date(event.startDate).toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'long',year:'numeric'});
+            const _e = new Date(event.endDate).toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'long',year:'numeric'});
+          %>
+          <%= _s === _e ? _s : _s + ' → ' + _e %>
+          </span>
+        </div>
+      <% } %>
+      <% if (event.customDetails && event.customDetails.length > 0) { %>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;" data-aos="fade-up" data-aos-delay="80">
+          <% event.customDetails.forEach(function(detail) { %>
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(166,124,82,0.05);border:1px solid rgba(166,124,82,0.15);border-radius:var(--r-full);">
+              <strong style="font-size:0.85rem;color:var(--br);"><%= detail.key %>:</strong>
+              <span style="font-size:0.85rem;color:var(--tx-mid);"><%= detail.value %></span>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+      <div class="event-description-body" data-aos="fade-up"><%- event.description %></div>
+      <% if (event.about) { %>
+        <div style="background:rgba(166,124,82,0.05);border-left:3px solid var(--br);border-radius:0 var(--r-md) var(--r-md) 0;padding:16px 20px;margin-top:18px;max-width:780px;" data-aos="fade-up">
+          <div class="event-description-body"><%- event.about %></div>
+        </div>
+      <% } %>
+    </div>
+
+<!-- ══════════════════════════
+     SCHEDULE CARDS
+══════════════════════════ -->
+<% if (event.scheduleCards && event.scheduleCards.length > 0) { %>
+  <% var sortedCards = event.scheduleCards.slice().sort(function(a, b) {
+       return a.heading.localeCompare(b.heading, undefined, { numeric: true });
+     }); %>
+  <div class="detail-section" data-aos="fade-up">
+    <h2 class="detail-section-title">
+      <i class="bi bi-calendar2-week" style="color:var(--br);margin-right:8px;"></i> Event Schedule
+    </h2>
+    <div class="sched-btn-row">
+      <% sortedCards.forEach(function(card, ci) { %>
+        <button
+          type="button"
+          class="sched-pill-btn"
+          onclick="openSchedModal('<%= card._id %>')"
+          data-aos="fade-up"
+          data-aos-delay="<%= ci * 60 %>"
+        >
+          <i class="bi bi-calendar-week"></i>
+          <%= card.heading %>
+          <i class="bi bi-chevron-right" style="margin-left:4px;font-size:0.7rem;opacity:0.7;"></i>
+        </button>
+      <% }) %>
+    </div>
+  </div>
+<% } %>
+
+<!-- Schedule Card Modals -->
+<% if (event.scheduleCards && event.scheduleCards.length > 0) { %>
+  <% sortedCards.forEach(function(card) { %>
+    <div class="sched-modal-overlay" id="sched-modal-<%= card._id %>" onclick="closeSchedModal(event, '<%= card._id %>')">
+      <div class="sched-modal-card" role="dialog" aria-modal="true">
+        <button class="sched-modal-close" onclick="closeSchedModalById('<%= card._id %>')" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="sched-modal-heading">
+          <i class="bi bi-calendar2-week" style="color:var(--br);margin-right:8px;"></i><%= card.heading %>
+        </div>
+        <% if (card.body && card.body.trim() !== '') { %>
+          <div class="sched-modal-body event-description-body"><%- card.body %></div>
+        <% } %>
+        <% if (card.tableData && card.tableData.columns && card.tableData.columns.length > 0) { %>
+          <div class="sched-table-wrap">
+            <table class="sched-table">
+              <thead>
+                <tr>
+                  <% card.tableData.columns.forEach(function(col) { %>
+                    <th><%= col %></th>
+                  <% }) %>
+                </tr>
+              </thead>
+              <tbody>
+                <% (card.tableData.rows || []).forEach(function(row) { %>
+                  <tr>
+                    <% card.tableData.columns.forEach(function(col, ci) { %>
+                      <td><%= row[ci] || '' %></td>
+                    <% }) %>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+        <% if ((!card.body || card.body.trim() === '') && (!card.tableData || !card.tableData.columns || card.tableData.columns.length === 0)) { %>
+          <div class="sched-modal-body"><em style="opacity:0.5;">No details added yet.</em></div>
+        <% } %>
+      </div>
+    </div>
+  <% }) %>
+<% } %>
+
+<%
+  var isAdmin = user && (user.role === 'admin' || user.role === 'superadmin');
+  var hasSubEvents = subEvents && subEvents.length > 0;
+  var hasExternalLink = event.registrationLink && event.registrationLink.trim() !== '';
+  var showRegSection = !isPast || isAdmin;
+%>
+
+    <!-- ═══ DOCUMENTS ═══ -->
+       <% if ((event.documents && event.documents.length > 0) || isAdmin) { %>
+    <div class="detail-section" data-aos="fade-up">
+      <h2 class="detail-section-title">Event Brochure</h2>
+      <% if (event.documents && event.documents.length > 0) { %>
+        <% event.documents.forEach(function(doc, i) { %>
+          <% if (doc.isPublic || isAdmin) { %>
+            <div class="person-item">
+              <div>
+                <div class="person-name"><%= doc.title %></div>
+                <% if (!doc.isPublic && isAdmin) { %>
+                  <span style="font-size:0.72rem;color:#b8860b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Admin Only</span>
+                <% } %>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <a href="https://docs.google.com/viewer?url=<%= encodeURIComponent(doc.file) %>&embedded=false" target="_blank" rel="noopener noreferrer" class="btn-details" style="font-size:0.82rem;padding:6px 14px;">👁 View</a>
+                <% if (isAdmin) { %>
+                  <form action="/events/<%= event._id %>/documents/<%= i %>/delete" method="POST" onsubmit="return confirm('Delete?')">
+                    <button type="submit" class="btn-admin-danger" style="padding:5px 12px;font-size:0.8rem;">✕</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% } %>
+        <% }) %>
+      <% } else { %>
+        <p style="color:var(--tx-muted);font-size:0.92rem;">No documents uploaded yet.</p>
+      <% } %>
+      <% if (isAdmin) { %>
+        <form action="/events/<%= event._id %>/documents" method="POST" enctype="multipart/form-data" class="admin-add-form mt-3">
+          <div class="row g-2">
+            <div class="col-md-5"><input type="text" name="title" class="form-control" placeholder="Document title" required></div>
+            <div class="col-md-4"><input type="file" name="document" class="form-control" required></div>
+            <div class="col-md-3">
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="isPublic" id="isPublicDoc"><label class="form-check-label" for="isPublicDoc" style="font-size:0.82rem;color:var(--tx-muted);">Public</label></div>
+              <button type="submit" class="btn-register w-100">Upload</button>
+            </div>
+          </div>
+        </form>
+      <% } %>
+    </div>
+<% } %>
+
+    <!-- ═══ REGISTRATION ═══ -->
+    <% if (showRegSection) { %>
+      <% if ((mainRegSub || hasExternalLink) && !hasSubEvents) { %>
+        <div class="detail-section" data-aos="fade-up">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid rgba(166,124,82,0.18);">
+            <h2 class="detail-section-title" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">Registration</h2>
+            <% if (isAdmin && mainRegSub) { %>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <a href="/admin/subevents/<%= mainRegSub._id %>/registrations"
+                  class="btn-details"
+                  style="font-size:0.78rem;padding:6px 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:rgba(39,174,96,0.08);border-color:rgba(39,174,96,0.30);color:#27ae60;">
+                  <i class="bi bi-people"></i> View Registrations
+                </a>
+                <a href="/admin/subevents/<%= mainRegSub._id %>/registrations/export"
+                  class="btn-details"
+                  style="font-size:0.78rem;padding:6px 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:rgba(39,174,96,0.08);border-color:rgba(39,174,96,0.30);color:#27ae60;">
+                  <i class="bi bi-download"></i> Download Registrations
+                </a>
+              </div>
+            <% } %>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(166,124,82,0.07),rgba(201,168,76,0.04));border:1.5px solid rgba(166,124,82,0.22);border-radius:var(--r-lg);padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--tx);margin-bottom:4px;">
+                <% if (mainRegSub) { %>
+                  <i class="bi bi-pencil-square" style="color:var(--br);"></i> Fill Registration Form
+                <% } else { %>
+                  <i class="bi bi-link-45deg" style="color:var(--br);"></i> Register via External Form
+                <% } %>
+              </div>
+              <div style="font-size:0.82rem;color:var(--tx-muted);"><%= mainRegSub ? 'Fill the form directly on this site' : 'Opens in a new tab' %></div>
+            </div>
+            <% if (mainRegSub) { %>
+              <a href="/register/<%= mainRegSub._id %>" class="btn-register" style="white-space:nowrap;flex-shrink:0;">
+                Register Now <i class="bi bi-arrow-right"></i>
+              </a>
+            <% } else { %>
+              <a href="<%= event.registrationLink %>" target="_blank" rel="noopener noreferrer" class="btn-register" style="white-space:nowrap;flex-shrink:0;">
+                Register Now <i class="bi bi-box-arrow-up-right"></i>
+              </a>
+            <% } %>
+          </div>
+        </div>
+
+      <% } else if (hasSubEvents) { %>
+        <div class="detail-section" data-aos="fade-up">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid rgba(166,124,82,0.18);">
+            <h2 class="detail-section-title" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">
+              <%= isPast ? 'Sessions & Registrations' : 'Register for Sessions' %>
+            </h2>
+            <% if (isAdmin) { %>
+              <a href="/admin/events/<%= event._id %>/registrations/export-all"
+                class="btn-details"
+                style="font-size:0.78rem;padding:6px 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:rgba(39,174,96,0.08);border-color:rgba(39,174,96,0.30);color:#27ae60;">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Export All Registrations CSV
+              </a>
+            <% } %>
+          </div>
+
+          <% if (!isPast && hasExternalLink) { %>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;background:rgba(166,124,82,0.06);border:1px solid rgba(166,124,82,0.18);border-radius:var(--r-md);margin-bottom:16px;flex-wrap:wrap;">
+              <div style="flex:1;font-size:0.83rem;font-weight:600;color:var(--tx-mid);"><i class="bi bi-link-45deg" style="color:var(--br);"></i> External registration also available</div>
+              <a href="<%= event.registrationLink %>" target="_blank" rel="noopener noreferrer" class="btn-details" style="font-size:0.8rem;padding:6px 14px;white-space:nowrap;flex-shrink:0;">Open Form <i class="bi bi-box-arrow-up-right"></i></a>
+            </div>
+          <% } %>
+
+          <% if (groupedSubEvents && groupedSubEvents.length > 0) { %>
+            <% groupedSubEvents.forEach(function(group) { %>
+
+              <% if (group.day > 0) { %>
+                <div style="display:flex;align-items:center;gap:12px;margin:22px 0 12px;" data-aos="fade-up">
+                  <div style="padding:4px 16px;background:linear-gradient(135deg,var(--br),var(--br-deep));color:#fff;border-radius:var(--r-full);font-size:0.78rem;font-weight:700;letter-spacing:1px;white-space:nowrap;">
+                    DAY <%= group.day %>
+                    <% var firstSub = group.subEvents[0]; %>
+                   <% if (firstSub && firstSub.eventDate) { %>&nbsp;·&nbsp;<%= new Date(firstSub.eventDate).toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',year:'numeric'}) %><% } %>
+                  </div>
+                  <div style="flex:1;height:1px;background:var(--border-l);"></div>
+                </div>
+              <% } %>
+
+              <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px;">
+                <% group.subEvents.forEach(function(sub) { %>
+                  <%
+                    var regOpen = sub.registrationOpen !== false;
+                    var isClosed = !regOpen;
+                  %>
+                  <div class="show-sub-card" data-aos="fade-up" id="show-sub-<%= sub._id %>">
+
+                    <div class="show-sub-top">
+                      <div class="show-sub-left">
+                        <div class="show-sub-title">
+                          <%= sub.title %>
+                          <% if (isClosed && !isPast) { %>
+                            <span style="font-size:0.68rem;font-weight:700;background:rgba(192,57,43,0.10);color:#c0392b;padding:2px 8px;border-radius:var(--r-full);margin-left:8px;vertical-align:middle;">CLOSED</span>
+                          <% } %>
+                        </div>
+                        <div class="show-sub-pills">
+                          <% if (sub.startTime || sub.endTime) { %>
+                            <span class="spill spill-time"><i class="bi bi-clock"></i> <%= sub.startTime %><% if (sub.endTime) { %>&thinsp;–&thinsp;<%= sub.endTime %><% } %></span>
+                          <% } %>
+                          <% if (sub.isGroupEvent) { %>
+                            <span class="spill spill-type"><i class="bi bi-people"></i> Team&thinsp;<%= sub.minTeamSize %>–<%= sub.maxTeamSize %></span>
+                          <% } else { %>
+                            <span class="spill spill-type"><i class="bi bi-person"></i> Individual</span>
+                          <% } %>
+                          <% if (sub.maxParticipants) { %>
+                            <span class="spill spill-cap"><i class="bi bi-person-check"></i> Max&thinsp;<%= sub.maxParticipants %></span>
+                          <% } %>
+                          <% if (sub.requirePaymentScreenshot) { %>
+                            <span class="spill spill-pay"><i class="bi bi-credit-card"></i> Payment req.</span>
+                          <% } %>
+                          <% if (sub.externalRegistrationLink && sub.externalRegistrationLink.trim() !== '') { %>
+                            <span class="spill spill-ext"><i class="bi bi-box-arrow-up-right"></i> External Form</span>
+                          <% } %>
+                          <% if (sub.registrationDeadline && !isPast) { %>
+                            <%
+                              var dlDate = new Date(sub.registrationDeadline);
+var dlStr  = dlDate.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});                            %>
+                            <span class="spill <%= isClosed ? 'spill-closed' : 'spill-deadline' %>">
+                              <i class="bi bi-alarm"></i>
+                              <%= isClosed ? 'Closed' : ('Closes ' + dlStr) %>
+                            </span>
+                          <% } %>
+                        </div>
+                      </div>
+
+                      <div class="show-sub-actions">
+                        <% if (!isPast) { %>
+                          <% if (isClosed) { %>
+                            <span class="btn-details" style="opacity:0.5;cursor:not-allowed;font-size:0.85rem;padding:8px 16px;">
+                              <i class="bi bi-lock"></i> Closed
+                            </span>
+                          <% } else if (sub.externalRegistrationLink && sub.externalRegistrationLink.trim() !== '') { %>
+                            <a href="<%= sub.externalRegistrationLink %>" target="_blank" rel="noopener noreferrer" class="btn-register" style="white-space:nowrap;font-size:0.85rem;padding:8px 16px;">
+                              Register <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                          <% } else { %>
+                            <a href="/register/<%= sub._id %>" class="btn-register" style="white-space:nowrap;font-size:0.85rem;padding:8px 16px;">
+                              Register <i class="bi bi-arrow-right"></i>
+                            </a>
+                          <% } %>
+                        <% } %>
+                        <% if (isAdmin) { %>
+                          <a href="/admin/subevents/<%= sub._id %>/registrations" class="btn-details" style="font-size:0.78rem;padding:6px 12px;white-space:nowrap;">
+                            <i class="bi bi-people"></i> Registrations
+                          </a>
+                          <a href="/events/edit/<%= event._id %>#subevent-<%= sub._id %>" class="field-edit-btn" style="font-size:0.72rem;padding:4px 10px;text-decoration:none;">
+                            <i class="bi bi-pencil"></i> Edit
+                          </a>
+                        <% } %>
+                      </div>
+                    </div>
+
+                    <% if (sub.description) { %>
+                      <div class="show-sub-desc"><%= sub.description %></div>
+                    <% } %>
+
+                    <% if (sub.posterImage) { %>
+                      <div class="show-sub-poster-wrap">
+                        <img src="<%= sub.posterImage %>" alt="<%= sub.title %> Poster" class="show-sub-poster-img">
+                      </div>
+                    <% } %>
+
+                  </div>
+                <% }); %>
+              </div>
+            <% }); %>
+          <% } %>
+
+          <% if (!isPast && subEvents.length > 1) { %>
+            <div style="margin-top:18px;">
+              <a href="/events/<%= event._id %>/register" class="btn-register">Browse All Sessions <i class="bi bi-arrow-right"></i></a>
+            </div>
+          <% } %>
+        </div>
+
+      <% } else if (!isPast) { %>
+        <div data-aos="fade-up" style="margin:0 0 30px;">
+          <p style="color:var(--tx-muted);font-size:0.93rem;padding:14px 18px;background:rgba(166,124,82,0.05);border-radius:var(--r-md);border:1px solid var(--border-l);margin:0;">
+            <i class="bi bi-clock"></i> Registrations will open soon.
+          </p>
+        </div>
+      <% } %>
+    <% } %>
+
+
+    <!-- ═══ SPEAKERS ═══ -->
+    <%
+      var hasSpeakerImages = event.speakerImages && event.speakerImages.length > 0;
+    %>
+    <% if (hasSpeakerImages || isAdmin) { %>
+      <div class="detail-section" data-aos="fade-up">
+        <% if (hasSpeakerImages) { %><h2 class="detail-section-title">Speakers</h2><% } %>
+        <% if (hasSpeakerImages) { %>
+          <div class="gallery-grid-new">
+            <% event.speakerImages.forEach(function(img, i) { %>
+              <%
+                var hasName   = img.speakerName && img.speakerName.trim() !== '';
+                var hasDetail = img.detail && img.detail.trim() !== '';
+                var hasCap    = hasName || hasDetail;
+              %>
+              <div class="gallery-item-new <%= hasCap ? '' : 'no-caption-card' %>" data-aos="fade-up" data-aos-delay="<%= Math.min(i*40,280) %>">
+                <div class="gallery-img-wrap">
+                  <img src="<%= img.url %>" alt="<%= hasName ? img.speakerName.trim() : ('Speaker '+(i+1)) %>" class="gallery-img-actual" loading="lazy" onerror="this.parentElement.parentElement.style.display='none'">
+                  <% if (isAdmin) { %>
+                    <form action="/events/<%= event._id %>/speakers/<%= img._id %>/delete" method="POST" style="position:absolute;top:7px;right:7px;margin:0;z-index:2;" onsubmit="return confirm('Remove this speaker image?')">
+                      <button type="submit" class="gal-del-btn"><i class="bi bi-x-lg"></i></button>
+                    </form>
+                  <% } %>
+                </div>
+                <% if (hasCap) { %>
+                  <div class="gallery-caption-below">
+                    <% if (hasName) { %><div class="gcap-name"><%= img.speakerName.trim() %></div><% } %>
+                    <% if (hasDetail) { %><div class="gcap-detail"><%= img.detail.trim() %></div><% } %>
+                  </div>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+        <% if (isAdmin) { %>
+          <form action="/events/<%= event._id %>/speakers" method="POST" enctype="multipart/form-data" class="admin-gallery-upload-form mt-4">
+            <div class="section-label" style="margin-bottom:16px;"><i class="bi bi-cloud-upload"></i> Upload Speaker Images</div>
+            <div class="gallery-upload-fields">
+              <div class="gup-field"><label class="gup-label">Speaker Name (optional)</label><input type="text" name="speakerName" class="form-control-custom" placeholder="e.g. Dr. Raj Mehta"></div>
+              <div class="gup-field"><label class="gup-label">Caption / Detail (optional)</label><input type="text" name="detail" class="form-control-custom" placeholder="e.g. Keynote Speaker · AI Workshop"></div>
+            </div>
+            <div class="gup-file-area" onclick="document.getElementById('speakerFileInput').click()">
+              <div class="gup-file-icon">🎤</div><div class="gup-file-label">Click to select speaker images</div><div class="gup-file-hint">JPG, PNG, WEBP · Multiple · Max 30</div>
+              <input type="file" id="speakerFileInput" name="speakerImages" multiple accept="image/*" style="display:none;" required onchange="showSpeakerFiles(this)">
+              <div id="speakerFileNames" style="margin-top:10px;font-size:0.8rem;color:var(--br);font-weight:600;"></div>
+            </div>
+            <button type="submit" class="btn-register" style="margin-top:14px;"><i class="bi bi-cloud-upload"></i> Upload Speaker Images</button>
+          </form>
+        <% } %>
+      </div>
+    <% } %>
+
+
+    <!-- ═══ GALLERY ═══ -->
+    <%
+      var hasGalleryImages = event.galleryImages && event.galleryImages.length > 0;
+    %>
+    <% if (hasGalleryImages || isAdmin) { %>
+      <div class="detail-section" data-aos="fade-up">
+        <% if (hasGalleryImages) { %><h2 class="detail-section-title">Event Gallery</h2><% } %>
+        <% if (hasGalleryImages) { %>
+          <div class="gallery-grid-new">
+            <% event.galleryImages.forEach(function(img, i) { %>
+              <%
+                var hasName   = img.speakerName && img.speakerName.trim() !== '';
+                var hasDetail = img.detail && img.detail.trim() !== '';
+                var hasCap    = hasName || hasDetail;
+              %>
+              <div class="gallery-item-new <%= hasCap ? '' : 'no-caption-card' %>" data-aos="fade-up" data-aos-delay="<%= Math.min(i*40,280) %>">
+                <div class="gallery-img-wrap">
+                  <img src="<%= img.url %>" alt="<%= hasName ? img.speakerName.trim() : ('Gallery '+(i+1)) %>" class="gallery-img-actual" loading="lazy" onerror="this.parentElement.parentElement.style.display='none'">
+                  <% if (isAdmin) { %>
+                    <form action="/events/<%= event._id %>/gallery/<%= img._id %>/delete" method="POST" style="position:absolute;top:7px;right:7px;margin:0;z-index:2;" onsubmit="return confirm('Remove this image?')">
+                      <button type="submit" class="gal-del-btn"><i class="bi bi-x-lg"></i></button>
+                    </form>
+                  <% } %>
+                </div>
+                <% if (hasCap) { %>
+                  <div class="gallery-caption-below">
+                    <% if (hasName) { %><div class="gcap-name"><%= img.speakerName.trim() %></div><% } %>
+                    <% if (hasDetail) { %><div class="gcap-detail"><%= img.detail.trim() %></div><% } %>
+                  </div>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        <% } else if (isAdmin) { %>
+          <div class="gallery-empty"><div class="gallery-empty-icon">🖼</div><p>No gallery images yet.</p></div>
+        <% } %>
+        <% if (isAdmin) { %>
+          <form action="/events/<%= event._id %>/gallery" method="POST" enctype="multipart/form-data" class="admin-gallery-upload-form mt-4">
+            <div class="section-label" style="margin-bottom:16px;"><i class="bi bi-cloud-upload"></i> Upload Gallery Images</div>
+            <div class="gallery-upload-fields">
+              <div class="gup-field"><label class="gup-label">Caption Name (optional)</label><input type="text" name="speakerName" class="form-control-custom" placeholder="e.g. Dr. Raj Mehta"></div>
+              <div class="gup-field"><label class="gup-label">Detail (optional)</label><input type="text" name="detail" class="form-control-custom" placeholder="e.g. Day 1 · AI Workshop"></div>
+            </div>
+            <div class="gup-file-area" onclick="document.getElementById('galleryFileInput').click()">
+              <div class="gup-file-icon">📷</div><div class="gup-file-label">Click to select images</div><div class="gup-file-hint">JPG, PNG, WEBP · Multiple · Max 30</div>
+              <input type="file" id="galleryFileInput" name="galleryImages" multiple accept="image/*" style="display:none;" required onchange="showGalleryFiles(this)">
+              <div id="galleryFileNames" style="margin-top:10px;font-size:0.8rem;color:var(--br);font-weight:600;"></div>
+            </div>
+            <button type="submit" class="btn-register" style="margin-top:14px;"><i class="bi bi-cloud-upload"></i> Upload Images</button>
+          </form>
+        <% } %>
+      </div>
+    <% } %>
+
+
+    <!-- ═══ CONDUCTED BY teachers ═══ -->
+      <% if ((event.conductedBy && event.conductedBy.length > 0) || isAdmin) { %>
+    <div class="detail-section" data-aos="fade-up">
+      <h2 class="detail-section-title">Conducted By Faculty Coordinators</h2>
+      <% if (event.conductedBy && event.conductedBy.length > 0) { %>
+        <% event.conductedBy.forEach(function(person, i) { %>
+          <div class="person-item">
+            <div><div class="person-name"><%= person.name %></div><div class="person-email"><%= person.email %></div></div>
+            <% if (isAdmin) { %>
+              <form action="/events/<%= event._id %>/conducted-by/<%= i %>/delete" method="POST" onsubmit="return confirm('Remove?')">
+                <button type="submit" class="btn-admin-danger" style="padding:5px 12px;font-size:0.8rem;">✕</button>
+              </form>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p style="color:var(--tx-muted);font-size:0.92rem;">Coordinator details will be updated.</p>
+      <% } %>
+      <% if (isAdmin) { %>
+        <form action="/events/<%= event._id %>/conducted-by" method="POST" class="admin-add-form mt-3">
+          <div class="row g-2">
+            <div class="col-md-5"><input type="text" name="name" class="form-control" placeholder="Coordinator name" required></div>
+            <div class="col-md-5"><input type="email" name="email" class="form-control" placeholder="Email address" required></div>
+            <div class="col-md-2"><button type="submit" class="btn-register w-100">Add</button></div>
+          </div>
+        </form>
+      <% } %>
+    </div>
+<% } %>
+    
+  <!-- ═══ CONDUCTED BY students ═══ -->
+<% if ((event.studentCoordinators && event.studentCoordinators.length > 0) || isAdmin) { %>
+<div class="detail-section" data-aos="fade-up">
+  <h2 class="detail-section-title">Conducted By Student Coordinator</h2>
+  <% if (event.studentCoordinators && event.studentCoordinators.length > 0) { %>
+    <% event.studentCoordinators.forEach(function(person, i) { %>
+      <div class="person-item">
+        <div><div class="person-name"><%= person.name %></div><div class="person-email"><%= person.email %></div></div>
+        <% if (isAdmin) { %>
+          <form action="/events/<%= event._id %>/student-coordinators/<%= i %>/delete" method="POST" onsubmit="return confirm('Remove?')">
+            <button type="submit" class="btn-admin-danger" style="padding:5px 12px;font-size:0.8rem;">✕</button>
+          </form>
+        <% } %>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p style="color:var(--tx-muted);font-size:0.92rem;">Coordinator details will be updated.</p>
+  <% } %>
+  <% if (isAdmin) { %>
+    <form action="/events/<%= event._id %>/student-coordinators" method="POST" class="admin-add-form mt-3">
+      <div class="row g-2">
+        <div class="col-md-5"><input type="text" name="name" class="form-control" placeholder="Coordinator name" required></div>
+        <div class="col-md-5"><input type="email" name="email" class="form-control" placeholder="Email address" required></div>
+        <div class="col-md-2"><button type="submit" class="btn-register w-100">Add</button></div>
+      </div>
+    </form>
+  <% } %>
+</div>
+<% } %>
+
+    <!-- ═══ DOCUMENTS ═══ -->
+      <!-- <% if ((event.documents && event.documents.length > 0) || isAdmin) { %>
+    <div class="detail-section" data-aos="fade-up">
+      <h2 class="detail-section-title">Event Documents</h2>
+      <% if (event.documents && event.documents.length > 0) { %>
+        <% event.documents.forEach(function(doc, i) { %>
+          <% if (doc.isPublic || isAdmin) { %>
+            <div class="person-item">
+              <div>
+                <div class="person-name"><%= doc.title %></div>
+                <% if (!doc.isPublic && isAdmin) { %>
+                  <span style="font-size:0.72rem;color:#b8860b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Admin Only</span>
+                <% } %>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <a href="https://docs.google.com/viewer?url=<%= encodeURIComponent(doc.file) %>&embedded=false" target="_blank" rel="noopener noreferrer" class="btn-details" style="font-size:0.82rem;padding:6px 14px;">👁 View</a>
+                <% if (isAdmin) { %>
+                  <form action="/events/<%= event._id %>/documents/<%= i %>/delete" method="POST" onsubmit="return confirm('Delete?')">
+                    <button type="submit" class="btn-admin-danger" style="padding:5px 12px;font-size:0.8rem;">✕</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% } %>
+        <% }) %>
+      <% } else { %>
+        <p style="color:var(--tx-muted);font-size:0.92rem;">No documents uploaded yet.</p>
+      <% } %>
+      <% if (isAdmin) { %>
+        <form action="/events/<%= event._id %>/documents" method="POST" enctype="multipart/form-data" class="admin-add-form mt-3">
+          <div class="row g-2">
+            <div class="col-md-5"><input type="text" name="title" class="form-control" placeholder="Document title" required></div>
+            <div class="col-md-4"><input type="file" name="document" class="form-control" required></div>
+            <div class="col-md-3">
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="isPublic" id="isPublicDoc"><label class="form-check-label" for="isPublicDoc" style="font-size:0.82rem;color:var(--tx-muted);">Public</label></div>
+              <button type="submit" class="btn-register w-100">Upload</button>
+            </div>
+          </div>
+        </form>
+      <% } %>
+    </div>
+ <% } %> -->
+
+    <!-- ═══ REVIEWS ═══ -->
+    <% if (isPast) { %>
+      <div class="detail-section" data-aos="fade-up">
+        <h2 class="detail-section-title">⭐ Event Reviews</h2>
+        <form action="/events/<%= event._id %>/reviews" method="POST" class="admin-add-form mb-4">
+          <div class="row g-2">
+            <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="Your name" required></div>
+            <div class="col-md-6"><textarea name="message" class="form-control" placeholder="Write your review..." rows="2" required></textarea></div>
+            <div class="col-md-2 d-flex align-items-end"><button type="submit" class="btn-register w-100">Submit</button></div>
+          </div>
+        </form>
+        <% if (!reviews || reviews.length === 0) { %>
+          <p style="color:var(--tx-muted);font-size:0.92rem;">No reviews yet. Be the first!</p>
+        <% } %>
+        <% if (reviews && reviews.length > 0) { %>
+          <% reviews.forEach(function(review) { %>
+            <div class="review-card" data-aos="fade-up">
+              <div class="review-name"><%= review.name %></div>
+              <p class="review-body"><%= review.message %></p>
+              <% if (isAdmin) { %>
+                <form action="/events/<%= event._id %>/reviews/<%= review._id %>/delete" method="POST" class="mt-2" onsubmit="return confirm('Delete review?')">
+                  <button type="submit" class="btn-admin-danger" style="padding:5px 12px;font-size:0.8rem;">✕ Delete</button>
+                </form>
+              <% } %>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    <% } %>
+
+  </div>
+</div>
+
+
+<style>
+.event-detail-content { max-width:900px; margin:0 auto; }
+
+.slideshow-wrap {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--cream-alt, #f5f0e8);
+  box-shadow: var(--sh-lg);
+  user-select: none;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+body.dark-mode .slideshow-wrap { background: #1a1a1a; }
+.slideshow-track { position: relative; width: 100%; }
+.slide-item { width: 100%; position: relative; }
+.slideshow-track { will-change: contents; }
+.slide-img {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: var(--cream-alt, #f5f0e8);
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+body.dark-mode .slide-img { background: #1a1a1a; }
+@media (max-width: 768px) { .slideshow-wrap { max-width: 480px; } .slide-img { max-height: 440px; } }
+@media (max-width: 576px) { .slideshow-wrap { width: 100%; max-width: 100%; } .slide-img { max-height: 70vw; } }
+
+.slide-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,0.45); border: none; color: #fff;
+  font-size: 2rem; line-height: 1; padding: 6px 14px; cursor: pointer;
+  border-radius: var(--r-sm); backdrop-filter: blur(4px); transition: background 0.2s; z-index: 10;
+}
+.slide-btn:hover { background: rgba(0,0,0,0.72); }
+.slide-prev { left: 12px; }
+.slide-next { right: 12px; }
+
+.slide-dots {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 7px; z-index: 10;
+}
+.slide-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,0.45); cursor: pointer;
+  border: 1.5px solid rgba(255,255,255,0.6); transition: background 0.22s, transform 0.22s;
+}
+.slide-dot.active { background: var(--br, #8B5E3C); transform: scale(1.25); }
+
+.sched-btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.sched-pill-btn {
+  display: inline-flex; align-items: center; gap: 9px; padding: 11px 22px;
+  border-radius: var(--r-full); border: 2px solid rgba(166,124,82,0.35);
+  background: rgba(166,124,82,0.08); color: var(--tx);
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(0.82rem,1.5vw,0.95rem);
+  cursor: pointer;
+  transition: background 0.30s cubic-bezier(0.34,1.56,0.64,1), border-color 0.25s ease,
+              transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.30s ease, color 0.2s ease;
+  will-change: transform;
+}
+.sched-pill-btn:hover {
+  background: rgba(166,124,82,0.16); border-color: var(--br);
+  transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 22px rgba(166,124,82,0.22); color: var(--br);
+}
+.sched-pill-btn:active { transform: translateY(-1px) scale(0.99); }
+.sched-pill-btn i { color: var(--br); transition: transform 0.25s ease; }
+.sched-pill-btn:hover i.bi-chevron-right { transform: translateX(3px); }
+body.dark-mode .sched-pill-btn { border-color:rgba(210,180,140,0.28);background:rgba(210,180,140,0.07);color:var(--dk-text); }
+body.dark-mode .sched-pill-btn:hover { background:rgba(210,180,140,0.14);color:#d4b896; }
+
+.sched-modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52);
+  z-index: 9000; align-items: center; justify-content: center; padding: 16px;
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+}
+.sched-modal-overlay.open { display: flex; animation: scModalFadeIn 0.22s ease both; }
+@keyframes scModalFadeIn { from{opacity:0}to{opacity:1} }
+.sched-modal-card {
+  background: var(--cream-alt); border-radius: var(--r-xl); max-width: 680px; width: 100%;
+  max-height: 88vh; overflow-y: auto; padding: clamp(24px,4vw,40px); position: relative;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.22), 0 0 0 1px rgba(166,124,82,0.12);
+  animation: scModalSlideUp 0.36s cubic-bezier(0.22,1,0.36,1) both; border-top: 4px solid var(--br);
+}
+@keyframes scModalSlideUp { from{opacity:0;transform:translateY(40px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+.sched-modal-close {
+  position: absolute; top: 14px; right: 16px; background: rgba(166,124,82,0.10);
+  border: 1px solid var(--border-l); border-radius: 50%; width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  color: var(--tx-muted); transition: background 0.2s, color 0.2s, transform 0.2s; font-size: 0.82rem;
+}
+.sched-modal-close:hover { background: rgba(192,57,43,0.10); color: #c0392b; transform: scale(1.12); }
+.sched-modal-heading { font-family:var(--font-display);font-size:clamp(1.1rem,3vw,1.5rem);font-weight:800;color:var(--tx);margin-bottom:18px;padding-right:30px;line-height:1.3; }
+.sched-modal-heading i { color: var(--br) !important; }
+.sched-modal-body { font-size:clamp(0.88rem,1.5vw,1rem);color:var(--tx-mid);line-height:1.85; }
+.sched-modal-body ul,.sched-modal-body ol { padding-left:20px;margin-bottom:10px; }
+.sched-modal-body li { margin-bottom:5px; }
+.sched-modal-body h3,.sched-modal-body h4 { font-family:var(--font-display);color:var(--tx);font-weight:700;margin:14px 0 6px; }
+body.dark-mode .sched-modal-card { background:var(--dk-surface); }
+body.dark-mode .sched-modal-heading { color:var(--dk-text); }
+body.dark-mode .sched-modal-body { color:var(--dk-muted); }
+
+.sched-table-wrap { overflow-x:auto;margin-top:16px;border-radius:var(--r-md);border:1px solid rgba(166,124,82,0.25); }
+.sched-table { width:100%;border-collapse:collapse;font-size:clamp(0.78rem,1.4vw,0.92rem);min-width:320px; }
+.sched-table thead tr { background:linear-gradient(135deg,var(--br),#6b3f1a); }
+.sched-table thead th { padding:10px 14px;color:#fff;font-weight:700;text-align:left;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.12); }
+.sched-table thead th:last-child { border-right:none; }
+.sched-table tbody tr { border-bottom:1px solid rgba(166,124,82,0.12); }
+.sched-table tbody tr:nth-child(even) { background:rgba(166,124,82,0.05); }
+.sched-table tbody tr:hover { background:rgba(166,124,82,0.10); }
+.sched-table tbody td { padding:9px 14px;color:var(--tx-mid);border-right:1px solid rgba(166,124,82,0.08);line-height:1.5; }
+.sched-table tbody td:last-child { border-right:none; }
+body.dark-mode .sched-table tbody td { color:var(--dk-muted); }
+body.dark-mode .sched-table tbody tr:nth-child(even) { background:rgba(255,255,255,0.03); }
+
+.spill-deadline { background:rgba(201,168,76,0.12);border-color:rgba(201,168,76,0.35);color:#8a6914; }
+.spill-closed   { background:rgba(192,57,43,0.10);border-color:rgba(192,57,43,0.28);color:#c0392b; }
+
+.event-description-body { font-size:clamp(0.95rem,1.5vw,1.08rem);color:var(--tx-mid);line-height:1.9;max-width:780px; }
+.event-description-body p { margin-bottom:14px; }
+.event-description-body ul,.event-description-body ol { padding-left:22px;margin-bottom:14px; }
+.event-description-body li { margin-bottom:6px; }
+.event-description-body h3,.event-description-body h4 { font-family:var(--font-display);color:var(--tx);margin:18px 0 8px;font-weight:700; }
+.event-description-body strong { color:var(--tx); }
+body.dark-mode .event-description-body { color:var(--dk-muted); }
+
+.detail-section { margin-bottom:38px;padding-bottom:32px; }
+.detail-section + .detail-section { border-top:1px solid var(--border-l); padding-top:32px; }
+.detail-section-title { font-family:var(--font-display);font-size:1.15rem;font-weight:800;color:var(--tx);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid rgba(166,124,82,0.18); }
+
+.person-item { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--cream-alt);border:1px solid var(--border-l);border-radius:var(--r-md);margin-bottom:10px;flex-wrap:wrap; }
+.person-name { font-weight:700;font-size:0.95rem;color:var(--tx); }
+.person-email { font-size:0.8rem;color:var(--tx-muted);margin-top:2px; }
+
+.review-card { background:var(--cream-alt);border:1px solid var(--border-l);border-radius:var(--r-md);padding:16px 18px;margin-bottom:12px; }
+.review-name { font-weight:700;font-size:0.9rem;color:var(--br);margin-bottom:6px; }
+.review-body { font-size:0.9rem;color:var(--tx-mid);line-height:1.7;margin:0; }
+
+.gallery-empty { text-align:center;padding:40px 20px;background:rgba(166,124,82,0.04);border:1.5px dashed rgba(166,124,82,0.22);border-radius:var(--r-lg);margin-bottom:20px; }
+.gallery-empty-icon { font-size:2.5rem;margin-bottom:10px;opacity:0.5; }
+.gallery-empty p { color:var(--tx-muted);font-size:0.92rem;margin:0; }
+.admin-add-form { background:rgba(166,124,82,0.04);border:1.5px dashed rgba(166,124,82,0.22);border-radius:var(--r-md);padding:18px 20px; }
+
+.show-sub-card { background:var(--cream-alt);border:1px solid var(--border-l);border-radius:var(--r-md);overflow:hidden;transition:border-color 0.22s,box-shadow 0.22s; }
+.show-sub-card:hover { border-color:var(--br);box-shadow:0 4px 18px rgba(166,124,82,0.10); }
+.show-sub-top { display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:clamp(12px,1.8vw,18px) clamp(14px,2vw,20px) clamp(10px,1.5vw,14px);flex-wrap:wrap; }
+.show-sub-left { flex:1;min-width:0; }
+.show-sub-title { font-family:var(--font-display);font-weight:700;font-size:clamp(0.95rem,1.8vw,1.05rem);color:var(--tx);line-height:1.25;margin-bottom:8px; }
+.show-sub-actions { display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0; }
+.show-sub-pills { display:flex;flex-wrap:wrap;gap:5px; }
+.spill { display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:var(--r-full);font-size:0.71rem;font-weight:700;white-space:nowrap;border:1px solid transparent; }
+.spill-time { background:rgba(201,168,76,0.10);border-color:rgba(201,168,76,0.26);color:#8a6914; }
+.spill-type,.spill-cap { background:rgba(166,124,82,0.08);border-color:rgba(166,124,82,0.20);color:var(--br); }
+.spill-pay,.spill-ext { background:rgba(39,174,96,0.08);border-color:rgba(39,174,96,0.22);color:#27ae60; }
+.show-sub-desc { margin:0 clamp(14px,2vw,20px) clamp(10px,1.5vw,14px);font-size:0.83rem;color:var(--tx-muted);line-height:1.6; }
+.show-sub-poster-wrap { display:flex;justify-content:center;padding:0 clamp(14px,2vw,20px) clamp(12px,2vw,18px);border-top:1px solid var(--border-l);padding-top:clamp(12px,2vw,16px); }
+.show-sub-poster-img { max-width:320px;width:100%;border-radius:var(--r-md);border:1px solid var(--border-l);display:block; }
+.field-edit-btn { background:rgba(166,124,82,0.10);border:1px solid rgba(166,124,82,0.25);cursor:pointer;color:var(--br);padding:4px 10px;border-radius:var(--r-sm);font-size:0.75rem;font-weight:600;transition:background 0.2s; }
+.field-edit-btn:hover { background:rgba(166,124,82,0.22); }
+
+.gallery-grid-new { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px; }
+.gallery-item-new { display:flex;flex-direction:column;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border-l);background:var(--cream-alt);transition:box-shadow 0.24s,transform 0.24s; }
+.gallery-item-new:hover { box-shadow:0 6px 24px rgba(166,124,82,0.14);transform:translateY(-2px); }
+.gallery-img-wrap { position:relative;width:100%;padding-bottom:75%;overflow:hidden;background:rgba(166,124,82,0.06);flex-shrink:0; }
+.gallery-img-actual { position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.38s; }
+.gallery-item-new:hover .gallery-img-actual { transform:scale(1.04); }
+.gal-del-btn { width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.60);border:none;color:#fff;font-size:0.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background 0.2s;padding:0; }
+.gal-del-btn:hover { background:#c0392b; }
+.gallery-caption-below { padding:10px 13px 12px;border-top:1px solid var(--border-l);background:var(--cream-alt);text-align:center; }
+.gcap-name { font-family:var(--font-display);font-size:0.84rem;font-weight:700;color:var(--tx);line-height:1.3;margin-bottom:2px; }
+.gcap-detail { font-size:0.73rem;color:var(--tx-muted);line-height:1.4;font-weight:500; }
+.gallery-item-new.no-caption-card { background:transparent;border-color:transparent; }
+.gallery-item-new.no-caption-card:hover { box-shadow:none;transform:none;border-color:transparent; }
+.admin-gallery-upload-form { background:var(--cream-alt);border:1.5px dashed rgba(166,124,82,0.30);border-radius:var(--r-lg);padding:clamp(18px,2.5vw,28px); }
+.gallery-upload-fields { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px; }
+.gup-label { display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--br);margin-bottom:6px; }
+.gup-file-area { border:2px dashed rgba(166,124,82,0.32);border-radius:var(--r-md);padding:22px 16px;text-align:center;cursor:pointer;transition:border-color 0.22s,background 0.22s;background:rgba(166,124,82,0.02); }
+.gup-file-area:hover { border-color:var(--br);background:rgba(166,124,82,0.05); }
+.gup-file-icon { font-size:1.8rem;margin-bottom:6px;opacity:0.55; }
+.gup-file-label { font-size:0.88rem;font-weight:600;color:var(--tx-mid);margin-bottom:3px; }
+.gup-file-hint { font-size:0.75rem;color:var(--tx-muted); }
+
+.admin-action-bar { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;align-items:center; }
+.admin-bar-btn { flex:1 1 auto;min-width:130px;text-align:center;justify-content:center;white-space:nowrap;box-sizing:border-box; }
+@media (max-width: 400px) { .admin-action-bar { flex-direction:column; } .admin-bar-btn { width:100%;min-width:0; } }
+
+body.dark-mode .person-item,.dark-mode .review-card { background:var(--dk-surface);border-color:var(--border-d); }
+body.dark-mode .show-sub-card { background:var(--dk-surface);border-color:var(--border-d); }
+body.dark-mode .gallery-item-new { background:var(--dk-surface);border-color:var(--border-d); }
+body.dark-mode .gallery-caption-below { background:var(--dk-surface);border-color:var(--border-d); }
+body.dark-mode .admin-gallery-upload-form { background:var(--dk-surface); }
+body.dark-mode .show-sub-poster-wrap { border-color:var(--border-d); }
+
+@media (max-width:900px) { .gallery-grid-new { grid-template-columns:repeat(2,1fr);gap:12px; } .gallery-upload-fields { grid-template-columns:1fr; } }
+@media (max-width:576px) {
+  .slide-btn { font-size:1.5rem;padding:4px 10px; }
+  .gallery-grid-new { grid-template-columns:repeat(2,1fr);gap:8px; }
+  .show-sub-actions { flex-direction:row;flex-wrap:wrap; }
+  .sched-btn-row { gap:8px; }
+  .sched-pill-btn { font-size:0.78rem;padding:8px 14px; }
+}
+</style>
+
+
+<script>
+/* ══════════════════════
+   SLIDESHOW
+══════════════════════ */
+var slideIndex  = 0;
+var slideTimer  = null;
+var slides      = Array.prototype.slice.call(document.querySelectorAll('.slide-item'));
+var dots        = Array.prototype.slice.call(document.querySelectorAll('.slide-dot'));
+var slideshowEl = document.querySelector('.slideshow-wrap');
+
+function slideTo(n) {
+  if (!slides.length) return;
+  slides[slideIndex].style.display = 'none';
+  if (dots[slideIndex]) dots[slideIndex].classList.remove('active');
+  slideIndex = (n + slides.length) % slides.length;
+  slides[slideIndex].style.display = 'block';
+  if (dots[slideIndex]) dots[slideIndex].classList.add('active');
+}
+function slideMove(dir) { slideTo(slideIndex + dir); resetAutoTimer(); }
+function startAutoTimer() { if (slides.length <= 1) return; slideTimer = setInterval(function(){ slideTo(slideIndex + 1); }, 5000); }
+function resetAutoTimer() { clearInterval(slideTimer); startAutoTimer(); }
+function stopAutoTimer() { clearInterval(slideTimer); }
+
+if (slides.length > 0) {
+  slides.forEach(function(s, i){ s.style.display = i === 0 ? 'block' : 'none'; });
+  startAutoTimer();
+}
+if (slideshowEl) {
+  slideshowEl.addEventListener('mouseenter', stopAutoTimer);
+  slideshowEl.addEventListener('mouseleave', startAutoTimer);
+}
+var touchStartX = 0;
+if (slideshowEl) {
+  slideshowEl.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, { passive: true });
+  slideshowEl.addEventListener('touchend', function(e){
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { slideMove(diff > 0 ? 1 : -1); }
+  }, { passive: true });
+}
+
+/* ══════════════════════
+   SCHEDULE MODAL
+══════════════════════ */
+function openSchedModal(id) {
+  var overlay = document.getElementById('sched-modal-' + id);
+  if (!overlay) return;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSchedModalById(id) {
+  var overlay = document.getElementById('sched-modal-' + id);
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeSchedModal(e, id) {
+  if (e.target === document.getElementById('sched-modal-' + id)) { closeSchedModalById(id); }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.sched-modal-overlay.open').forEach(function(el) { el.classList.remove('open'); });
+    document.body.style.overflow = '';
+  }
+});
+
+/* ══════════════════════
+   GALLERY FILE NAMES
+══════════════════════ */
+function showGalleryFiles(input) {
+  var el = document.getElementById('galleryFileNames');
+  if (!el || !input.files.length) return;
+  el.textContent = '✓ ' + input.files.length + ' file(s): ' + Array.from(input.files).map(function(f){ return f.name; }).join(', ');
+  input.closest('.gup-file-area').style.borderColor = 'var(--br)';
+}
+function showSpeakerFiles(input) {
+  var el = document.getElementById('speakerFileNames');
+  if (!el || !input.files.length) return;
+  el.textContent = '✓ ' + input.files.length + ' file(s): ' + Array.from(input.files).map(function(f){ return f.name; }).join(', ');
+  input.closest('.gup-file-area').style.borderColor = 'var(--br)';
+}
+</script>

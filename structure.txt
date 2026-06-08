@@ -1,0 +1,190 @@
+Folder PATH listing for volume Windows
+Volume serial number is 48C3-D98D
+C:.
+�   .env
+�   .gitignore
+�   app.js
+�   audit-images.js
+�   fix-ispublic-migration.js
+�   package-lock.json
+�   package.json
+�   structure.txt
+�   
++---config
+�       cloudinary.js
+�       db.js
+�       passport.js
+�       
++---controllers
+�       adminController.js
+�       authController.js
+�       eventController.js
+�       homeController.js
+�       reachOutController.js
+�       teamController.js
+�       
++---middlewares
+�       authMiddleware.js
+�       upload.js
+�       uploadEvent.js
+�       uploadReachOut.js
+�       uploadRegistration.js
+�       uploadTeam.js
+�       
++---models
+�       Event.js
+�       HomeGallery.js
+�       HomePromo.js
+�       ReachOut.js
+�       Registration.js
+�       Review.js
+�       SubEvent.js
+�       TeamMember.js
+�       TeamSection.js
+�       User.js
+�       
++---node_modules
+�   
++---public
+�   +---css
+�   �       style.css
+�   �       
+�   +---images
+�   �       aayam_img.jpg
+�   �       favcon.jpeg
+�   �       karnavati_logo.png
+�   �       uit_logo.png
+�   �       
+�   +---js
+�           theme.js
+�           
++---routes
+�       adminRoutes.js
+�       authRoutes.js
+�       eventRoutes.js
+�       homeRoutes.js
+�       reachOutRoutes.js
+�       teamRoutes.js
+�       
++---uploads
+�   +---events
+�   �       1769655844258-Uzu-logo.png
+�   �       1769672777020-aayam_img.jpg
+�   �       1769672808255-Uzu-logo.png
+�   �       1769672815928-aayam_img.jpg
+�   �       1769672846588-Experiment 6.docx
+�   �       1769672896784-aayam_img.jpg
+�   �       1769672904063-Uzu-logo.png
+�   �       1769672950899-Step 1.docx
+�   �       1769941530795-Uzu-logo.png
+�   �       1771917348088-aayam_img.jpg
+�   �       1772045081174-Mern stack.jpeg
+�   �       1772045193239-SA.jpeg
+�   �       1772046729747-Uzu-logo.png
+�   �       1772048622548-SA.jpeg
+�   �       1772048769562-Mern stack.jpeg
+�   �       1772088451342-SA.jpeg
+�   �       1772088797509-Mern stack.jpeg
+�   �       1772088914097-aayam_img.jpg
+�   �       1772089069088-aayam_img.jpg
+�   �       1772110879318-Uzu-logo.png
+�   �       1772111341237-SA.jpeg
+�   �       1772112852849-aayam_img.jpg
+�   �       1772129369720-SA.jpeg
+�   �       1772129486337-aayam_img.jpg
+�   �       1772129550592-Mern stack.jpeg
+�   �       1772129981574-Mern stack.jpeg
+�   �       1772140427785-aayam_img.jpg
+�   �       1772140900583-Mern stack.jpeg
+�   �       1772142050246-SA.jpeg
+�   �       1772142076406-Mern stack.jpeg
+�   �       1772142086142-aayam_img.jpg
+�   �       1772142094469-aayam_img.jpg
+�   �       1772142102380-Mern stack.jpeg
+�   �       1772142111322-SA.jpeg
+�   �       1772142192306-ib_p5.pdf
+�   �       1772142317922-aayam_img.jpg
+�   �       1772145950302-Mern stack.jpeg
+�   �       1772146026848-aayam_img.jpg
+�   �       1772148820030-Mern stack.jpeg
+�   �       1772172999426-Uzu-logo.png
+�   �       
+�   +---home
+�   �       1769655815812.jpg
+�   �       1769672671418.png
+�   �       1771872153722.jpg
+�   �       1771876953902.jpg
+�   �       1771879588694.jpg
+�   �       1771915854889.jpg
+�   �       1771915872335.png
+�   �       1771915887707.jpg
+�   �       1771915921739.jpg
+�   �       1771915946530.jpg
+�   �       1771915957807.jpg
+�   �       1771916035379.jpg
+�   �       1772141783844.jpg
+�   �       1772141808413.jpg
+�   �       1772152024540.jpg
+�   �       1772306636221.jpeg
+�   �       1772307569416.jpg
+�   �       
+�   +---reachout
+�   +---registrations
+�   �       1772111409973-SA.jpeg
+�   �       1772120054042-SA.jpeg
+�   �       1772141550419-aayam_img.jpg
+�   �       1772142884257-aayam_img.jpg
+�   �       1772143764704-ib_p5.pdf
+�   �       1772144710912-aayam_img.jpg
+�   �       1772145852924-aayam_img.jpg
+�   �       
+�   +---team
+�           1769672693910.png
+�           1769673060399.jpg
+�           1771916388026.jpeg
+�           1772141879261.jpg
+�           
++---views
+    �   editMember.ejs
+    �   editSection.ejs
+    �   events.ejs
+    �   home.ejs
+    �   team.ejs
+    �   
+    +---admin
+    �   �   index.ejs
+    �   �   registrations.ejs
+    �   �   
+    �   +---reachout
+    �   �       index.ejs
+    �   �       
+    �   +---users
+    �           index.ejs
+    �           
+    +---auth
+    �       forgot.ejs
+    �       index.ejs
+    �       login.ejs
+    �       register.ejs
+    �       reset.ejs
+    �       
+    +---events
+    �       edit.ejs
+    �       index.ejs
+    �       private.ejs
+    �       register-success.ejs
+    �       register.ejs
+    �       show.ejs
+    �       subevents.ejs
+    �       
+    +---layouts
+    �       main.ejs
+    �       
+    +---partials
+    �       footer.ejs
+    �       homeSections.ejs
+    �       navbar.ejs
+    �       
+    +---reachout
+            index.ejs
+            

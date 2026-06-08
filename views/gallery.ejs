@@ -1,0 +1,264 @@
+<!-- views/gallery.ejs -->
+<div class="container my-5">
+  <div class="page-header text-center" data-aos="fade-down" style="margin-bottom: 50px;">
+    <div class="section-label" style="text-transform: uppercase; letter-spacing: 2px; color: var(--br); font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">Moments Captured</div>
+    <h1 class="page-title" style="font-family: var(--font-display); font-weight: 700; font-size: 3rem; margin-bottom: 12px;">Our Gallery</h1>
+    <p class="page-subtitle" style="color: var(--tx-muted); max-width: 600px; margin: 0 auto; font-size: 1.05rem;">Relive the energy, collaboration, and success of our events and activities</p>
+    <div style="width: 80px; height: 3px; background: var(--br); margin: 20px auto 0;"></div>
+  </div>
+
+  <!-- Gallery Filter Tabs -->
+  <div class="d-flex justify-content-center gap-3 mb-5 flex-wrap" data-aos="fade-up">
+    <button class="gallery-filter-btn active" data-filter="all">All Memories</button>
+    <button class="gallery-filter-btn" data-filter="general">General Activities</button>
+    <button class="gallery-filter-btn" data-filter="events">Event Highlights</button>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="row g-4 gallery-grid" data-aos="fade-up" data-aos-delay="100">
+    <!-- General Images -->
+    <% if (generalImages && generalImages.length > 0) { %>
+      <% generalImages.forEach((img, idx) => { %>
+        <div class="col-xl-3 col-lg-4 col-md-6 gallery-item-wrapper" data-category="general">
+          <div class="gallery-card">
+            <div class="gallery-img-wrap">
+              <img src="<%= img.image %>" alt="General Activity Image <%= idx + 1 %>" class="gallery-img" loading="lazy">
+              <div class="gallery-hover-overlay">
+                <i class="bi bi-zoom-in zoom-icon"></i>
+              </div>
+            </div>
+            <div class="gallery-card-body">
+              <span class="gallery-badge"><%= img.section === 'what_we_do' ? 'Activity' : 'Highlight' %></span>
+              <h3 class="gallery-item-title">General Activity</h3>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+
+    <!-- Event Images -->
+    <% if (eventImages && eventImages.length > 0) { %>
+      <% eventImages.forEach((img, idx) => { %>
+        <div class="col-xl-3 col-lg-4 col-md-6 gallery-item-wrapper" data-category="events">
+          <div class="gallery-card">
+            <div class="gallery-img-wrap">
+              <img src="<%= img.url %>" alt="<%= img.title %> - Highlight Image <%= idx + 1 %>" class="gallery-img" loading="lazy">
+              <div class="gallery-hover-overlay">
+                <i class="bi bi-zoom-in zoom-icon"></i>
+              </div>
+            </div>
+            <div class="gallery-card-body">
+              <span class="gallery-badge">Event Image</span>
+              <h3 class="gallery-item-title"><%= img.title %></h3>
+              <% if (img.speakerName) { %>
+                <p class="gallery-item-sub">Speaker: <%= img.speakerName %></p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+
+    <% if ((!generalImages || generalImages.length === 0) && (!eventImages || eventImages.length === 0)) { %>
+      <div class="col-12 text-center py-5">
+        <div class="no-images-state">
+          <i class="bi bi-images" style="font-size: 3rem; color: var(--tx-muted); display: block; margin-bottom: 15px;"></i>
+          <p style="color: var(--tx-muted); font-size: 1.1rem; font-style: italic;">No gallery memories uploaded yet.</p>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<style>
+  /* Premium Gallery Styling */
+  .gallery-filter-btn {
+    background: transparent;
+    border: 1px solid var(--border-l);
+    color: var(--tx-mid);
+    padding: 10px 24px;
+    border-radius: var(--r-full);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+  }
+
+  body.dark-mode .gallery-filter-btn {
+    border-color: var(--border-d);
+    color: var(--dk-muted);
+  }
+
+  .gallery-filter-btn:hover {
+    color: var(--br);
+    border-color: var(--br);
+    transform: translateY(-2px);
+  }
+
+  .gallery-filter-btn.active {
+    background: linear-gradient(135deg, var(--br), #8e623b);
+    border-color: transparent;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(166, 124, 82, 0.25);
+  }
+
+  /* Gallery Card */
+  .gallery-card {
+    background: var(--cream-alt);
+    border: 1px solid var(--border-l);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--sh-sm);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+
+  body.dark-mode .gallery-card {
+    background: var(--dk-surface);
+    border-color: var(--border-d);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .gallery-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sh-md);
+  }
+
+  .gallery-img-wrap {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+
+  .gallery-card:hover .gallery-img {
+    transform: scale(1.08);
+  }
+
+  .gallery-hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(44, 31, 23, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+    pointer-events: none; /* Let the image click propagate */
+  }
+
+  .gallery-card:hover .gallery-hover-overlay {
+    opacity: 1;
+  }
+
+  .zoom-icon {
+    font-size: 2.2rem;
+    color: #fff;
+    transform: scale(0.8);
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .gallery-card:hover .zoom-icon {
+    transform: scale(1);
+  }
+
+  .gallery-card-body {
+    padding: 16px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-badge {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--br);
+    background: rgba(166, 124, 82, 0.1);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  body.dark-mode .gallery-badge {
+    background: rgba(166, 124, 82, 0.2);
+  }
+
+  .gallery-item-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--tx);
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+
+  body.dark-mode .gallery-item-title {
+    color: var(--dk-text);
+  }
+
+  .gallery-item-sub {
+    font-size: 0.82rem;
+    color: var(--tx-muted);
+    margin: 0;
+  }
+
+  body.dark-mode .gallery-item-sub {
+    color: var(--dk-muted);
+  }
+
+  /* Fade transition for filter */
+  .gallery-item-wrapper {
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+
+  .gallery-item-wrapper.hide-item {
+    display: none;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const filterButtons = document.querySelectorAll(".gallery-filter-btn");
+    const galleryItems = document.querySelectorAll(".gallery-item-wrapper");
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", function() {
+        const filter = this.getAttribute("data-filter");
+
+        // Set active button
+        filterButtons.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        // Filter items
+        galleryItems.forEach(item => {
+          const category = item.getAttribute("data-category");
+          if (filter === "all" || category === filter) {
+            item.classList.remove("hide-item");
+            // Add fade-in animation
+            item.style.opacity = "0";
+            item.style.transform = "scale(0.95)";
+            setTimeout(() => {
+              item.style.opacity = "1";
+              item.style.transform = "scale(1)";
+            }, 50);
+          } else {
+            item.classList.add("hide-item");
+          }
+        });
+      });
+    });
+  });
+</script>

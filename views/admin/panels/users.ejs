@@ -1,0 +1,125 @@
+<!-- views/admin/panels/users.ejs -->
+<div class="row g-4">
+  
+  <!-- Admins List & Invite Form -->
+  <div class="col-xl-7" data-aos="fade-right">
+    <div class="dashboard-block h-100">
+      <div class="block-header">
+        <h2 class="block-title">Administrators & Access Roles</h2>
+      </div>
+      
+      <div class="table-responsive mt-3">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (admins && admins.length > 0) { %>
+              <% admins.forEach(admin => { %>
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: var(--cream-light);"><%= admin.email %></div>
+                  </td>
+                  <td>
+                    <span class="badge-role <%= admin.role === 'superadmin' ? 'badge-super' : 'badge-admin' %>">
+                      <%= admin.role === "superadmin" ? "Main Admin" : "Admin" %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge-role <%= admin.isActive ? 'badge-active' : 'badge-disabled' %>">
+                      <%= admin.isActive ? "Active" : "Disabled" %>
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <% if (user.role === "superadmin" && admin.role !== "superadmin") { %>
+                      <div style="display:flex; gap:6px; justify-content: flex-end; flex-wrap:wrap;">
+                        <form action="/admin/toggle/<%= admin._id %>" method="POST" class="d-inline" onsubmit="return confirm('Toggle admin active status?')">
+                          <button class="btn btn-sm btn-admin-warn">Toggle Status</button>
+                        </form>
+                        <form action="/admin/make-super/<%= admin._id %>" method="POST" class="d-inline" onsubmit="return confirm('Promote to Main Admin?')">
+                          <button class="btn btn-sm btn-admin-danger">Make Main</button>
+                        </form>
+                        <form action="/admin/delete/<%= admin._id %>" method="POST" class="d-inline" onsubmit="return confirm('Delete this admin permanently?')">
+                          <button class="btn btn-sm btn-admin-danger">Delete</button>
+                        </form>
+                      </div>
+                    <% } else { %>
+                      <span style="color:var(--text-muted);font-size:0.85rem;">—</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Invite Admin Form (Preserved for Superadmin) -->
+      <% if (user.role === "superadmin") { %>
+        <div class="mt-4 pt-4" style="border-top:1px solid var(--db-border);">
+          <h3 class="block-title mb-2" style="font-size:1.05rem;">Invite New Admin</h3>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">You can invite up to <strong>10 administrative users</strong>.</p>
+          <form action="/admin/invite" method="POST">
+            <div class="row g-2">
+              <div class="col-md-5">
+                <input type="email" name="email" class="form-control form-control-custom" placeholder="Admin email address" required>
+              </div>
+              <div class="col-md-5">
+                <input type="password" name="password" class="form-control form-control-custom" placeholder="Temporary password" required>
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn-gold w-100 py-2">Invite</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Regular Registered Users List -->
+  <div class="col-xl-5" data-aos="fade-left">
+    <div class="dashboard-block h-100">
+      <div class="block-header">
+        <h2 class="block-title">Registered Public Accounts</h2>
+      </div>
+      <p class="text-muted small mt-2">Public members registered on the site to sign up for event forms.</p>
+
+      <div class="table-responsive mt-3" style="max-height: 520px; overflow-y: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>User Account</th>
+              <th>Registered At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (regularUsers && regularUsers.length > 0) { %>
+              <% regularUsers.forEach(regUser => { %>
+                <tr>
+                  <td>
+                    <div style="font-weight: 500; color: var(--cream-light); font-size: 0.88rem;"><%= regUser.email %></div>
+                    <span class="badge bg-secondary font-monospace" style="font-size: 0.65rem;">PUBLIC USER</span>
+                  </td>
+                  <td class="small text-muted">
+                    <%= regUser.createdAt ? new Date(regUser.createdAt).toLocaleDateString('en-IN') : 'N/A' %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="2" class="text-center text-muted py-4">No regular user accounts registered.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

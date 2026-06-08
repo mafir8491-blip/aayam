@@ -1,0 +1,94 @@
+<!-- views/admin/panels/dashboard.ejs -->
+<!-- Statistics Grid -->
+<section class="stats-grid" data-aos="fade-up">
+  <!-- Total Events -->
+  <div class="stat-card">
+    <div class="stat-title">Total Events</div>
+    <div class="stat-value"><%= stats.eventsCount %></div>
+    <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Active in database</div>
+  </div>
+  <!-- Total Teams -->
+  <div class="stat-card">
+    <div class="stat-title">Total Team Members</div>
+    <div class="stat-value"><%= stats.teamCount %></div>
+    <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Across sections</div>
+  </div>
+  <!-- Messages -->
+  <div class="stat-card">
+    <div class="stat-title">Reach Outs</div>
+    <div class="stat-value"><%= stats.reachOutCount %></div>
+    <div class="stat-trend"><i class="bi bi-envelope-fill"></i> User messages</div>
+  </div>
+  <!-- Users -->
+  <div class="stat-card">
+    <div class="stat-title">Total Registered Users</div>
+    <div class="stat-value"><%= stats.userCount %></div>
+    <div class="stat-trend"><i class="bi bi-person-fill"></i> Admin + User accounts</div>
+  </div>
+</section>
+
+<!-- Two-Column Block (Events list & Messages list) -->
+<section class="blocks-grid" data-aos="fade-up">
+  <!-- Recent Events -->
+  <div class="dashboard-block">
+    <div class="block-header">
+      <h2 class="block-title">Recent Events</h2>
+      <a href="/admin?tab=events" class="block-btn">View All</a>
+    </div>
+    <div class="event-list">
+      <% if (recentEvents && recentEvents.length > 0) { %>
+        <% recentEvents.forEach(event => { %>
+          <div class="event-item">
+            <img src="<%= event.bannerImage || '/images/aayam_img.jpg' %>" alt="Event" class="event-thumbnail">
+            <div class="event-info">
+              <h3 class="event-title"><%= event.title %></h3>
+              <p class="event-date"><%= event.startDate ? new Date(event.startDate).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}) : '' %></p>
+            </div>
+            <a href="/events/edit/<%= event._id %>" class="btn btn-sm btn-outline-warning" style="font-size:0.75rem; border-radius:10px;">Edit</a>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p style="font-size:0.88rem;color:var(--text-muted);font-style:italic;">No recent events.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="dashboard-block">
+    <div class="block-header">
+      <h2 class="block-title">Messages</h2>
+      <a href="/admin?tab=messages" class="block-btn">View All</a>
+    </div>
+    <div class="message-list">
+      <% if (recentMessages && recentMessages.length > 0) { %>
+        <% recentMessages.forEach(msg => { %>
+          <div class="message-item">
+            <div class="msg-avatar"><%= msg.name ? msg.name.substring(0,1).toUpperCase() : 'M' %></div>
+            <div class="msg-content">
+              <div class="msg-header">
+                <h3 class="msg-sender"><%= msg.name %></h3>
+                <span class="msg-time">
+                  <%= msg.createdAt ? new Date(msg.createdAt).toLocaleDateString('en-IN', {month:'short', day:'numeric'}) : '' %>
+                </span>
+              </div>
+              <p class="msg-snippet"><%= msg.message || '' %></p>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p style="font-size:0.88rem;color:var(--text-muted);font-style:italic;">No messages received.</p>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- Event Overview Chart -->
+<section class="chart-container" data-aos="fade-up">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="block-title">Registration Trends</h2>
+    <span style="font-size:0.8rem; color:var(--text-muted);">Last 6 Months</span>
+  </div>
+  <div style="height:280px; width:100%; position:relative;">
+    <canvas id="eventOverviewChart"></canvas>
+  </div>
+</section>
