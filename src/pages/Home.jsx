@@ -700,7 +700,7 @@ export default function Home() {
       <section
         className="hs-hero"
         style={{
-          background: `url('/images/committee_hero.jpg') no-repeat center center`,
+          background: `url('/images/committee_hero_new.jpg') no-repeat center center`,
           backgroundSize: 'cover',
           minHeight: '100vh',
           display: 'flex',
