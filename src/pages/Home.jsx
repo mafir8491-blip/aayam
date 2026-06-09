@@ -734,7 +734,7 @@ export default function Home() {
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '2px',
-              color: '#a67c52',
+              color: '#000000',
               marginBottom: '18px',
               lineHeight: 1.1,
             }}
