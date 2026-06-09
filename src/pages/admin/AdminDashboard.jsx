@@ -442,6 +442,12 @@ export default function AdminDashboard() {
                         </td>
                         <td>
                           <div className="d-flex gap-2">
+                            <Link
+                              to={`/events/edit/${evt._id}`}
+                              className="btn btn-sm btn-outline-warning d-flex align-items-center gap-1"
+                            >
+                              📝 Edit
+                            </Link>
                             <button
                               onClick={() => handleToggleEventVisibility(evt._id)}
                               className={`btn btn-sm ${evt.isPublic ? 'btn-outline-warning' : 'btn-outline-success'}`}

@@ -5,6 +5,7 @@ export default function EventSubEvents() {
   const { eventId } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
   // Active Schedule Modal State
@@ -32,8 +33,21 @@ export default function EventSubEvents() {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const json = await res.json();
+        setUser(json.user || null);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchSubEvents();
+    fetchUser();
   }, [eventId]);
 
   if (loading) {
@@ -265,25 +279,45 @@ export default function EventSubEvents() {
                       </div>
 
                       {/* CTA Button */}
-                      <div>
-                        {isFull || isClosed ? (
-                          <button className="btn btn-outline-secondary btn-sm disabled" style={{ opacity: 0.5 }}>
-                            <i className="bi bi-lock me-1"></i> {isFull ? 'Full' : 'Closed'}
-                          </button>
-                        ) : hasExternal ? (
-                          <a
-                            href={sub.externalRegistrationLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn-register btn-sm"
-                            style={{ textDecoration: 'none' }}
-                          >
-                            Register <i className="bi bi-box-arrow-up-right ms-1"></i>
-                          </a>
-                        ) : (
-                          <Link to={`/register/${sub._id}`} className="btn-register btn-sm" style={{ textDecoration: 'none' }}>
-                            Register Now &rarr;
-                          </Link>
+                      <div className="d-flex flex-column gap-2 align-items-end">
+                        <div>
+                          {isFull || isClosed ? (
+                            <button className="btn btn-outline-secondary btn-sm disabled" style={{ opacity: 0.5 }}>
+                              <i className="bi bi-lock me-1"></i> {isFull ? 'Full' : 'Closed'}
+                            </button>
+                          ) : hasExternal ? (
+                            <a
+                              href={sub.externalRegistrationLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-register btn-sm"
+                              style={{ textDecoration: 'none' }}
+                            >
+                              Register <i className="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                          ) : (
+                            <Link to={`/register/${sub._id}`} className="btn-register btn-sm" style={{ textDecoration: 'none' }}>
+                              Register Now &rarr;
+                            </Link>
+                          )}
+                        </div>
+                        {user && (user.role === 'admin' || user.role === 'superadmin') && (
+                          <div className="d-flex gap-2">
+                            <Link
+                              to={`/admin/subevents/${sub._id}/registrations`}
+                              className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                              style={{ fontSize: '0.72rem', padding: '4px 8px' }}
+                            >
+                              <i className="bi bi-people"></i> View Regs ({sub.registrationCount || 0})
+                            </Link>
+                            <a
+                              href={`/api/admin/subevents/${sub._id}/registrations/export`}
+                              className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                              style={{ fontSize: '0.72rem', padding: '4px 8px' }}
+                            >
+                              <i className="bi bi-download"></i> CSV
+                            </a>
+                          </div>
                         )}
                       </div>
                     </div>

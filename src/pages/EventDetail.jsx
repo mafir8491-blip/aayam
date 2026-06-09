@@ -68,6 +68,31 @@ export default function EventDetail() {
     }
   };
 
+  const handleToggleVisibility = async () => {
+    try {
+      const res = await fetch(`/api/events/toggle-visibility/${id}`, { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to toggle visibility');
+      alert('Event visibility updated!');
+      fetchEventDetails();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!confirm('Are you sure you want to permanently delete this event, all its sub-events, and all registrations? This cannot be undone.')) return;
+    try {
+      const res = await fetch(`/api/events/delete/${id}`, { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to delete event');
+      alert('Event deleted successfully.');
+      navigate('/events');
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   useEffect(() => {
     fetchEventDetails();
     fetchUser();
@@ -311,6 +336,29 @@ export default function EventDetail() {
 
   return (
     <div className="container py-5">
+      {/* Admin action bar */}
+      {isAdmin && (
+        <div className="admin-action-bar p-3 mb-4 d-flex align-items-center gap-3 flex-wrap" style={{ background: 'rgba(30, 21, 14, 0.65)', border: '1px solid var(--br)', borderRadius: '12px' }}>
+          <Link to={`/events/edit/${event._id}`} className="btn btn-outline-warning btn-sm d-flex align-items-center gap-2" style={{ textDecoration: 'none', borderColor: 'var(--br)', color: 'var(--br)', padding: '8px 16px', borderRadius: '8px', fontSize: '0.88rem', fontWeight: 600 }}>
+            <i className="bi bi-pencil-square"></i> Edit Event
+          </Link>
+          <button
+            onClick={handleToggleVisibility}
+            className={`btn btn-sm ${event.isPublic === false ? 'btn-success' : 'btn-warning'} d-flex align-items-center gap-2`}
+            style={{ fontSize: '0.88rem', padding: '8px 16px', borderRadius: '8px', fontWeight: 600, color: event.isPublic === false ? '#fff' : '#000' }}
+          >
+            {event.isPublic === false ? '🌐 Make Public' : '🔒 Make Private'}
+          </button>
+          <button
+            onClick={handleDeleteEvent}
+            className="btn btn-danger btn-sm ms-md-auto d-flex align-items-center gap-2"
+            style={{ fontSize: '0.88rem', padding: '8px 16px', borderRadius: '8px', fontWeight: 600 }}
+          >
+            🗑 Delete Event
+          </button>
+        </div>
+      )}
+
       <div className="event-detail-content">
         {/* POSTER SLIDESHOW */}
         {allSlides.length > 0 && (
@@ -578,7 +626,40 @@ export default function EventDetail() {
         {/* REGISTRATION */}
         {showRegSection && (
           <div className="detail-section mb-5 p-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.25)', borderRadius: '12px' }}>
-            <h2 className="detail-section-title mb-3" style={{ borderBottom: 'none' }}>Registration</h2>
+            <div className="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3 border-bottom pb-2" style={{ borderColor: 'rgba(166,124,82,0.18)' }}>
+              <h2 className="detail-section-title m-0 border-0 p-0">Registration</h2>
+              {isAdmin && (
+                <div className="d-flex gap-2 flex-wrap">
+                  {mainRegSub && (
+                    <>
+                      <Link
+                        to={`/admin/subevents/${mainRegSub._id}/registrations`}
+                        className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                        style={{ fontSize: '0.78rem', padding: '6px 12px' }}
+                      >
+                        <i className="bi bi-people"></i> View Regs ({mainRegSub.registrationCount || 0})
+                      </Link>
+                      <a
+                        href={`/api/admin/subevents/${mainRegSub._id}/registrations/export`}
+                        className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                        style={{ fontSize: '0.78rem', padding: '6px 12px' }}
+                      >
+                        <i className="bi bi-download"></i> Download CSV
+                      </a>
+                    </>
+                  )}
+                  {hasSubEvents && (
+                    <a
+                      href={`/api/admin/events/${event._id}/registrations/export-all`}
+                      className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                      style={{ fontSize: '0.78rem', padding: '6px 12px' }}
+                    >
+                      <i className="bi bi-file-earmark-spreadsheet"></i> Export All CSV
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Case 1: Has custom form or external form and NO sub-events */}
             {((mainRegSub || hasExternalLink) && !hasSubEvents) && (

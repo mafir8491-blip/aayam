@@ -17,6 +17,7 @@ import Gallery from './pages/Gallery';
 import AuthPortal from './pages/AuthPortal';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRegistrations from './pages/admin/AdminRegistrations';
+import EventEdit from './pages/EventEdit';
 
 // Helper component to conditionally wrap pages with global layout (Navbar/Footer)
 const Layout = ({ children }) => {
@@ -50,6 +51,7 @@ export default function App() {
         {/* Admin Routes (nested or separate layouts) */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/subevents/:id/registrations" element={<AdminRegistrations />} />
+        <Route path="/events/edit/:id" element={<Layout><EventEdit /></Layout>} />
         
         {/* Fallback Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
