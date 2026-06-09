@@ -739,8 +739,97 @@ export default function EventEdit() {
     );
   }
 
+  /* ── Design tokens matching the rest of the site ── */
+  const BR      = '#a67c52';
+  const BR_D    = '#8a6240';
+  const BG_PAGE = '#fdf8f3';
+  const BG_CARD = '#fdfaf6';
+  const BG_INNER= '#f5ede3';
+  const TX      = '#3a2a1a';
+  const TX_MUT  = '#8a7a6a';
+  const BORDER  = '#e0d5c8';
+
+  const sectionCard = {
+    background: BG_CARD,
+    border: `1px solid ${BORDER}`,
+    borderRadius: '14px',
+    padding: '28px',
+    marginBottom: '24px',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+  };
+  const inputCls = {
+    background: '#fff',
+    border: `1.5px solid ${BORDER}`,
+    borderRadius: '8px',
+    color: TX,
+    padding: '8px 12px',
+    width: '100%',
+    fontSize: '0.9rem',
+    outline: 'none',
+  };
+  const labelCls = {
+    fontSize: '0.78rem',
+    fontWeight: 700,
+    color: BR,
+    marginBottom: '5px',
+    display: 'block',
+  };
+  const btnPrimary = {
+    background: BR,
+    border: `1.5px solid ${BR}`,
+    color: '#fff',
+    borderRadius: '8px',
+    padding: '8px 20px',
+    fontWeight: 700,
+    fontSize: '0.875rem',
+    cursor: 'pointer',
+  };
+  const btnOutline = {
+    background: 'transparent',
+    border: `1.5px solid ${BORDER}`,
+    color: TX_MUT,
+    borderRadius: '8px',
+    padding: '8px 20px',
+    fontWeight: 600,
+    fontSize: '0.875rem',
+    cursor: 'pointer',
+  };
+  const btnDanger = {
+    background: 'transparent',
+    border: '1.5px solid #e74c3c',
+    color: '#e74c3c',
+    borderRadius: '8px',
+    padding: '6px 14px',
+    fontWeight: 600,
+    fontSize: '0.8rem',
+    cursor: 'pointer',
+  };
+  const btnSuccess = {
+    background: '#27ae60',
+    border: '1.5px solid #27ae60',
+    color: '#fff',
+    borderRadius: '8px',
+    padding: '6px 14px',
+    fontWeight: 600,
+    fontSize: '0.8rem',
+    cursor: 'pointer',
+  };
+  const sectionHeading = {
+    fontFamily: 'Playfair Display, serif',
+    fontSize: '1.15rem',
+    fontWeight: 800,
+    color: TX,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '20px',
+    paddingBottom: '12px',
+    borderBottom: `1px solid ${BORDER}`,
+  };
+
   return (
-    <div className="container py-5" style={{ maxWidth: '900px', background: '#120e0b', color: '#e8d9c5' }}>
+    <div style={{ background: BG_PAGE, minHeight: '100vh', paddingBottom: '60px' }}>
+    <div className="container py-5" style={{ maxWidth: '900px' }}>
       
       {/* Page Header */}
       <div className="mb-4">
@@ -748,17 +837,17 @@ export default function EventEdit() {
           <i className="bi bi-arrow-left"></i> Back to Event
         </Link>
         <div className="section-label">Admin Console</div>
-        <h1 className="page-title text-warning fw-bold" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '2.2rem' }}>Edit Event: {event.title}</h1>
+        <h1 className="page-title fw-bold" style={{color:"#a67c52"}} style={{ fontFamily: 'var(--font-display, serif)', fontSize: '2.2rem' }}>Edit Event: {event.title}</h1>
       </div>
 
       {/* SECTION 1 - EVENT DETAILS FORM */}
-      <div className="card p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.18)', borderRadius: '12px' }}>
-        <h2 className="h5 fw-bold text-white mb-3 d-flex align-items-center gap-2">
+      <div className="card p-4 mb-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px' }}>
+        <h2 className="h5 fw-bold mb-3 d-flex align-items-center gap-2" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>
           <span>📋</span> Event Details
         </h2>
         <form onSubmit={handleDetailsSubmit}>
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">Event Visibility</label>
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Event Visibility</label>
             <div className="d-flex gap-3">
               <label className="d-flex align-items-center gap-2 cursor-pointer">
                 <input type="radio" checked={isPublic} onChange={() => setIsPublic(true)} />
@@ -772,14 +861,14 @@ export default function EventEdit() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">Event Title *</label>
-            <input type="text" className="form-control bg-dark text-white border-secondary" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Event Title *</label>
+            <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
 
           <div className="row g-3 mb-3">
             <div className="col-md-6">
-              <label className="form-label text-warning small fw-bold">Category *</label>
-              <select className="form-select bg-dark text-white border-secondary" value={category} onChange={(e) => setCategory(e.target.value)} required>
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Category *</label>
+              <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={category} onChange={(e) => setCategory(e.target.value)} required>
                 <option value="Technical">Technical</option>
                 <option value="Cultural">Cultural</option>
                 <option value="Sports">Sports</option>
@@ -787,66 +876,66 @@ export default function EventEdit() {
               </select>
             </div>
             <div className="col-md-6">
-              <label className="form-label text-warning small fw-bold">Location *</label>
-              <input type="text" className="form-control bg-dark text-white border-secondary" value={location} onChange={(e) => setLocation(e.target.value)} required />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Location *</label>
+              <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={location} onChange={(e) => setLocation(e.target.value)} required />
             </div>
           </div>
 
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">Short Description *</label>
-            <textarea className="form-control bg-dark text-white border-secondary" rows="2" value={shortDesc} onChange={(e) => setShortDesc(e.target.value)} required />
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Short Description *</label>
+            <textarea className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} rows="2" value={shortDesc} onChange={(e) => setShortDesc(e.target.value)} required />
           </div>
 
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">Full Description * <small className="text-muted">(HTML tags supported)</small></label>
-            <textarea className="form-control bg-dark text-white border-secondary" rows="4" value={description} onChange={(e) => setDescription(e.target.value)} required />
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Full Description * <small className="text-muted">(HTML tags supported)</small></label>
+            <textarea className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} rows="4" value={description} onChange={(e) => setDescription(e.target.value)} required />
           </div>
 
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">About Event <small className="text-muted">(Optional, HTML supported)</small></label>
-            <textarea className="form-control bg-dark text-white border-secondary" rows="3" value={about} onChange={(e) => setAbout(e.target.value)} />
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>About Event <small className="text-muted">(Optional, HTML supported)</small></label>
+            <textarea className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} rows="3" value={about} onChange={(e) => setAbout(e.target.value)} />
           </div>
 
           <div className="row g-3 mb-3">
             <div className="col-md-6">
-              <label className="form-label text-warning small fw-bold">Start Date *</label>
-              <input type="date" className="form-control bg-dark text-white border-secondary" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Start Date *</label>
+              <input type="date" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
             </div>
             <div className="col-md-6">
-              <label className="form-label text-warning small fw-bold">End Date *</label>
-              <input type="date" className="form-control bg-dark text-white border-secondary" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>End Date *</label>
+              <input type="date" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
             </div>
           </div>
 
           <div className="mb-3">
-            <label className="form-label text-warning small fw-bold">Registration Link <small className="text-muted">(Optional Google Form/External link)</small></label>
-            <input type="url" className="form-control bg-dark text-white border-secondary" value={registrationLink} onChange={(e) => setRegistrationLink(e.target.value)} placeholder="https://forms.gle/..." />
+            <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Registration Link <small className="text-muted">(Optional Google Form/External link)</small></label>
+            <input type="url" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={registrationLink} onChange={(e) => setRegistrationLink(e.target.value)} placeholder="https://forms.gle/..." />
           </div>
 
           {/* Custom Details Key-Values */}
           <div className="mb-4">
-            <label className="form-label text-warning small fw-bold d-block">Custom Event Details <small className="text-muted">(Entry Fee, Prize Pool, etc.)</small></label>
+            <label className="form-label small fw-bold d-block" style={{color:"#a67c52"}}>Custom Event Details <small className="text-muted">(Entry Fee, Prize Pool, etc.)</small></label>
             <div className="d-flex flex-column gap-2 mb-2">
               {customDetails.map((detail, idx) => (
                 <div key={idx} className="d-flex gap-2">
-                  <input type="text" className="form-control bg-dark text-white border-secondary" placeholder="Key (e.g. Fee)" value={detail.key} onChange={(e) => updateCustomDetailRow(idx, 'key', e.target.value)} style={{ flex: 1 }} />
-                  <input type="text" className="form-control bg-dark text-white border-secondary" placeholder="Value (e.g. Free)" value={detail.value} onChange={(e) => updateCustomDetailRow(idx, 'value', e.target.value)} style={{ flex: 1 }} />
+                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Key (e.g. Fee)" value={detail.key} onChange={(e) => updateCustomDetailRow(idx, 'key', e.target.value)} style={{ flex: 1 }} />
+                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Value (e.g. Free)" value={detail.value} onChange={(e) => updateCustomDetailRow(idx, 'value', e.target.value)} style={{ flex: 1 }} />
                   <button type="button" className="btn btn-danger" onClick={() => removeCustomDetailRow(idx)}>✕</button>
                 </div>
               ))}
             </div>
-            <button type="button" className="btn btn-outline-warning btn-sm" onClick={addCustomDetailRow}>+ Add Custom Detail</button>
+            <button type="button" className="btn btn-sm" style={{border:"1.5px solid #a67c52",color:"#a67c52",background:"transparent"}} onClick={addCustomDetailRow}>+ Add Custom Detail</button>
           </div>
 
           <div className="mb-4">
-            <label className="form-label text-warning small fw-bold d-block">Replace Banner Image</label>
+            <label className="form-label small fw-bold d-block" style={{color:"#a67c52"}}>Replace Banner Image</label>
             {event.bannerImage && (
               <div className="mb-2">
                 <img src={event.bannerImage} alt="Current banner" style={{ maxHeight: '100px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
                 <div className="small text-muted mt-1">Current Banner Image</div>
               </div>
             )}
-            <input type="file" className="form-control bg-dark text-white border-secondary" accept="image/*" onChange={(e) => setBannerFile(e.target.files[0])} />
+            <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} accept="image/*" onChange={(e) => setBannerFile(e.target.files[0])} />
           </div>
 
           <div className="d-flex gap-2">
@@ -857,8 +946,8 @@ export default function EventEdit() {
       </div>
 
       {/* SECTION 1A - CUSTOM REGISTRATION FORM BUILDER */}
-      <div className="card p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.18)', borderRadius: '12px', borderLeft: '4px solid #27ae60' }}>
-        <h2 className="h5 fw-bold text-white mb-3 d-flex align-items-center gap-2">
+      <div className="card p-4 mb-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px', borderLeft: '4px solid #27ae60' }}>
+        <h2 className="h5 fw-bold mb-3 d-flex align-items-center gap-2" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>
           <span>📝</span> Event Registration Form
         </h2>
         {!mainRegSub ? (
@@ -874,19 +963,19 @@ export default function EventEdit() {
             </div>
 
             <div className="mb-3">
-              <h3 className="h6 fw-bold text-warning mb-2">Existing Custom Fields</h3>
+              <h3 className="h6 fw-bold mb-2" style={{color:"#a67c52"}}>Existing Custom Fields</h3>
               <div className="d-flex flex-column gap-2 mb-3">
                 {mainRegSub.formFields && mainRegSub.formFields.length > 0 ? (
                   mainRegSub.formFields.map((field) => (
-                    <div key={field._id} className="p-2 border rounded bg-dark border-secondary">
+                    <div key={field._id} className="p-2 rounded" style={{border:"1px solid #e0d5c8",background:"#fdfaf6"}}>
                       {editingFieldId === field._id ? (
                         <form onSubmit={(e) => handleSaveEditField(e, field._id)}>
                           <div className="row g-2 mb-2">
                             <div className="col-12">
-                              <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Field Label" value={editFieldLabel} onChange={(e) => setEditFieldLabel(e.target.value)} required />
+                              <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Field Label" value={editFieldLabel} onChange={(e) => setEditFieldLabel(e.target.value)} required />
                             </div>
                             <div className="col-sm-6">
-                              <select className="form-select form-select-sm bg-dark text-white border-secondary" value={editFieldType} onChange={(e) => setEditFieldType(e.target.value)} required>
+                              <select className="form-select form-select-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} value={editFieldType} onChange={(e) => setEditFieldType(e.target.value)} required>
                                 <option value="text">Short Answer (Text)</option>
                                 <option value="textarea">Paragraph (Textarea)</option>
                                 <option value="dropdown">Dropdown</option>
@@ -897,11 +986,11 @@ export default function EventEdit() {
                               </select>
                             </div>
                             <div className="col-sm-6">
-                              <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Placeholder Hint" value={editFieldPlaceholder} onChange={(e) => setEditFieldPlaceholder(e.target.value)} />
+                              <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Placeholder Hint" value={editFieldPlaceholder} onChange={(e) => setEditFieldPlaceholder(e.target.value)} />
                             </div>
                             {(editFieldType === 'dropdown' || editFieldType === 'checkbox') && (
                               <div className="col-12">
-                                <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Options (comma separated: Opt1, Opt2)" value={editFieldOptions} onChange={(e) => setEditFieldOptions(e.target.value)} required />
+                                <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Options (comma separated: Opt1, Opt2)" value={editFieldOptions} onChange={(e) => setEditFieldOptions(e.target.value)} required />
                               </div>
                             )}
                           </div>
@@ -920,14 +1009,14 @@ export default function EventEdit() {
                         <div className="d-flex justify-content-between align-items-center">
                           <div>
                             <span className="badge bg-secondary me-2">{field.type}</span>
-                            <strong className="text-white">{field.label}</strong>
+                            <strong style={{color:"#3a2a1a"}}>{field.label}</strong>
                             {field.required && <span className="text-danger ms-1">*</span>}
                             {field.options && field.options.length > 0 && (
                               <div className="small text-muted mt-1">Options: {field.options.join(', ')}</div>
                             )}
                           </div>
                           <div className="d-flex gap-1">
-                            <button type="button" className="btn btn-outline-warning btn-sm" onClick={() => startEditField(field)}>Edit</button>
+                            <button type="button" className="btn btn-sm" style={{border:"1.5px solid #a67c52",color:"#a67c52",background:"transparent"}} onClick={() => startEditField(field)}>Edit</button>
                             <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteField(field._id)}>✕</button>
                           </div>
                         </div>
@@ -941,14 +1030,14 @@ export default function EventEdit() {
             </div>
 
             {/* Add New Field form */}
-            <form onSubmit={handleAddField} className="p-3 border border-secondary rounded bg-dark">
-              <h4 className="h6 text-warning fw-bold mb-2">➕ Add New Field</h4>
+            <form onSubmit={handleAddField} className="p-3 rounded" style={{border:"1px solid #e0d5c8",background:"#f5ede3"}}>
+              <h4 className="h6 fw-bold mb-2" style={{color:"#a67c52"}}>➕ Add New Field</h4>
               <div className="row g-2 mb-2">
                 <div className="col-12">
-                  <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Field Label (e.g. Branch, Roll Number)" value={newFieldLabel} onChange={(e) => setNewFieldLabel(e.target.value)} required />
+                  <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Field Label (e.g. Branch, Roll Number)" value={newFieldLabel} onChange={(e) => setNewFieldLabel(e.target.value)} required />
                 </div>
                 <div className="col-sm-6">
-                  <select className="form-select form-select-sm bg-dark text-white border-secondary" value={newFieldType} onChange={(e) => setNewFieldType(e.target.value)} required>
+                  <select className="form-select form-select-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} value={newFieldType} onChange={(e) => setNewFieldType(e.target.value)} required>
                     <option value="text">Short Answer (Text)</option>
                     <option value="textarea">Paragraph (Textarea)</option>
                     <option value="dropdown">Dropdown</option>
@@ -959,11 +1048,11 @@ export default function EventEdit() {
                   </select>
                 </div>
                 <div className="col-sm-6">
-                  <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Placeholder Hint" value={newFieldPlaceholder} onChange={(e) => setNewFieldPlaceholder(e.target.value)} />
+                  <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Placeholder Hint" value={newFieldPlaceholder} onChange={(e) => setNewFieldPlaceholder(e.target.value)} />
                 </div>
                 {(newFieldType === 'dropdown' || newFieldType === 'checkbox') && (
                   <div className="col-12">
-                    <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Options (comma separated: Opt1, Opt2)" value={newFieldOptions} onChange={(e) => setNewFieldOptions(e.target.value)} required />
+                    <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Options (comma separated: Opt1, Opt2)" value={newFieldOptions} onChange={(e) => setNewFieldOptions(e.target.value)} required />
                   </div>
                 )}
               </div>
@@ -972,7 +1061,7 @@ export default function EventEdit() {
                   <input type="checkbox" checked={newFieldRequired} onChange={(e) => setNewFieldRequired(e.target.checked)} />
                   Required Field
                 </label>
-                <button type="submit" className="btn btn-warning btn-sm">Add Field</button>
+                <button type="submit" className="btn btn-sm" style={{background:"#a67c52",border:"1.5px solid #a67c52",color:"#fff"}}>Add Field</button>
               </div>
             </form>
           </div>
@@ -980,8 +1069,8 @@ export default function EventEdit() {
       </div>
 
       {/* SECTION 1B - POSTER SLIDESHOW */}
-      <div className="card p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.18)', borderRadius: '12px', borderLeft: '4px solid #6c63ff' }}>
-        <h2 className="h5 fw-bold text-white mb-3 d-flex align-items-center gap-2">
+      <div className="card p-4 mb-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px', borderLeft: '4px solid #6c63ff' }}>
+        <h2 className="h5 fw-bold mb-3 d-flex align-items-center gap-2" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>
           <span>🖼</span> Poster Slideshow
         </h2>
         {event.posterSlides && event.posterSlides.length > 0 ? (
@@ -1000,15 +1089,15 @@ export default function EventEdit() {
 
         <form onSubmit={handleUploadSlides}>
           <div className="mb-3">
-            <input type="file" className="form-control bg-dark text-white border-secondary" multiple accept="image/*" onChange={(e) => setSlideFiles(e.target.files)} />
+            <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} multiple accept="image/*" onChange={(e) => setSlideFiles(e.target.files)} />
           </div>
           <button type="submit" className="btn btn-sm btn-outline-warning" disabled={slideFiles.length === 0}>Upload Slides</button>
         </form>
       </div>
 
       {/* SECTION 1C - SCHEDULE / INFO CARDS */}
-      <div className="card p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.18)', borderRadius: '12px', borderLeft: '4px solid var(--br)' }}>
-        <h2 className="h5 fw-bold text-white mb-3 d-flex align-items-center gap-2">
+      <div className="card p-4 mb-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px', borderLeft: '4px solid #a67c52' }}>
+        <h2 className="h5 fw-bold mb-3 d-flex align-items-center gap-2" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>
           <span>📅</span> Schedule &amp; Info Cards
         </h2>
 
@@ -1016,23 +1105,23 @@ export default function EventEdit() {
         {event.scheduleCards && event.scheduleCards.length > 0 ? (
           <div className="d-flex flex-column gap-2 mb-4">
             {event.scheduleCards.map((card) => (
-              <div key={card._id} className="p-3 border border-secondary rounded bg-dark">
+              <div key={card._id} className="p-3 rounded" style={{border:"1px solid #e0d5c8",background:"#f5ede3"}}>
                 {editingCardId === card._id ? (
                   <form onSubmit={(e) => handleSaveEditCard(e, card._id)}>
                     <div className="mb-3">
-                      <label className="form-label text-warning small fw-bold">Heading *</label>
-                      <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" value={editCardHeading} onChange={(e) => setEditCardHeading(e.target.value)} required />
+                      <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Heading *</label>
+                      <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} value={editCardHeading} onChange={(e) => setEditCardHeading(e.target.value)} required />
                     </div>
                     <div className="mb-3">
                       <div className="btn-group btn-group-sm mb-2">
-                        <button type="button" className={`btn ${editCardMode === 'text' ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => setEditCardMode('text')}>📝 Rich Text</button>
-                        <button type="button" className={`btn ${editCardMode === 'table' ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => setEditCardMode('table')}>📊 Table</button>
+                        <button type="button" className="btn btn-sm" onClick={() => setEditCardMode('text')}>📝 Rich Text</button>
+                        <button type="button" className="btn btn-sm" onClick={() => setEditCardMode('table')}>📊 Table</button>
                       </div>
                     </div>
 
                     {editCardMode === 'text' ? (
                       <div className="mb-3">
-                        <textarea className="form-control form-control-sm bg-dark text-white border-secondary" rows="3" placeholder="Card body text (HTML supported)" value={editCardBody} onChange={(e) => setEditCardBody(e.target.value)} />
+                        <textarea className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} rows="3" placeholder="Card body text (HTML supported)" value={editCardBody} onChange={(e) => setEditCardBody(e.target.value)} />
                       </div>
                     ) : (
                       <div className="mb-3">
@@ -1042,16 +1131,16 @@ export default function EventEdit() {
                             const newCols = parseInt(e.target.value) || 3;
                             setEditCardColsCount(newCols);
                             buildGrid('edit', newCols);
-                          }} className="form-control form-control-sm bg-dark text-white border-secondary" style={{ width: '60px' }} />
+                          }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} style={{ width: '60px' }} />
                           <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => addRowToTable('edit')}>+ Row</button>
                         </div>
                         <div className="table-responsive">
-                          <table className="table table-bordered table-dark table-sm">
+                          <table className="table table-bordered table-sm" style={{background:"#fff",color:"#3a2a1a"}}>
                             <thead>
                               <tr>
                                 {editCardHeaders.map((h, ci) => (
                                   <th key={ci}>
-                                    <input type="text" className="form-control form-control-sm bg-dark text-white border-0 text-center fw-bold" value={h} onChange={(e) => updateHeader('edit', ci, e.target.value)} />
+                                    <input type="text" className="form-control form-control-sm text-center fw-bold" style={{background:"#fff",color:"#3a2a1a",border:"none"}} value={h} onChange={(e) => updateHeader('edit', ci, e.target.value)} />
                                   </th>
                                 ))}
                                 <th></th>
@@ -1062,7 +1151,7 @@ export default function EventEdit() {
                                 <tr key={ri}>
                                   {editCardHeaders.map((_, ci) => (
                                     <td key={ci}>
-                                      <input type="text" className="form-control form-control-sm bg-dark text-white border-0" value={row[ci] || ''} onChange={(e) => updateCell('edit', ri, ci, e.target.value)} />
+                                      <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"none"}} value={row[ci] || ''} onChange={(e) => updateCell('edit', ri, ci, e.target.value)} />
                                     </td>
                                   ))}
                                   <td className="text-center">
@@ -1084,11 +1173,11 @@ export default function EventEdit() {
                 ) : (
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <strong className="text-white"><i className="bi bi-calendar-week text-warning me-2"></i>{card.heading}</strong>
+                      <strong style={{color:"#3a2a1a"}}><i className="bi bi-calendar-week text-warning me-2"></i>{card.heading}</strong>
                       <span className="badge bg-secondary ms-2">{card.body ? 'Text' : 'Table'}</span>
                     </div>
                     <div className="d-flex gap-1">
-                      <button type="button" className="btn btn-outline-warning btn-sm" onClick={() => startEditCard(card)}>Edit</button>
+                      <button type="button" className="btn btn-sm" style={{border:"1.5px solid #a67c52",color:"#a67c52",background:"transparent"}} onClick={() => startEditCard(card)}>Edit</button>
                       <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteCard(card._id)}>✕</button>
                     </div>
                   </div>
@@ -1101,21 +1190,21 @@ export default function EventEdit() {
         )}
 
         {/* Add new card form */}
-        <form onSubmit={handleAddScheduleCard} className="p-3 border border-secondary rounded bg-dark">
-          <h3 className="h6 text-warning fw-bold mb-2">➕ Add New Card</h3>
+        <form onSubmit={handleAddScheduleCard} className="p-3 rounded" style={{border:"1px solid #e0d5c8",background:"#f5ede3"}}>
+          <h3 className="h6 fw-bold mb-2" style={{color:"#a67c52"}}>➕ Add New Card</h3>
           <div className="mb-3">
-            <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Heading (e.g. Day 1 — 12 Oct)" value={newCardHeading} onChange={(e) => setNewCardHeading(e.target.value)} required />
+            <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Heading (e.g. Day 1 — 12 Oct)" value={newCardHeading} onChange={(e) => setNewCardHeading(e.target.value)} required />
           </div>
           <div className="mb-3">
             <div className="btn-group btn-group-sm mb-2">
-              <button type="button" className={`btn ${newCardMode === 'text' ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => setNewCardMode('text')}>📝 Rich Text</button>
-              <button type="button" className={`btn ${newCardMode === 'table' ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => setNewCardMode('table')}>📊 Table</button>
+              <button type="button" className="btn btn-sm" onClick={() => setNewCardMode('text')}>📝 Rich Text</button>
+              <button type="button" className="btn btn-sm" onClick={() => setNewCardMode('table')}>📊 Table</button>
             </div>
           </div>
 
           {newCardMode === 'text' ? (
             <div className="mb-3">
-              <textarea className="form-control form-control-sm bg-dark text-white border-secondary" rows="3" placeholder="Card body details (HTML tags allowed)" value={newCardBody} onChange={(e) => setNewCardBody(e.target.value)} />
+              <textarea className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} rows="3" placeholder="Card body details (HTML tags allowed)" value={newCardBody} onChange={(e) => setNewCardBody(e.target.value)} />
             </div>
           ) : (
             <div className="mb-3">
@@ -1125,16 +1214,16 @@ export default function EventEdit() {
                   const newCols = parseInt(e.target.value) || 3;
                   setNewCardColsCount(newCols);
                   buildGrid('new', newCols);
-                }} className="form-control form-control-sm bg-dark text-white border-secondary" style={{ width: '60px' }} />
+                }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} style={{ width: '60px' }} />
                 <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => addRowToTable('new')}>+ Row</button>
               </div>
               <div className="table-responsive">
-                <table className="table table-bordered table-dark table-sm">
+                <table className="table table-bordered table-sm" style={{background:"#fff",color:"#3a2a1a"}}>
                   <thead>
                     <tr>
                       {newCardHeaders.map((h, ci) => (
                         <th key={ci}>
-                          <input type="text" className="form-control form-control-sm bg-dark text-white border-0 text-center fw-bold" value={h} onChange={(e) => updateHeader('new', ci, e.target.value)} />
+                          <input type="text" className="form-control form-control-sm text-center fw-bold" style={{background:"#fff",color:"#3a2a1a",border:"none"}} value={h} onChange={(e) => updateHeader('new', ci, e.target.value)} />
                         </th>
                       ))}
                       <th></th>
@@ -1145,7 +1234,7 @@ export default function EventEdit() {
                       <tr key={ri}>
                         {newCardHeaders.map((_, ci) => (
                           <td key={ci}>
-                            <input type="text" className="form-control form-control-sm bg-dark text-white border-0" value={row[ci] || ''} onChange={(e) => updateCell('new', ri, ci, e.target.value)} />
+                            <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"none"}} value={row[ci] || ''} onChange={(e) => updateCell('new', ri, ci, e.target.value)} />
                           </td>
                         ))}
                         <td className="text-center">
@@ -1159,58 +1248,58 @@ export default function EventEdit() {
             </div>
           )}
 
-          <button type="submit" className="btn btn-warning btn-sm">Add Card</button>
+          <button type="submit" className="btn btn-sm" style={{background:"#a67c52",border:"1.5px solid #a67c52",color:"#fff"}}>Add Card</button>
         </form>
       </div>
 
       {/* SECTION 2 - CREATE NEW SUB-EVENT */}
-      <div className="card p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.18)', borderRadius: '12px' }}>
-        <h2 className="h5 fw-bold text-white mb-3 d-flex align-items-center gap-2">
+      <div className="card p-4 mb-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px' }}>
+        <h2 className="h5 fw-bold mb-3 d-flex align-items-center gap-2" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>
           <span>➕</span> Create New Sub-Event (Session)
         </h2>
         <form onSubmit={handleAddSubEvent}>
           <div className="row g-3">
             <div className="col-12">
-              <label className="form-label text-warning small fw-bold">Sub-Event Title *</label>
-              <input type="text" className="form-control bg-dark text-white border-secondary" placeholder="e.g. Workshop Session, Coding Track" value={newSubTitle} onChange={(e) => setNewSubTitle(e.target.value)} required />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Sub-Event Title *</label>
+              <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="e.g. Workshop Session, Coding Track" value={newSubTitle} onChange={(e) => setNewSubTitle(e.target.value)} required />
             </div>
             <div className="col-12">
-              <label className="form-label text-warning small fw-bold">Description</label>
-              <textarea className="form-control bg-dark text-white border-secondary" rows="2" value={newSubDesc} onChange={(e) => setNewSubDesc(e.target.value)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Description</label>
+              <textarea className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} rows="2" value={newSubDesc} onChange={(e) => setNewSubDesc(e.target.value)} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Day Number</label>
-              <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={newSubDay} onChange={(e) => setNewSubDay(parseInt(e.target.value) || 1)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Day Number</label>
+              <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubDay} onChange={(e) => setNewSubDay(parseInt(e.target.value) || 1)} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Event Date</label>
-              <input type="date" className="form-control bg-dark text-white border-secondary" value={newSubDate} onChange={(e) => setNewSubDate(e.target.value)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Event Date</label>
+              <input type="date" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubDate} onChange={(e) => setNewSubDate(e.target.value)} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Start Time</label>
-              <select className="form-select bg-dark text-white border-secondary" value={newSubStart} onChange={(e) => setNewSubStart(e.target.value)}>
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Start Time</label>
+              <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubStart} onChange={(e) => setNewSubStart(e.target.value)}>
                 <option value="">— Select —</option>
                 {timeOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </select>
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">End Time</label>
-              <select className="form-select bg-dark text-white border-secondary" value={newSubEnd} onChange={(e) => setNewSubEnd(e.target.value)}>
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>End Time</label>
+              <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubEnd} onChange={(e) => setNewSubEnd(e.target.value)}>
                 <option value="">— Select —</option>
                 {timeOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </select>
             </div>
             <div className="col-12">
-              <label className="form-label text-warning small fw-bold">Registration Deadline</label>
-              <input type="datetime-local" className="form-control bg-dark text-white border-secondary" value={newSubDeadline} onChange={(e) => setNewSubDeadline(e.target.value)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Registration Deadline</label>
+              <input type="datetime-local" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubDeadline} onChange={(e) => setNewSubDeadline(e.target.value)} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Max Participants <small className="text-muted">(Optional)</small></label>
-              <input type="number" className="form-control bg-dark text-white border-secondary" placeholder="Unlimited" value={newSubMaxParts} onChange={(e) => setNewSubMaxParts(e.target.value)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Max Participants <small className="text-muted">(Optional)</small></label>
+              <input type="number" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Unlimited" value={newSubMaxParts} onChange={(e) => setNewSubMaxParts(e.target.value)} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Registration Type</label>
-              <select className="form-select bg-dark text-white border-secondary" value={newSubIsGroup ? 'true' : 'false'} onChange={(e) => {
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Registration Type</label>
+              <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubIsGroup ? 'true' : 'false'} onChange={(e) => {
                 const isG = e.target.value === 'true';
                 setNewSubIsGroup(isG);
                 if (!isG) {
@@ -1225,50 +1314,50 @@ export default function EventEdit() {
             {newSubIsGroup && (
               <>
                 <div className="col-sm-6">
-                  <label className="form-label text-warning small fw-bold">Min Team Size</label>
-                  <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={newSubMinTeam} onChange={(e) => setNewSubMinTeam(parseInt(e.target.value) || 1)} />
+                  <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Min Team Size</label>
+                  <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubMinTeam} onChange={(e) => setNewSubMinTeam(parseInt(e.target.value) || 1)} />
                 </div>
                 <div className="col-sm-6">
-                  <label className="form-label text-warning small fw-bold">Max Team Size</label>
-                  <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={newSubMaxTeam} onChange={(e) => setNewSubMaxTeam(parseInt(e.target.value) || 1)} />
+                  <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Max Team Size</label>
+                  <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={newSubMaxTeam} onChange={(e) => setNewSubMaxTeam(parseInt(e.target.value) || 1)} />
                 </div>
               </>
             )}
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">QR Image</label>
-              <input type="file" className="form-control bg-dark text-white border-secondary" accept="image/*" onChange={(e) => setNewSubQrFile(e.target.files[0])} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>QR Image</label>
+              <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} accept="image/*" onChange={(e) => setNewSubQrFile(e.target.files[0])} />
             </div>
             <div className="col-sm-6">
-              <label className="form-label text-warning small fw-bold">Sub-Event Poster Image</label>
-              <input type="file" className="form-control bg-dark text-white border-secondary" accept="image/*" onChange={(e) => setNewSubPosterFile(e.target.files[0])} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Sub-Event Poster Image</label>
+              <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} accept="image/*" onChange={(e) => setNewSubPosterFile(e.target.files[0])} />
             </div>
             <div className="col-12">
-              <label className="form-label text-warning small fw-bold">External Google Forms Link <small className="text-muted">(Optional)</small></label>
-              <input type="url" className="form-control bg-dark text-white border-secondary" placeholder="https://forms.gle/..." value={newSubExternalLink} onChange={(e) => setNewSubExternalLink(e.target.value)} />
+              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>External Google Forms Link <small className="text-muted">(Optional)</small></label>
+              <input type="url" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="https://forms.gle/..." value={newSubExternalLink} onChange={(e) => setNewSubExternalLink(e.target.value)} />
             </div>
           </div>
-          <button type="submit" className="btn btn-warning mt-3">Create Sub-Event</button>
+          <button type="submit" className="btn mt-3" style={{background:"#a67c52",border:"1.5px solid #a67c52",color:"#fff",padding:"10px 24px",fontWeight:700}}>Create Sub-Event</button>
         </form>
       </div>
 
       {/* SECTION 3 - EXISTING SUB-EVENTS PANEL */}
       <div className="mb-5">
-        <h2 className="h4 fw-bold text-white mb-3">Existing Sub-Events ({subEvents.length})</h2>
+        <h2 className="h4 fw-bold mb-3" style={{color:"#3a2a1a",fontFamily:"Playfair Display,serif"}}>Existing Sub-Events ({subEvents.length})</h2>
         {subEvents.length === 0 ? (
-          <div className="p-4 text-center rounded border border-secondary text-muted bg-dark italic">No sub-events created yet.</div>
+          <div className="p-4 text-center rounded text-muted" style={{border:"1.5px dashed #e0d5c8",background:"#fdfaf6",fontStyle:"italic"}}>No sub-events created yet.</div>
         ) : (
           <div className="d-flex flex-column gap-4">
             {subEvents.map((sub, sIdx) => {
               const isEditing = editingSubEventId === sub._id;
               return (
-                <div key={sub._id} className="card p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.22)', borderRadius: '12px' }}>
+                <div key={sub._id} className="card p-4" style={{ background: '#fdfaf6', border: '1px solid #e0d5c8', borderRadius: '14px' }}>
                   <div className="d-flex justify-content-between align-items-start border-bottom pb-2 mb-3">
                     <div>
                       <span className="badge bg-warning text-dark me-2">Sub-Event #{sIdx + 1}</span>
                       <strong className="text-white h5">{sub.title}</strong>
                     </div>
                     <div className="d-flex gap-2">
-                      <button type="button" className="btn btn-outline-warning btn-sm" onClick={() => {
+                      <button type="button" className="btn btn-sm" style={{border:"1.5px solid #a67c52",color:"#a67c52",background:"transparent"}} onClick={() => {
                         if (isEditing) setEditingSubEventId(null);
                         else startEditSubEvent(sub);
                       }}>{isEditing ? 'Cancel Edit' : 'Edit Sub-Event'}</button>
@@ -1281,46 +1370,46 @@ export default function EventEdit() {
                     <form onSubmit={(e) => handleSaveEditSubEvent(e, sub._id)} className="mb-4">
                       <div className="row g-3">
                         <div className="col-12">
-                          <label className="form-label text-warning small fw-bold">Title *</label>
-                          <input type="text" className="form-control bg-dark text-white border-secondary" value={editSubTitle} onChange={(e) => setEditSubTitle(e.target.value)} required />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Title *</label>
+                          <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubTitle} onChange={(e) => setEditSubTitle(e.target.value)} required />
                         </div>
                         <div className="col-12">
-                          <label className="form-label text-warning small fw-bold">Description</label>
-                          <textarea className="form-control bg-dark text-white border-secondary" rows="2" value={editSubDesc} onChange={(e) => setEditSubDesc(e.target.value)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Description</label>
+                          <textarea className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} rows="2" value={editSubDesc} onChange={(e) => setEditSubDesc(e.target.value)} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">Day Number</label>
-                          <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={editSubDay} onChange={(e) => setEditSubDay(parseInt(e.target.value) || 1)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Day Number</label>
+                          <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubDay} onChange={(e) => setEditSubDay(parseInt(e.target.value) || 1)} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">Event Date</label>
-                          <input type="date" className="form-control bg-dark text-white border-secondary" value={editSubDate} onChange={(e) => setEditSubDate(e.target.value)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Event Date</label>
+                          <input type="date" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubDate} onChange={(e) => setEditSubDate(e.target.value)} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">Start Time</label>
-                          <select className="form-select bg-dark text-white border-secondary" value={editSubStart} onChange={(e) => setEditSubStart(e.target.value)}>
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Start Time</label>
+                          <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubStart} onChange={(e) => setEditSubStart(e.target.value)}>
                             <option value="">— Select —</option>
                             {timeOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                           </select>
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">End Time</label>
-                          <select className="form-select bg-dark text-white border-secondary" value={editSubEnd} onChange={(e) => setEditSubEnd(e.target.value)}>
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>End Time</label>
+                          <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubEnd} onChange={(e) => setEditSubEnd(e.target.value)}>
                             <option value="">— Select —</option>
                             {timeOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                           </select>
                         </div>
                         <div className="col-12">
-                          <label className="form-label text-warning small fw-bold">Registration Deadline</label>
-                          <input type="datetime-local" className="form-control bg-dark text-white border-secondary" value={editSubDeadline} onChange={(e) => setEditSubDeadline(e.target.value)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Registration Deadline</label>
+                          <input type="datetime-local" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubDeadline} onChange={(e) => setEditSubDeadline(e.target.value)} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">Max Participants</label>
-                          <input type="number" className="form-control bg-dark text-white border-secondary" placeholder="Unlimited" value={editSubMaxParts} onChange={(e) => setEditSubMaxParts(e.target.value)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Max Participants</label>
+                          <input type="number" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Unlimited" value={editSubMaxParts} onChange={(e) => setEditSubMaxParts(e.target.value)} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold">Registration Type</label>
-                          <select className="form-select bg-dark text-white border-secondary" value={editSubIsGroup ? 'true' : 'false'} onChange={(e) => setEditSubIsGroup(e.target.value === 'true')}>
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Registration Type</label>
+                          <select className="form-select" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubIsGroup ? 'true' : 'false'} onChange={(e) => setEditSubIsGroup(e.target.value === 'true')}>
                             <option value="false">👤 Individual</option>
                             <option value="true">👥 Team / Group</option>
                           </select>
@@ -1328,38 +1417,38 @@ export default function EventEdit() {
                         {editSubIsGroup && (
                           <>
                             <div className="col-sm-6">
-                              <label className="form-label text-warning small fw-bold">Min Team Size</label>
-                              <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={editSubMinTeam} onChange={(e) => setEditSubMinTeam(parseInt(e.target.value) || 1)} />
+                              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Min Team Size</label>
+                              <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubMinTeam} onChange={(e) => setEditSubMinTeam(parseInt(e.target.value) || 1)} />
                             </div>
                             <div className="col-sm-6">
-                              <label className="form-label text-warning small fw-bold">Max Team Size</label>
-                              <input type="number" min="1" className="form-control bg-dark text-white border-secondary" value={editSubMaxTeam} onChange={(e) => setEditSubMaxTeam(parseInt(e.target.value) || 1)} />
+                              <label className="form-label small fw-bold" style={{color:"#a67c52"}}>Max Team Size</label>
+                              <input type="number" min="1" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} value={editSubMaxTeam} onChange={(e) => setEditSubMaxTeam(parseInt(e.target.value) || 1)} />
                             </div>
                           </>
                         )}
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold d-block">QR Code Image</label>
+                          <label className="form-label small fw-bold d-block" style={{color:"#a67c52"}}>QR Code Image</label>
                           {sub.qrImage && (
                             <div className="mb-2 position-relative" style={{ display: 'inline-block' }}>
                               <img src={sub.qrImage} alt="QR" style={{ maxHeight: '60px', borderRadius: '4px' }} />
                               <button type="button" className="btn btn-danger btn-sm ms-2" onClick={() => handleDeleteSubQr(sub._id)}>Remove QR</button>
                             </div>
                           )}
-                          <input type="file" className="form-control bg-dark text-white border-secondary" accept="image/*" onChange={(e) => setEditSubQrFile(e.target.files[0])} />
+                          <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} accept="image/*" onChange={(e) => setEditSubQrFile(e.target.files[0])} />
                         </div>
                         <div className="col-sm-6">
-                          <label className="form-label text-warning small fw-bold d-block">Poster Image</label>
+                          <label className="form-label small fw-bold d-block" style={{color:"#a67c52"}}>Poster Image</label>
                           {sub.posterImage && (
                             <div className="mb-2 position-relative" style={{ display: 'inline-block' }}>
                               <img src={sub.posterImage} alt="Poster" style={{ maxHeight: '60px', borderRadius: '4px' }} />
                               <button type="button" className="btn btn-danger btn-sm ms-2" onClick={() => handleDeleteSubPoster(sub._id)}>Remove Poster</button>
                             </div>
                           )}
-                          <input type="file" className="form-control bg-dark text-white border-secondary" accept="image/*" onChange={(e) => setEditSubPosterFile(e.target.files[0])} />
+                          <input type="file" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} accept="image/*" onChange={(e) => setEditSubPosterFile(e.target.files[0])} />
                         </div>
                         <div className="col-12">
-                          <label className="form-label text-warning small fw-bold">External Google Forms Link</label>
-                          <input type="url" className="form-control bg-dark text-white border-secondary" placeholder="https://forms.gle/..." value={editSubExternalLink} onChange={(e) => setEditSubExternalLink(e.target.value)} />
+                          <label className="form-label small fw-bold" style={{color:"#a67c52"}}>External Google Forms Link</label>
+                          <input type="url" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="https://forms.gle/..." value={editSubExternalLink} onChange={(e) => setEditSubExternalLink(e.target.value)} />
                         </div>
                       </div>
                       <button type="submit" className="btn btn-success btn-sm mt-3">Save Sub-Event Details</button>
@@ -1375,21 +1464,21 @@ export default function EventEdit() {
                   )}
 
                   {/* Sub-Event Fields Builder */}
-                  <div className="p-3 border border-secondary rounded bg-dark">
-                    <h4 className="h6 text-warning fw-bold mb-3 border-bottom pb-2">📋 Sub-Event Custom Registration Fields</h4>
+                  <div className="p-3 rounded" style={{border:"1px solid #e0d5c8",background:"#f5ede3"}}>
+                    <h4 className="h6 fw-bold mb-3 pb-2" style={{color:"#a67c52",borderBottom:"1px solid #e0d5c8"}}>📋 Sub-Event Custom Registration Fields</h4>
                     
                     <div className="d-flex flex-column gap-2 mb-3">
                       {sub.formFields && sub.formFields.length > 0 ? (
                         sub.formFields.map((field) => (
-                          <div key={field._id} className="p-2 border rounded bg-dark border-secondary">
+                          <div key={field._id} className="p-2 rounded" style={{border:"1px solid #e0d5c8",background:"#fdfaf6"}}>
                             {editingSubFieldId === field._id ? (
                               <form onSubmit={(e) => handleSaveEditSubField(e, sub._id, field._id)}>
                                 <div className="row g-2 mb-2">
                                   <div className="col-12">
-                                    <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Field Label" value={editSubFieldLabel} onChange={(e) => setEditSubFieldLabel(e.target.value)} required />
+                                    <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Field Label" value={editSubFieldLabel} onChange={(e) => setEditSubFieldLabel(e.target.value)} required />
                                   </div>
                                   <div className="col-sm-6">
-                                    <select className="form-select form-select-sm bg-dark text-white border-secondary" value={editSubFieldType} onChange={(e) => setEditSubFieldType(e.target.value)} required>
+                                    <select className="form-select form-select-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} value={editSubFieldType} onChange={(e) => setEditSubFieldType(e.target.value)} required>
                                       <option value="text">Short Answer (Text)</option>
                                       <option value="textarea">Paragraph (Textarea)</option>
                                       <option value="dropdown">Dropdown</option>
@@ -1400,11 +1489,11 @@ export default function EventEdit() {
                                     </select>
                                   </div>
                                   <div className="col-sm-6">
-                                    <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Placeholder Hint" value={editSubFieldPlaceholder} onChange={(e) => setEditSubFieldPlaceholder(e.target.value)} />
+                                    <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Placeholder Hint" value={editSubFieldPlaceholder} onChange={(e) => setEditSubFieldPlaceholder(e.target.value)} />
                                   </div>
                                   {(editSubFieldType === 'dropdown' || editSubFieldType === 'checkbox') && (
                                     <div className="col-12">
-                                      <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Options (comma separated: Opt1, Opt2)" value={editSubFieldOptions} onChange={(e) => setEditSubFieldOptions(e.target.value)} required />
+                                      <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Options (comma separated: Opt1, Opt2)" value={editSubFieldOptions} onChange={(e) => setEditSubFieldOptions(e.target.value)} required />
                                     </div>
                                   )}
                                 </div>
@@ -1423,14 +1512,14 @@ export default function EventEdit() {
                               <div className="d-flex justify-content-between align-items-center">
                                 <div>
                                   <span className="badge bg-secondary me-2">{field.type}</span>
-                                  <strong className="text-white">{field.label}</strong>
+                                  <strong style={{color:"#3a2a1a"}}>{field.label}</strong>
                                   {field.required && <span className="text-danger ms-1">*</span>}
                                   {field.options && field.options.length > 0 && (
                                     <div className="small text-muted mt-1">Options: {field.options.join(', ')}</div>
                                   )}
                                 </div>
                                 <div className="d-flex gap-1">
-                                  <button type="button" className="btn btn-outline-warning btn-sm" onClick={() => startEditSubField(field)}>Edit</button>
+                                  <button type="button" className="btn btn-sm" style={{border:"1.5px solid #a67c52",color:"#a67c52",background:"transparent"}} onClick={() => startEditSubField(field)}>Edit</button>
                                   <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteSubField(sub._id, field._id)}>✕</button>
                                 </div>
                               </div>
@@ -1443,14 +1532,14 @@ export default function EventEdit() {
                     </div>
 
                     {/* Add sub field form */}
-                    <form onSubmit={(e) => handleAddSubField(e, sub._id)} className="p-3 border border-secondary rounded bg-dark">
+                    <form onSubmit={(e) => handleAddSubField(e, sub._id)} className="p-3 rounded" style={{border:"1px solid #e0d5c8",background:"#f5ede3"}}>
                       <h5 className="mb-2 text-warning small fw-bold">➕ Add Sub-Event Field</h5>
                       <div className="row g-2 mb-2">
                         <div className="col-12">
-                          <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Field Label (e.g. Github Link, Team Member Names)" value={newSubFieldLabel} onChange={(e) => setNewSubFieldLabel(e.target.value)} required />
+                          <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Field Label (e.g. Github Link, Team Member Names)" value={newSubFieldLabel} onChange={(e) => setNewSubFieldLabel(e.target.value)} required />
                         </div>
                         <div className="col-sm-6">
-                          <select className="form-select form-select-sm bg-dark text-white border-secondary" value={newSubFieldType} onChange={(e) => setNewSubFieldType(e.target.value)} required>
+                          <select className="form-select form-select-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} value={newSubFieldType} onChange={(e) => setNewSubFieldType(e.target.value)} required>
                             <option value="text">Short Answer (Text)</option>
                             <option value="textarea">Paragraph (Textarea)</option>
                             <option value="dropdown">Dropdown</option>
@@ -1461,11 +1550,11 @@ export default function EventEdit() {
                           </select>
                         </div>
                         <div className="col-sm-6">
-                          <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Placeholder Hint" value={newSubFieldPlaceholder} onChange={(e) => setNewSubFieldPlaceholder(e.target.value)} />
+                          <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Placeholder Hint" value={newSubFieldPlaceholder} onChange={(e) => setNewSubFieldPlaceholder(e.target.value)} />
                         </div>
                         {(newSubFieldType === 'dropdown' || newSubFieldType === 'checkbox') && (
                           <div className="col-12">
-                            <input type="text" className="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Options (comma separated: Opt1, Opt2)" value={newSubFieldOptions} onChange={(e) => setNewSubFieldOptions(e.target.value)} required />
+                            <input type="text" className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} placeholder="Options (comma separated: Opt1, Opt2)" value={newSubFieldOptions} onChange={(e) => setNewSubFieldOptions(e.target.value)} required />
                           </div>
                         )}
                       </div>
@@ -1474,7 +1563,7 @@ export default function EventEdit() {
                           <input type="checkbox" checked={newSubFieldRequired} onChange={(e) => setNewSubFieldRequired(e.target.checked)} />
                           Required Field
                         </label>
-                        <button type="submit" className="btn btn-warning btn-sm">Add Field</button>
+                        <button type="submit" className="btn btn-sm" style={{background:"#a67c52",border:"1.5px solid #a67c52",color:"#fff"}}>Add Field</button>
                       </div>
                     </form>
                   </div>
@@ -1484,6 +1573,7 @@ export default function EventEdit() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }
