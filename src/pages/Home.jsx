@@ -236,6 +236,73 @@ export default function Home() {
 
   return (
     <div className="home-wrapper">
+      <style>{`
+        .hero-stats-new {
+          background: rgba(18, 12, 8, 0.70);
+          border: 1.5px solid rgba(166, 124, 82, 0.35);
+          border-radius: 18px;
+          padding: 22px 30px;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          max-width: 820px;
+          margin: 0 auto;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 992px) {
+          .hero-stats-new {
+            grid-template-columns: repeat(2, 1fr);
+            padding: 20px;
+            gap: 16px;
+          }
+          
+          .hero-stat-item-new {
+            border-left: none !important;
+            padding-left: 0 !important;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .hero-stats-new {
+            grid-template-columns: 1fr;
+            padding: 16px;
+            gap: 12px;
+          }
+        }
+
+        .upcoming-events-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+        }
+
+        @media (max-width: 1200px) {
+          .upcoming-events-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .upcoming-events-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+
+        .promo-actions-grid-new {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        @media (max-width: 576px) {
+          .promo-actions-grid-new {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
       {/* HERO SECTION */}
       <section
         className="hs-hero"
@@ -362,22 +429,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div
-            className="hero-stats"
-            style={{
-              background: 'rgba(18, 12, 8, 0.70)',
-              border: '1.5px solid rgba(166, 124, 82, 0.35)',
-              borderRadius: '18px',
-              padding: '22px 30px',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '20px',
-              maxWidth: '820px',
-              margin: '0 auto',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-            }}
-          >
+          <div className="hero-stats-new">
             {/* Stat 1 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left' }}>
               <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
@@ -391,7 +443,7 @@ export default function Home() {
               </div>
             </div>
             {/* Stat 2 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
+            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
               <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
                 <i className="bi bi-calendar-check-fill"></i>
               </div>
@@ -403,7 +455,7 @@ export default function Home() {
               </div>
             </div>
             {/* Stat 3 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
+            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
               <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
                 <i className="bi bi-trophy-fill"></i>
               </div>
@@ -415,7 +467,7 @@ export default function Home() {
               </div>
             </div>
             {/* Stat 4 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
+            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
               <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
                 <i className="bi bi-building"></i>
               </div>
@@ -575,7 +627,7 @@ export default function Home() {
                   <i className="bi bi-plus-circle"></i> {data.promo ? 'Replace Banner' : 'Add New Banner'}
                 </div>
                 <form onSubmit={handlePromoSubmit}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="promo-actions-grid-new">
                     <div className="edit-field-group">
                       <label className="form-label-custom">
                         Pill Label{' '}
@@ -733,7 +785,7 @@ export default function Home() {
           </div>
 
           {data.upcomingEvents && data.upcomingEvents.length > 0 ? (
-            <div className="upcoming-events-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
+            <div className="upcoming-events-grid">
               {data.upcomingEvents.map((evt, idx) => (
                 <div
                   key={evt._id}

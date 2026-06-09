@@ -336,7 +336,10 @@ if (isDummy) {
   if (databaseUrl) {
     pool = new Pool({
       connectionString: databaseUrl,
-      ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false },
+      max: 2,                  // Highly optimized for Serverless functions
+      idleTimeoutMillis: 1000,  // Terminate idle clients quickly
+      connectionTimeoutMillis: 2000 // Return error quickly instead of hanging if pool is full
     });
   }
 }
