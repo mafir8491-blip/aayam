@@ -700,7 +700,7 @@ export default function Home() {
       <section
         className="hs-hero"
         style={{
-          background: `linear-gradient(rgba(18, 12, 8, 0.78), rgba(18, 12, 8, 0.78)), url('/images/committee_hero.jpg') no-repeat center center`,
+          background: `url('/images/committee_hero.jpg') no-repeat center center`,
           backgroundSize: 'cover',
           minHeight: '100vh',
           display: 'flex',
