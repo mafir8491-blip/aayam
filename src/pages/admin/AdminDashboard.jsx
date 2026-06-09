@@ -253,10 +253,10 @@ export default function AdminDashboard() {
   } : null;
 
   return (
-    <div className="d-flex min-vh-100" style={{ background: '#120e0b', color: '#e8d9c5' }}>
+    <div className="d-flex min-vh-100" style={{ background: 'var(--bg-base-theme)', color: 'var(--text-theme)' }}>
       
       {/* SIDEBAR NAVIGATION */}
-      <nav className="sidebar p-3 d-flex flex-column justify-content-between" style={{ width: '260px', background: '#1c1612', borderRight: '1px solid rgba(210,180,140,0.14)', height: '100vh', position: 'sticky', top: 0 }}>
+      <nav className="sidebar p-3 d-flex flex-column justify-content-between" style={{ width: '260px', background: 'var(--bg-surface-theme)', borderRight: '1px solid var(--border-theme)', height: '100vh', position: 'sticky', top: 0 }}>
         <div>
           <div className="d-flex align-items-center gap-2 mb-4 border-bottom pb-3">
             <img src="/images/aayam_img.jpg" alt="AAYAM" className="rounded" style={{ width: '32px', height: '32px', border: '1.5px solid var(--br)' }} />
@@ -276,8 +276,8 @@ export default function AdminDashboard() {
               <li className="nav-item" key={tab.id}>
                 <button
                   onClick={() => handleTabSelect(tab.id)}
-                  className={`nav-link w-100 text-start border-0 py-2 px-3 fw-bold d-flex align-items-center gap-2 ${activeTab === tab.id ? 'bg-warning text-dark' : 'text-white bg-transparent'}`}
-                  style={{ borderRadius: '8px' }}
+                  className={`nav-link w-100 text-start border-0 py-2 px-3 fw-bold d-flex align-items-center gap-2 ${activeTab === tab.id ? 'bg-warning text-dark' : 'bg-transparent'}`}
+                  style={activeTab === tab.id ? { borderRadius: '8px' } : { borderRadius: '8px', color: 'var(--text-muted-theme)' }}
                 >
                   <i className={tab.icon}></i>
                   <span>{tab.label}</span>
@@ -287,9 +287,9 @@ export default function AdminDashboard() {
           </ul>
         </div>
 
-        <div className="border-top pt-3">
+        <div className="border-top pt-3" style={{ borderColor: 'var(--border-theme)' }}>
           <div className="small text-muted mb-2">Logged in as:</div>
-          <div className="small fw-bold text-white mb-2">{user?.email?.split('@')[0]}</div>
+          <div className="small fw-bold mb-2">{user?.email?.split('@')[0]}</div>
           <a href="/logout" className="btn btn-outline-danger btn-sm w-100">
             <i className="bi bi-box-arrow-right"></i> Logout
           </a>
@@ -309,10 +309,10 @@ export default function AdminDashboard() {
               { label: 'Registered Users', count: data.stats.userCount, icon: 'bi-person-check', color: '#2980b9' },
             ].map((stat, idx) => (
               <div className="col-sm-6 col-lg-3" key={idx}>
-                <div className="p-3 d-flex align-items-center justify-content-between" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
+                <div className="p-3 d-flex align-items-center justify-content-between" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
                   <div>
                     <div className="small text-muted">{stat.label}</div>
-                    <div className="h3 fw-bold mb-0 text-white">{stat.count}</div>
+                    <div className="h3 fw-bold mb-0">{stat.count}</div>
                   </div>
                   <i className={`${stat.icon} fs-2`} style={{ color: stat.color }}></i>
                 </div>
@@ -325,8 +325,8 @@ export default function AdminDashboard() {
         {activeTab === 'dashboard' && data && (
           <div className="row g-4">
             <div className="col-lg-8">
-              <div className="p-4 mb-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-graph-up me-2"></i>Registration Overview</h3>
+              <div className="p-4 mb-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-graph-up me-2"></i>Registration Overview</h3>
                 {chartDataConfig && (
                   <div style={{ height: '300px' }}>
                     <Line
@@ -336,8 +336,8 @@ export default function AdminDashboard() {
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
                         scales: {
-                          y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a89070' } },
-                          x: { grid: { display: false }, ticks: { color: '#a89070' } }
+                          y: { grid: { color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }, ticks: { color: document.body.classList.contains('dark-mode') ? '#a89070' : '#8c6a55' } },
+                          x: { grid: { display: false }, ticks: { color: document.body.classList.contains('dark-mode') ? '#a89070' : '#8c6a55' } }
                         }
                       }}
                     />
@@ -346,10 +346,10 @@ export default function AdminDashboard() {
               </div>
 
               {/* Recent Events */}
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-calendar-check me-2"></i>Recent Events Added</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-calendar-check me-2"></i>Recent Events Added</h3>
                 <div className="table-responsive">
-                  <table className="table table-dark table-striped small">
+                  <table className="table table-striped small">
                     <thead>
                       <tr>
                         <th>Title</th>
@@ -378,13 +378,13 @@ export default function AdminDashboard() {
             </div>
 
             <div className="col-lg-4">
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px', minHeight: '100%' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-chat-left-dots-fill me-2"></i>Recent Messages</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px', minHeight: '100%' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-chat-left-dots-fill me-2"></i>Recent Messages</h3>
                 <div className="d-flex flex-column gap-3">
                   {data.recentMessages.map((msg) => (
                     <div key={msg._id} className="p-2 border-bottom border-secondary">
                       <div className="d-flex justify-content-between align-items-center mb-1">
-                        <strong className="text-white">{msg.name}</strong>
+                        <strong>{msg.name}</strong>
                         <span className="small text-muted">{msg.purpose}</span>
                       </div>
                       <p className="small text-muted mb-0 text-truncate">{msg.message}</p>
@@ -401,10 +401,10 @@ export default function AdminDashboard() {
 
         {/* 2. EVENTS TAB PANEL */}
         {activeTab === 'events' && data && (
-          <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-            <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-calendar2-week me-2"></i>Events Management</h3>
+          <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+            <h3 className="h5 fw-bold mb-3"><i className="bi bi-calendar2-week me-2"></i>Events Management</h3>
             <div className="table-responsive">
-              <table className="table table-dark table-striped small align-middle">
+              <table className="table table-striped small align-middle">
                 <thead>
                   <tr>
                     <th>Title</th>
@@ -473,8 +473,8 @@ export default function AdminDashboard() {
 
         {/* 3. TEAMS TAB PANEL */}
         {activeTab === 'teams' && data && (
-          <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-            <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-people-fill me-2"></i>Teams &amp; Members Sections</h3>
+          <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+            <h3 className="h5 fw-bold mb-3"><i className="bi bi-people-fill me-2"></i>Teams &amp; Members Sections</h3>
             <p className="small text-muted mb-4">Admins can add/delete member listings directly inside the public <Link to="/team" className="text-warning fw-bold text-decoration-none">Team Page</Link>.</p>
           </div>
         )}
@@ -483,20 +483,20 @@ export default function AdminDashboard() {
         {activeTab === 'gallery' && data && (
           <div className="row g-4">
             <div className="col-lg-6">
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-images me-2"></i>Gallery Promo Uploads</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-images me-2"></i>Gallery Promo Uploads</h3>
                 <p className="small text-muted mb-4">You can manage and add general gallery items directly in the <Link to="/" className="text-warning fw-bold text-decoration-none">Home Page</Link> view form panels.</p>
               </div>
             </div>
 
             <div className="col-lg-6">
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-megaphone-fill me-2"></i>Active Promos History</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-megaphone-fill me-2"></i>Active Promos History</h3>
                 <div className="d-flex flex-column gap-3">
                   {data.promos.map((pr) => (
                     <div key={pr._id} className="p-2 border rounded border-secondary bg-dark">
                       <div className="d-flex justify-content-between align-items-center mb-1">
-                        <strong className="text-white">{pr.title}</strong>
+                        <strong>{pr.title}</strong>
                         <span className={`badge ${pr.isActive ? 'bg-success' : 'bg-secondary'}`}>{pr.isActive ? 'Live' : 'Hidden'}</span>
                       </div>
                       <p className="small text-muted mb-0">{pr.description}</p>
@@ -510,10 +510,10 @@ export default function AdminDashboard() {
 
         {/* 5. MESSAGES PANEL */}
         {activeTab === 'messages' && data && (
-          <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-            <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-envelope-paper-fill me-2"></i>Inquiries Box</h3>
+          <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+            <h3 className="h5 fw-bold mb-3"><i className="bi bi-envelope-paper-fill me-2"></i>Inquiries Box</h3>
             <div className="table-responsive">
-              <table className="table table-dark table-striped small align-middle">
+              <table className="table table-striped small align-middle">
                 <thead>
                   <tr>
                     <th>Sender</th>
@@ -526,7 +526,7 @@ export default function AdminDashboard() {
                 <tbody>
                   {data.messages.map((msg) => (
                     <tr key={msg._id} style={{ opacity: msg.isRead ? 0.75 : 1 }}>
-                      <td><strong className="text-white">{msg.name}</strong></td>
+                      <td><strong>{msg.name}</strong></td>
                       <td>
                         <div className="small text-muted">{msg.email}</div>
                         <div className="small text-muted">{msg.contact || 'No phone'}</div>
@@ -567,10 +567,10 @@ export default function AdminDashboard() {
 
         {/* 6. USERS LIST PANEL */}
         {activeTab === 'users' && data && (
-          <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-            <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-person-badge-fill me-2"></i>Users List</h3>
+          <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+            <h3 className="h5 fw-bold mb-3"><i className="bi bi-person-badge-fill me-2"></i>Users List</h3>
             <div className="table-responsive">
-              <table className="table table-dark table-striped small">
+              <table className="table table-striped small">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -604,8 +604,8 @@ export default function AdminDashboard() {
             
             {/* Update profile form */}
             <div className="col-lg-6">
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-shield-lock-fill me-2"></i>Update Admin Security Credentials</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-shield-lock-fill me-2"></i>Update Admin Security Credentials</h3>
                 <form onSubmit={handleProfileUpdate}>
                   <div className="mb-3">
                     <label className="form-label-custom">Email Address</label>
@@ -658,8 +658,8 @@ export default function AdminDashboard() {
             <div className="col-lg-6 d-flex flex-column gap-4">
               
               {/* Invite new admin */}
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-person-plus-fill me-2"></i>Invite / Upgrade Admin</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-person-plus-fill me-2"></i>Invite / Upgrade Admin</h3>
                 <form onSubmit={handleInviteAdmin}>
                   <div className="mb-3">
                     <input
@@ -688,13 +688,13 @@ export default function AdminDashboard() {
               </div>
 
               {/* List of Admins */}
-              <div className="p-4" style={{ background: '#1c1612', border: '1px solid rgba(210,180,140,0.14)', borderRadius: '12px' }}>
-                <h3 className="h5 fw-bold text-white mb-3"><i className="bi bi-people-fill me-2"></i>Administrator Board</h3>
+              <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+                <h3 className="h5 fw-bold mb-3"><i className="bi bi-people-fill me-2"></i>Administrator Board</h3>
                 <div className="d-flex flex-column gap-2">
                   {data.admins.map((adm) => (
                     <div key={adm._id} className="d-flex justify-content-between align-items-center p-2 border-bottom border-secondary">
                       <div>
-                        <div className="small fw-bold text-white">
+                        <div className="small fw-bold">
                           {adm.email}
                           <span className="badge bg-secondary ms-2 small" style={{ fontSize: '0.65rem' }}>{adm.role}</span>
                         </div>

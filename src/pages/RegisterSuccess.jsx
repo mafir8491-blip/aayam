@@ -87,7 +87,7 @@ export default function RegisterSuccess() {
             {isAlready ? 'Duplicate Submission' : 'Registration Complete'}
           </div>
           <h1
-            className="mb-3 text-white"
+            className="mb-3"
             style={{
               fontFamily: 'var(--font-display, serif)',
               fontSize: 'clamp(1.8rem, 5vw, 2.6rem)',
@@ -104,7 +104,7 @@ export default function RegisterSuccess() {
               </span>
             ) : (
               <span>
-                Your registration for <strong className="text-white">{subEvent.title}</strong> has been received successfully. It will be reviewed shortly, if anything goes wrong we will inform you.
+                Your registration for <strong className="fw-bold">{subEvent.title}</strong> has been received successfully. It will be reviewed shortly, if anything goes wrong we will inform you.
               </span>
             )}
           </p>
@@ -114,8 +114,8 @@ export default function RegisterSuccess() {
         <div
           className="p-4 mb-4 text-start"
           style={{
-            background: 'rgba(30, 21, 14, 0.45)',
-            border: '1px solid rgba(166, 124, 82, 0.15)',
+            background: 'var(--bg-surface-theme)',
+            border: '1px solid var(--border-theme)',
             borderRadius: '12px',
             position: 'relative',
           }}
@@ -138,21 +138,21 @@ export default function RegisterSuccess() {
           </div>
 
           {subEvent.eventId && (
-            <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
               <span className="small text-muted fw-semibold">Event</span>
-              <span className="small text-white fw-bold text-end" style={{ maxWidth: '60%' }}>{subEvent.eventId.title}</span>
+              <span className="small fw-bold text-end" style={{ maxWidth: '60%' }}>{subEvent.eventId.title}</span>
             </div>
           )}
 
-          <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
             <span className="small text-muted fw-semibold">Session</span>
-            <span className="small text-white fw-bold text-end" style={{ maxWidth: '60%' }}>{subEvent.title}</span>
+            <span className="small fw-bold text-end" style={{ maxWidth: '60%' }}>{subEvent.title}</span>
           </div>
 
           {(subEvent.dayNumber || subEvent.startTime) && (
-            <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="d-flex justify-content-between align-items-center py-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
               <span className="small text-muted fw-semibold">Schedule</span>
-              <span className="small text-white fw-bold">
+              <span className="small fw-bold">
                 {subEvent.dayNumber && `Day ${subEvent.dayNumber}`}
                 {subEvent.startTime && ` · ${subEvent.startTime} ${subEvent.endTime ? `– ${subEvent.endTime}` : ''}`}
               </span>

@@ -112,7 +112,7 @@ export default function EventSubEvents() {
                 type="button"
                 className="btn btn-outline-secondary d-flex align-items-center gap-2"
                 onClick={() => setActiveModalCard(card)}
-                style={{ borderColor: 'var(--br)', color: 'var(--br)', background: 'rgba(30, 21, 14, 0.45)', borderRadius: '20px', padding: '8px 18px' }}
+                style={{ borderColor: 'var(--border-theme)', color: 'var(--text-theme)', background: 'var(--bg-surface-theme)', borderRadius: '20px', padding: '8px 18px' }}
               >
                 <i className="bi bi-calendar-week"></i>
                 {card.heading}
@@ -132,13 +132,13 @@ export default function EventSubEvents() {
           onClick={() => setActiveModalCard(null)}
         >
           <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-content text-white" style={{ background: '#1c1510', border: '1px solid var(--br)' }}>
+            <div className="modal-content" style={{ background: 'var(--bg-surface-theme)', color: 'var(--text-theme)', border: '1px solid var(--border-theme)' }}>
               <div className="modal-header border-0">
                 <h5 className="modal-title fw-bold" style={{ color: 'var(--br)' }}>
                   <i className="bi bi-calendar-week me-2"></i>
                   {activeModalCard.heading}
                 </h5>
-                <button type="button" className="btn-close btn-close-white" onClick={() => setActiveModalCard(null)}></button>
+                <button type="button" className="btn-close" onClick={() => setActiveModalCard(null)}></button>
               </div>
               <div className="modal-body">
                 {activeModalCard.body && (
@@ -146,7 +146,7 @@ export default function EventSubEvents() {
                 )}
                 {activeModalCard.tableData && activeModalCard.tableData.columns && activeModalCard.tableData.columns.length > 0 && (
                   <div className="table-responsive">
-                    <table className="table table-bordered table-dark small">
+                    <table className="table table-bordered small">
                       <thead>
                         <tr>
                           {activeModalCard.tableData.columns.map((col, idx) => (
@@ -174,7 +174,7 @@ export default function EventSubEvents() {
 
       {/* External Registration Link Info */}
       {event.registrationLink && event.registrationLink.trim() !== '' && (
-        <div className="d-flex align-items-center justify-content-between p-3 mb-4 flex-wrap gap-2" style={{ background: 'rgba(166,124,82,0.06)', border: '1px solid rgba(166,124,82,0.2)', borderRadius: '8px' }}>
+        <div className="d-flex align-items-center justify-content-between p-3 mb-4 flex-wrap gap-2" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '8px' }}>
           <div className="small fw-semibold text-muted">
             <i className="bi bi-link-45deg me-1" style={{ color: 'var(--br)' }}></i> External registration is also open
           </div>
@@ -183,7 +183,7 @@ export default function EventSubEvents() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-outline-secondary btn-sm"
-            style={{ borderColor: 'var(--br)', color: 'var(--br)' }}
+            style={{ borderColor: 'var(--border-theme)', color: 'var(--text-theme)' }}
           >
             Open Form <i class="bi bi-box-arrow-up-right ms-1"></i>
           </a>
@@ -192,7 +192,7 @@ export default function EventSubEvents() {
 
       {/* Sub-events tracks listing */}
       {!subEvents || subEvents.length === 0 ? (
-        <div className="text-center p-5 rounded border border-dashed text-muted" style={{ background: 'rgba(166,124,82,0.04)', borderColor: 'var(--br)' }}>
+        <div className="text-center p-5 rounded border border-dashed text-muted" style={{ background: 'var(--bg-surface-theme)', borderColor: 'var(--border-theme)' }}>
           <div className="fs-1 mb-2">📅</div>
           <p className="mb-0">No sessions available yet. Check back soon!</p>
         </div>
@@ -208,7 +208,7 @@ export default function EventSubEvents() {
                     <span> · {new Date(group.subEvents[0].eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
                   )}
                 </span>
-                <div style={{ flex: 1, height: '1px', background: 'var(--border-l)' }}></div>
+                <div style={{ flex: 1, height: '1px', background: 'var(--border-theme)' }}></div>
               </div>
             )}
 
@@ -225,15 +225,15 @@ export default function EventSubEvents() {
                     key={sub._id}
                     className="p-3"
                     style={{
-                      background: 'rgba(30, 21, 14, 0.45)',
-                      border: '1px solid rgba(166, 124, 82, 0.15)',
+                      background: 'var(--bg-surface-theme)',
+                      border: '1px solid var(--border-theme)',
                       borderRadius: '12px',
                       opacity: (isFull || isClosed) ? 0.75 : 1,
                     }}
                   >
                     <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
                       <div className="flex-fill">
-                        <div className="h5 fw-bold text-white mb-2 d-flex align-items-center flex-wrap gap-2">
+                        <div className="h5 fw-bold mb-2 d-flex align-items-center flex-wrap gap-2">
                           {sub.title}
                           {isFull && <span className="badge bg-danger small" style={{ fontSize: '0.65rem' }}>FULL</span>}
                           {isClosed && <span className="badge bg-secondary small" style={{ fontSize: '0.65rem' }}>CLOSED</span>}
@@ -325,7 +325,7 @@ export default function EventSubEvents() {
                     {/* Capacity visual bar */}
                     {sub.maxParticipants && (
                       <div className="mt-3">
-                        <div className="progress" style={{ height: '6px', background: 'rgba(255,255,255,0.08)' }}>
+                        <div className="progress" style={{ height: '6px', background: 'var(--bg-base-theme)' }}>
                           <div
                             className="progress-bar"
                             role="progressbar"
@@ -343,7 +343,7 @@ export default function EventSubEvents() {
 
                     {/* Sub-event Poster slide check */}
                     {sub.posterImage && (
-                      <div className="mt-3 text-center border-top pt-3" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                      <div className="mt-3 text-center border-top pt-3" style={{ borderColor: 'var(--border-theme)' }}>
                         <img
                           src={sub.posterImage}
                           alt={`${sub.title} Poster`}

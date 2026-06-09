@@ -95,6 +95,22 @@ export default function Events() {
     }
   };
 
+  const handleStatusChange = async (evtId, newStatus) => {
+    try {
+      const res = await fetch(`/api/events/change-status/${evtId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: newStatus }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to change status');
+      alert('Event status updated!');
+      fetchData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     fetchUser();
@@ -214,8 +230,8 @@ export default function Events() {
 
       {/* Admin form unified block */}
       {isAdmin && (
-        <details className="admin-add-form mb-5 p-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px dashed var(--br)', borderRadius: '12px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--br)' }}>
+        <details className="admin-add-form mb-5" data-aos="fade-up">
+          <summary style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--br)', listStyle: 'none', outline: 'none', padding: '4px 0' }}>
             ➕ Add New Event
           </summary>
           <form onSubmit={handleAddEventSubmit} className="mt-4">
@@ -392,80 +408,65 @@ export default function Events() {
       )}
 
       {/* Status Selection Boxes */}
-      <div className="status-selection-container d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+      <div className="status-selection-container" data-aos="fade-up">
         <div
-          className={`status-box flex-fill p-3 d-flex align-items-center justify-content-between cursor-pointer ${selectedStatus === 'upcoming' ? 'active' : ''}`}
+          className={`status-box ${selectedStatus === 'upcoming' ? 'active' : ''}`}
+          id="box-upcoming"
           onClick={() => {
             setSelectedStatus('upcoming');
             setSelectedCategory('all');
           }}
-          style={{
-            background: 'rgba(30, 21, 14, 0.45)',
-            border: selectedStatus === 'upcoming' ? '2px solid var(--br)' : '1px solid rgba(166, 124, 82, 0.15)',
-            borderRadius: '12px',
-            cursor: 'pointer',
-          }}
         >
-          <div className="d-flex align-items-center gap-3">
-            <div className="status-box-icon" style={{ fontSize: '1.8rem', color: 'var(--br)' }}>
-              <i className="bi bi-calendar2-week"></i>
-            </div>
-            <div>
-              <h3 className="status-box-title h5 mb-0" style={{ color: '#fff' }}>Upcoming Events</h3>
-              <p className="status-box-count mb-0 text-muted">{(data.upcomingEvents || []).length} Events</p>
-            </div>
+          <div className="status-box-icon">
+            <i className="bi bi-calendar2-week"></i>
           </div>
-          <i className="bi bi-chevron-right text-muted"></i>
+          <div className="status-box-content">
+            <h3 className="status-box-title">Upcoming Events</h3>
+            <p className="status-box-count">{(data.upcomingEvents || []).length} Events</p>
+          </div>
+          <div className="status-box-arrow">
+            <i className="bi bi-chevron-right"></i>
+          </div>
         </div>
 
         <div
-          className={`status-box flex-fill p-3 d-flex align-items-center justify-content-between cursor-pointer ${selectedStatus === 'live' ? 'active' : ''}`}
+          className={`status-box ${selectedStatus === 'live' ? 'active' : ''}`}
+          id="box-live"
           onClick={() => {
             setSelectedStatus('live');
             setSelectedCategory('all');
           }}
-          style={{
-            background: 'rgba(30, 21, 14, 0.45)',
-            border: selectedStatus === 'live' ? '2px solid var(--br)' : '1px solid rgba(166, 124, 82, 0.15)',
-            borderRadius: '12px',
-            cursor: 'pointer',
-          }}
         >
-          <div className="d-flex align-items-center gap-3">
-            <div className="status-box-icon live-pulse-icon" style={{ fontSize: '1.8rem', color: 'var(--br)' }}>
-              <i className="bi bi-play-circle-fill"></i>
-            </div>
-            <div>
-              <h3 className="status-box-title h5 mb-0" style={{ color: '#fff' }}>Live Events</h3>
-              <p className="status-box-count mb-0 text-muted">{(data.liveEvents || []).length} Events</p>
-            </div>
+          <div className="status-box-icon live-pulse-icon">
+            <i className="bi bi-play-circle-fill"></i>
           </div>
-          <i className="bi bi-chevron-right text-muted"></i>
+          <div className="status-box-content">
+            <h3 className="status-box-title">Live Events</h3>
+            <p className="status-box-count">{(data.liveEvents || []).length} Events</p>
+          </div>
+          <div className="status-box-arrow">
+            <i className="bi bi-chevron-right"></i>
+          </div>
         </div>
 
         <div
-          className={`status-box flex-fill p-3 d-flex align-items-center justify-content-between cursor-pointer ${selectedStatus === 'past' ? 'active' : ''}`}
+          className={`status-box ${selectedStatus === 'past' ? 'active' : ''}`}
+          id="box-past"
           onClick={() => {
             setSelectedStatus('past');
             setSelectedCategory('all');
           }}
-          style={{
-            background: 'rgba(30, 21, 14, 0.45)',
-            border: selectedStatus === 'past' ? '2px solid var(--br)' : '1px solid rgba(166, 124, 82, 0.15)',
-            borderRadius: '12px',
-            cursor: 'pointer',
-          }}
         >
-          <div className="d-flex align-items-center gap-3">
-            <div className="status-box-icon" style={{ fontSize: '1.8rem', color: 'var(--br)' }}>
-              <i className="bi bi-check-circle-fill"></i>
-            </div>
-            <div>
-              <h3 className="status-box-title h5 mb-0" style={{ color: '#fff' }}>Past Events</h3>
-              <p className="status-box-count mb-0 text-muted">{(data.pastEvents || []).length} Events</p>
-            </div>
+          <div className="status-box-icon">
+            <i className="bi bi-check-circle-fill"></i>
           </div>
-          <i className="bi bi-chevron-right text-muted"></i>
+          <div className="status-box-content">
+            <h3 className="status-box-title">Past Events</h3>
+            <p className="status-box-count">{(data.pastEvents || []).length} Events</p>
+          </div>
+          <div className="status-box-arrow">
+            <i className="bi bi-chevron-right"></i>
+          </div>
         </div>
       </div>
 
@@ -477,15 +478,6 @@ export default function Events() {
               key={cat}
               className={`filter-tab ${selectedCategory === cat ? 'active' : ''}`}
               onClick={() => setSelectedCategory(cat)}
-              style={{
-                background: selectedCategory === cat ? 'var(--br)' : 'rgba(30,21,14,0.45)',
-                color: selectedCategory === cat ? '#000' : 'var(--tx)',
-                border: '1px solid var(--br)',
-                borderRadius: '6px',
-                padding: '6px 16px',
-                fontSize: '0.88rem',
-                fontWeight: 600,
-              }}
             >
               {cat === 'all' ? 'All Categories' : cat}
             </button>
@@ -500,56 +492,45 @@ export default function Events() {
             displayedEvents.map((evt) => (
               <div className="col-xl-3 col-lg-4 col-md-6 d-flex" key={evt._id}>
                 <div className="grid-event-card flex-fill d-flex flex-column">
-                  <Link to={`/events/${evt._id}`} className="card-img-wrap" style={{ position: 'relative', display: 'block', height: '180px', overflow: 'hidden' }}>
+                  <Link to={`/events/${evt._id}`} className="card-img-wrap">
                     {evt.bannerImage ? (
                       <img
                         src={evt.bannerImage}
                         className="card-img"
                         alt={evt.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     ) : (
-                      <div className="card-img-placeholder d-flex align-items-center justify-content-center h-100 text-muted bg-dark">
-                        <i className="bi bi-calendar-event" style={{ fontSize: '2rem' }}></i>
+                      <div className="card-img-placeholder">
+                        <i className="bi bi-calendar-event"></i>
                       </div>
                     )}
-                    <span
-                      className="position-absolute bottom-2 start-2 badge"
-                      style={{
-                        bottom: '12px',
-                        left: '12px',
-                        background: 'var(--br)',
-                        color: '#120c08',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      {evt.category || 'Event'}
-                    </span>
                   </Link>
 
-                  <div className="card-body-wrap p-4 d-flex flex-column flex-fill">
-                    <h3 className="h5 fw-bold mb-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'between', gap: '8px', color: '#fff' }}>
-                      <Link to={`/events/${evt._id}`} style={{ textDecoration: 'none', color: '#fff' }}>{evt.title}</Link>
+                  <div className="card-body-wrap">
+                    <span className="category-badge">{evt.category || 'Event'}</span>
+                    <h3 className="card-title">
+                      <Link to={`/events/${evt._id}`}>{evt.title}</Link>
                       {!evt.isPublic && isAdmin && (
-                        <span className="badge bg-warning text-dark" style={{ fontSize: '0.65rem' }}>🔒 Private</span>
+                        <span className="badge-private">🔒 Private</span>
                       )}
                     </h3>
-                    <p className="text-muted small flex-fill mb-3">{evt.shortDescription || ''}</p>
-
-                    <div className="d-flex align-items-center gap-2 mb-3 text-muted small">
-                      <i className="bi bi-calendar3 text-warning"></i>
-                      <span>
-                        {new Date(evt.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </span>
+                    <div className="card-info-row">
+                      <div className="info-item">
+                        <i className="bi bi-calendar3 info-icon"></i>
+                        <span>
+                          {new Date(evt.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <i className="bi bi-geo-alt-fill info-icon"></i>
+                        <span>{evt.location || 'SVNIT Surat'}</span>
+                      </div>
                     </div>
+                    <p className="ev-desc-summary">{evt.shortDescription || ''}</p>
 
-                    <div className="d-flex gap-2 mt-auto">
+                    <div className="card-action-btns">
                       <Link to={`/events/${evt._id}`} className="btn-details-custom">
-                        View Details &rarr;
+                        View Details <i className="bi bi-arrow-right"></i>
                       </Link>
                       {evt.isPublic && (
                         evt.hasMainForm && evt.mainFormSubId ? (
@@ -569,27 +550,44 @@ export default function Events() {
                     </div>
 
                     {isAdmin && (
-                      <div className="card-admin-row">
-                        <Link to={`/events/edit/${evt._id}`} className="btn-admin-action">
+                      <div className="card-admin-row" style={{ flexWrap: 'wrap', gap: '8px' }}>
+                        <div style={{ display: 'flex', width: '100%', gap: '4px', marginBottom: '6px', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--tx-muted)', marginRight: '4px' }}>Status:</span>
+                          <select
+                            value={evt.type}
+                            onChange={(e) => handleStatusChange(evt._id, e.target.value)}
+                            className="form-control-custom"
+                            style={{
+                              fontSize: '0.75rem',
+                              padding: '4px 8px',
+                              height: 'auto',
+                              borderRadius: '4px',
+                              border: '1.5px solid var(--br)',
+                              background: 'transparent',
+                              color: 'var(--text-theme)',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <option value="upcoming">Upcoming</option>
+                            <option value="live">Live</option>
+                            <option value="past">Past</option>
+                          </select>
+                        </div>
+                        <Link to={`/events/edit/${evt._id}`} className="btn-admin-action" style={{ flex: 1, textDecoration: 'none' }}>
                           ✏ Edit
                         </Link>
                         <button
                           onClick={() => handleToggleVisibility(evt._id)}
                           className="btn-admin-action btn-warn"
+                          style={{ flex: 1 }}
                         >
-                          {evt.isPublic ? '🔒 Make Private' : '🌐 Make Public'}
+                          {evt.isPublic ? '🔒 Private' : '🌐 Public'}
                         </button>
-                        {evt.type !== 'past' && (
-                          <button
-                            onClick={() => handleMoveToPast(evt._id)}
-                            className="btn-admin-action"
-                          >
-                            ⏳ Move to Past
-                          </button>
-                        )}
                         <button
                           onClick={() => handleDeleteEvent(evt._id)}
                           className="btn-admin-action btn-danger"
+                          style={{ flex: 1 }}
                         >
                           ✕ Delete
                         </button>

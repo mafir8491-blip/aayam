@@ -264,7 +264,7 @@ export default function Register() {
       {/* Header */}
       <div className="page-header text-center mb-5">
         <div className="section-label">{subEvent.eventId ? subEvent.eventId.title : 'Event Registration'}</div>
-        <h1 className="page-title text-white" style={{ fontFamily: "var(--font-display, serif)", color: 'var(--br)' }}>{subEvent.title}</h1>
+        <h1 className="page-title" style={{ fontFamily: "var(--font-display, serif)", color: 'var(--br)' }}>{subEvent.title}</h1>
         {subEvent.description && <p className="page-subtitle text-muted mt-2">{subEvent.description}</p>}
 
         {(subEvent.startTime || subEvent.eventDate) && (
@@ -289,12 +289,12 @@ export default function Register() {
 
         {/* Capacity status block */}
         {subEvent.maxParticipants && (
-          <div className="p-3 mb-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166, 124, 82, 0.15)', borderRadius: '8px' }}>
+          <div className="p-3 mb-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '8px' }}>
             <div className="d-flex justify-content-between mb-2">
               <span className="small text-muted">Spots filled</span>
               <span className="small fw-bold" style={{ color: 'var(--br)' }}>{subEvent.registrationCount}/{subEvent.maxParticipants}</span>
             </div>
-            <div className="progress" style={{ height: '6px', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="progress" style={{ height: '6px', background: 'var(--bg-base-theme)' }}>
               <div
                 className="progress-bar"
                 style={{
@@ -309,13 +309,13 @@ export default function Register() {
 
         {/* Media Block (Poster & QR) */}
         {(hasPoster || hasQR) && (
-          <div className="p-4 mb-4 text-center" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.15)', borderRadius: '12px' }}>
+          <div className="p-4 mb-4 text-center" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
             {hasPoster && (
               <div className="mb-4">
                 <img
                   src={subEvent.posterImage}
                   alt={`${subEvent.title} Poster`}
-                  style={{ maxWidth: '400px', width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ maxWidth: '400px', width: '100%', borderRadius: '8px', border: '1px solid var(--border-theme)' }}
                 />
               </div>
             )}
@@ -332,10 +332,10 @@ export default function Register() {
         )}
 
         {!isFull ? (
-          <div className="p-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166, 124, 82, 0.25)', borderRadius: '12px' }}>
+          <div className="p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
             <form onSubmit={handleSubmit}>
               {/* Leader/Participant Contact Details */}
-              <div className="p-3 mb-4 rounded" style={{ background: 'rgba(166, 124, 82, 0.05)', border: '1px solid rgba(166, 124, 82, 0.16)' }}>
+              <div className="p-3 mb-4 rounded" style={{ background: 'var(--bg-base-theme)', border: '1px solid var(--border-theme)' }}>
                 <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'var(--br)', marginBottom: '14px' }}>
                   <i className="bi bi-person-fill me-1"></i>
                   {subEvent.enableTeamMembers ? 'Team Leader Details' : 'Participant Details'}
@@ -357,7 +357,7 @@ export default function Register() {
                   <label className="form-label-custom">Email Address <span className="text-danger">*</span></label>
                   <input
                     type="email"
-                    className="form-control-custom bg-dark text-muted"
+                    className="form-control-custom text-muted"
                     value={participantEmail}
                     readOnly
                     placeholder="you@example.com"
@@ -445,7 +445,7 @@ export default function Register() {
                                 onChange={(e) => handleCheckboxChange(field._id, opt, e.target.checked)}
                                 style={{ accentColor: 'var(--br)' }}
                               />
-                              <span className="small text-white">{opt}</span>
+                              <span className="small">{opt}</span>
                             </label>
                           ))}
                         </div>
@@ -467,7 +467,7 @@ export default function Register() {
                             required={field.required}
                           />
                           {responses[field._id] && (
-                            <div className="small text-white mt-2 fw-semibold">
+                            <div className="small mt-2 fw-semibold" style={{ color: 'var(--br)' }}>
                               Selected: {responses[field._id].name}
                             </div>
                           )}
@@ -510,7 +510,7 @@ export default function Register() {
 
                   <div className="d-flex flex-column gap-3">
                     {members.map((member, idx) => (
-                      <div key={idx} className="border p-3 rounded" style={{ background: 'rgba(255,255,255,0.02)', borderColor: 'rgba(166,124,82,0.2)' }}>
+                      <div key={idx} className="border p-3 rounded" style={{ background: 'var(--bg-base-theme)', borderColor: 'var(--border-theme)' }}>
                         <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
                           <span className="fw-bold text-uppercase" style={{ fontSize: '0.75rem', color: 'var(--br)', letterSpacing: '1px' }}>
                             Member {idx + 1}
@@ -646,8 +646,8 @@ export default function Register() {
                     />
                     {paymentPreview && (
                       <div className="mt-3">
-                        <img src={paymentPreview} alt="Receipt Preview" style={{ maxHeight: '160px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
-                        <div className="small text-white mt-2 fw-semibold">{paymentScreenshot?.name}</div>
+                        <img src={paymentPreview} alt="Receipt Preview" style={{ maxHeight: '160px', borderRadius: '8px', border: '1px solid var(--border-theme)' }} />
+                        <div className="small mt-2 fw-semibold">{paymentScreenshot?.name}</div>
                       </div>
                     )}
                   </div>

@@ -168,7 +168,7 @@ export default function Team() {
               {section.members && section.members.length > 0 ? (
                 section.members.map((member, mi) => (
                   <div className="col-xl-2 col-lg-3 col-md-4 col-6 text-center" key={member._id}>
-                    <div className="team-member-card p-3" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.15)', borderRadius: '12px' }}>
+                    <div className="team-member-card p-3" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
                       <div className="team-member-img-wrap mb-3 mx-auto" style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden' }}>
                         <img
                           src={member.image}
@@ -177,7 +177,7 @@ export default function Team() {
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </div>
-                      <p className="team-member-name fw-bold mb-1" style={{ color: '#fff' }}>{member.name}</p>
+                      <p className="team-member-name fw-bold mb-1">{member.name}</p>
                       {member.position && (
                         <p className="team-member-position text-muted small mb-0">{member.position}</p>
                       )}
@@ -246,8 +246,8 @@ export default function Team() {
       })}
 
       {isAdmin && (
-        <div className="text-center mt-5 pt-4 border-top" style={{ borderColor: 'var(--border-l)' }}>
-          <h4 className="mb-3" style={{ color: '#fff' }}>Add New Team Section</h4>
+        <div className="text-center mt-5 pt-4 border-top" style={{ borderColor: 'var(--border-theme)' }}>
+          <h4 className="mb-3">Add New Team Section</h4>
           <form onSubmit={handleAddSection} className="d-inline-flex gap-2 align-items-center justify-content-center flex-wrap">
             <input
               type="text"

@@ -338,8 +338,8 @@ export default function EventDetail() {
     <div className="container py-5">
       {/* Admin action bar */}
       {isAdmin && (
-        <div className="admin-action-bar p-3 mb-4 d-flex align-items-center gap-3 flex-wrap" style={{ background: 'rgba(30, 21, 14, 0.65)', border: '1px solid var(--br)', borderRadius: '12px' }}>
-          <Link to={`/events/edit/${event._id}`} className="btn btn-outline-warning btn-sm d-flex align-items-center gap-2" style={{ textDecoration: 'none', borderColor: 'var(--br)', color: 'var(--br)', padding: '8px 16px', borderRadius: '8px', fontSize: '0.88rem', fontWeight: 600 }}>
+        <div className="admin-action-bar p-3 mb-4 d-flex align-items-center gap-3 flex-wrap" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
+          <Link to={`/events/edit/${event._id}`} className="btn btn-outline-warning btn-sm d-flex align-items-center gap-2" style={{ textDecoration: 'none', borderColor: 'var(--border-theme)', color: 'var(--text-theme)', padding: '8px 16px', borderRadius: '8px', fontSize: '0.88rem', fontWeight: 600 }}>
             <i className="bi bi-pencil-square"></i> Edit Event
           </Link>
           <button
@@ -477,7 +477,7 @@ export default function EventDetail() {
                   type="button"
                   className="btn btn-outline-secondary d-flex align-items-center gap-2"
                   onClick={() => setActiveModalCard(card)}
-                  style={{ borderColor: 'var(--br)', color: 'var(--br)', background: 'rgba(30, 21, 14, 0.45)' }}
+                  style={{ borderColor: 'var(--border-theme)', color: 'var(--text-theme)', background: 'var(--bg-surface-theme)' }}
                 >
                   <i className="bi bi-calendar-week"></i>
                   {card.heading}
@@ -497,13 +497,13 @@ export default function EventDetail() {
             onClick={() => setActiveModalCard(null)}
           >
             <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-content text-white" style={{ background: '#1c1510', border: '1px solid var(--br)' }}>
+              <div className="modal-content" style={{ background: 'var(--bg-surface-theme)', color: 'var(--text-theme)', border: '1px solid var(--border-theme)' }}>
                 <div className="modal-header border-0">
                   <h5 className="modal-title fw-bold" style={{ color: 'var(--br)' }}>
                     <i className="bi bi-calendar2-week me-2"></i>
                     {activeModalCard.heading}
                   </h5>
-                  <button type="button" className="btn-close btn-close-white" onClick={() => setActiveModalCard(null)}></button>
+                  <button type="button" className="btn-close" onClick={() => setActiveModalCard(null)}></button>
                 </div>
                 <div className="modal-body">
                   {activeModalCard.body && (
@@ -511,7 +511,7 @@ export default function EventDetail() {
                   )}
                   {activeModalCard.tableData && activeModalCard.tableData.columns && activeModalCard.tableData.columns.length > 0 && (
                     <div className="table-responsive">
-                      <table className="table table-bordered table-dark small">
+                      <table className="table table-bordered small">
                         <thead>
                           <tr>
                             {activeModalCard.tableData.columns.map((col, idx) => (
@@ -546,9 +546,9 @@ export default function EventDetail() {
                 event.documents.map((doc, idx) => {
                   if (doc.isPublic || isAdmin) {
                     return (
-                      <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                      <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
                         <div>
-                          <div className="fw-semibold text-white">{doc.title}</div>
+                          <div className="fw-semibold">{doc.title}</div>
                           {!doc.isPublic && isAdmin && (
                             <span className="badge bg-warning text-dark text-uppercase" style={{ fontSize: '0.65rem' }}>Admin Only</span>
                           )}
@@ -559,7 +559,7 @@ export default function EventDetail() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-outline-secondary btn-sm"
-                            style={{ borderColor: 'var(--br)', color: 'var(--br)' }}
+                            style={{ borderColor: 'var(--border-theme)', color: 'var(--text-theme)' }}
                           >
                             👁 View
                           </a>
@@ -625,7 +625,7 @@ export default function EventDetail() {
 
         {/* REGISTRATION */}
         {showRegSection && (
-          <div className="detail-section mb-5 p-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.25)', borderRadius: '12px' }}>
+          <div className="detail-section mb-5 p-4" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
             <div className="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3 border-bottom pb-2" style={{ borderColor: 'rgba(166,124,82,0.18)' }}>
               <h2 className="detail-section-title m-0 border-0 p-0">Registration</h2>
               {isAdmin && (
@@ -711,11 +711,11 @@ export default function EventDetail() {
               {event.speakerImages && event.speakerImages.length > 0 ? (
                 event.speakerImages.map((spk) => (
                   <div className="col-lg-3 col-md-4 col-6 text-center" key={spk._id}>
-                    <div className="team-member-card p-3 h-100 d-flex flex-column" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.15)', borderRadius: '12px' }}>
+                    <div className="team-member-card p-3 h-100 d-flex flex-column" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
                       <div className="mb-3 mx-auto" style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden' }}>
                         <img src={spk.url} alt={spk.speakerName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
-                      <h4 className="h6 fw-bold text-white mb-1">{spk.speakerName}</h4>
+                      <h4 className="h6 fw-bold mb-1">{spk.speakerName}</h4>
                       <p className="small text-muted flex-fill mb-2">{spk.detail}</p>
                       {isAdmin && (
                         <button
@@ -734,7 +734,7 @@ export default function EventDetail() {
             </div>
             {isAdmin && (
               <form onSubmit={handleAddSpeaker} className="mt-4 p-3" style={{ border: '1px dashed rgba(166,124,82,0.3)', borderRadius: '8px' }}>
-                <h5 className="mb-3 text-white small fw-bold">➕ Add Speaker</h5>
+                <h5 className="mb-3 small fw-bold">➕ Add Speaker</h5>
                 <div className="row g-2">
                   <div className="col-md-4">
                     <input
@@ -805,7 +805,7 @@ export default function EventDetail() {
             </div>
             {isAdmin && (
               <form onSubmit={handleAddGallery} className="mt-4 p-3" style={{ border: '1px dashed rgba(166,124,82,0.3)', borderRadius: '8px' }}>
-                <h5 className="mb-3 text-white small fw-bold">➕ Add Gallery Image</h5>
+                <h5 className="mb-3 small fw-bold">➕ Add Gallery Image</h5>
                 <div className="row g-2">
                   <div className="col-md-4">
                     <input
@@ -850,9 +850,9 @@ export default function EventDetail() {
               <h2 className="detail-section-title">Faculty Conveners</h2>
               {event.conductedBy && event.conductedBy.length > 0 ? (
                 event.conductedBy.map((coord, idx) => (
-                  <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
                     <div>
-                      <div className="fw-semibold text-white">{coord.name}</div>
+                      <div className="fw-semibold">{coord.name}</div>
                       <span className="small text-muted">{coord.email}</span>
                     </div>
                     {isAdmin && (
@@ -880,9 +880,9 @@ export default function EventDetail() {
               <h2 className="detail-section-title">Student Coordinators</h2>
               {event.studentCoordinators && event.studentCoordinators.length > 0 ? (
                 event.studentCoordinators.map((coord, idx) => (
-                  <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div key={idx} className="d-flex align-items-center justify-content-between p-2 border-bottom" style={{ borderColor: 'var(--border-theme)' }}>
                     <div>
-                      <div className="fw-semibold text-white">{coord.name}</div>
+                      <div className="fw-semibold">{coord.name}</div>
                       <span className="small text-muted">{coord.email}</span>
                     </div>
                     {isAdmin && (
@@ -913,9 +913,9 @@ export default function EventDetail() {
             <div className="d-flex flex-column gap-3 mb-4">
               {reviews && reviews.length > 0 ? (
                 reviews.map((rev) => (
-                  <div key={rev._id} className="p-3" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166,124,82,0.15)', borderRadius: '8px' }}>
+                  <div key={rev._id} className="p-3" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '8px' }}>
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                      <strong className="text-white">{rev.name}</strong>
+                      <strong>{rev.name}</strong>
                       <span className="small text-muted">
                         {new Date(rev.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
@@ -937,7 +937,7 @@ export default function EventDetail() {
               )}
             </div>
 
-            <form onSubmit={handleAddReview} className="p-3" style={{ background: 'rgba(166, 124, 82, 0.04)', border: '1px solid rgba(166, 124, 82, 0.15)', borderRadius: '12px' }}>
+            <form onSubmit={handleAddReview} className="p-3" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
               <h4 className="h6 fw-bold mb-3" style={{ color: 'var(--br)' }}>Add Your Review</h4>
               <div className="mb-2">
                 <input

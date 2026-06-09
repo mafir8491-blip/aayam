@@ -150,7 +150,7 @@ export default function Gallery() {
         <div className="section-label" style={{ textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--br)', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px' }}>
           Moments Captured
         </div>
-        <h1 className="page-title text-white" style={{ fontFamily: 'var(--font-display, serif)', fontWeight: 700, fontSize: '3rem', marginBottom: '12px' }}>
+        <h1 className="page-title" style={{ fontFamily: 'var(--font-display, serif)', fontWeight: 700, fontSize: '3rem', marginBottom: '12px', color: 'var(--br)' }}>
           Our Gallery
         </h1>
         <p className="page-subtitle text-muted" style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem' }}>
@@ -161,20 +161,20 @@ export default function Gallery() {
 
       {/* Admin Upload Zone */}
       {isAdmin && (
-        <div className="hs-upload-zone mb-5 p-4" style={{ background: 'rgba(30, 21, 14, 0.45)', border: '1.5px dashed rgba(166, 124, 82, 0.3)', borderRadius: '16px', maxWidth: '600px', margin: '0 auto 40px' }}>
-          <h4 className="text-white mb-3 text-center" style={{ fontFamily: 'var(--font-display, serif)' }}>Upload New Image to Gallery</h4>
+        <div className="hs-upload-zone mb-5 p-4" style={{ background: 'var(--bg-surface-theme)', border: '1.5px dashed var(--border-theme)', borderRadius: '16px', maxWidth: '600px', margin: '0 auto 40px' }}>
+          <h4 className="mb-3 text-center" style={{ fontFamily: 'var(--font-display, serif)' }}>Upload New Image to Gallery</h4>
           <form onSubmit={handleUploadSubmit} className="text-center">
             <div className="mb-3">
               <label 
                 htmlFor="galleryUploadInput" 
                 style={{ 
                   display: 'block', 
-                  border: '1.5px dashed rgba(255, 255, 255, 0.25)', 
+                  border: '1.5px dashed var(--border-theme)', 
                   padding: '24px', 
                   borderRadius: '12px', 
                   cursor: 'pointer',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  color: 'rgba(255, 255, 255, 0.6)'
+                  background: 'var(--bg-base-theme)',
+                  color: 'var(--text-muted-theme)'
                 }}
               >
                 {preview ? (
@@ -271,7 +271,7 @@ export default function Gallery() {
                   <span className="gallery-badge" style={{ background: 'rgba(166, 124, 82, 0.15)', color: '#a67c52', fontSize: '0.72rem', padding: '4px 10px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700 }}>
                     {item.badge}
                   </span>
-                  <h3 className="gallery-item-title text-white mt-2 mb-0" style={{ fontSize: '1.05rem', fontWeight: 600 }}>{item.title}</h3>
+                  <h3 className="gallery-item-title mt-2 mb-0" style={{ fontSize: '1.05rem', fontWeight: 600 }}>{item.title}</h3>
                 </div>
               </div>
             </div>

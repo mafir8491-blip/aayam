@@ -174,7 +174,7 @@ export default function AdminRegistrations() {
   }
 
   return (
-    <div className="container py-5" style={{ color: '#e8d9c5' }}>
+    <div className="container py-5" style={{ color: 'var(--text-theme)' }}>
       
       {/* Header */}
       <div className="page-header text-start mb-4">
@@ -184,7 +184,7 @@ export default function AdminRegistrations() {
           </Link>
         )}
         <div className="section-label">Admin Panel</div>
-        <h1 className="page-title text-white" style={{ fontFamily: 'var(--font-display, serif)', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)' }}>
+        <h1 className="page-title" style={{ fontFamily: 'var(--font-display, serif)', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)' }}>
           {subEvent.title}
         </h1>
         <p className="page-subtitle text-muted">Registration Management</p>
@@ -199,7 +199,7 @@ export default function AdminRegistrations() {
           { label: 'Rejected', count: rejectedCount, border: 'rgba(192,57,43,0.22)', color: '#c0392b' },
         ].map((stat, idx) => (
           <div className="col-6 col-md-3" key={idx}>
-            <div className="p-3 rounded" style={{ background: 'rgba(30, 21, 14, 0.45)', border: `1px solid ${stat.border}` }}>
+            <div className="p-3 rounded" style={{ background: 'var(--bg-surface-theme)', border: `1px solid ${stat.border}` }}>
               <div className="h2 fw-bold mb-0" style={{ color: stat.color }}>{stat.count}</div>
               <div className="small text-muted text-uppercase fw-semibold" style={{ fontSize: '0.75rem', letterSpacing: '1px', marginTop: '4px' }}>{stat.label}</div>
             </div>
@@ -218,7 +218,7 @@ export default function AdminRegistrations() {
           ].map((tab) => (
             <button
               key={tab.id}
-              className={`btn btn-sm ${statusFilter === tab.id ? 'btn-warning text-dark' : 'btn-outline-secondary text-white'}`}
+              className={`btn btn-sm ${statusFilter === tab.id ? 'btn-warning text-dark' : 'btn-outline-secondary'}`}
               onClick={() => setStatusFilter(tab.id)}
               style={{ borderRadius: '20px', padding: '6px 16px', fontWeight: 600 }}
             >
@@ -252,7 +252,7 @@ export default function AdminRegistrations() {
       {/* Registration Cards */}
       <div className="d-flex flex-column gap-4">
         {displayedRegs.length === 0 ? (
-          <div className="text-center p-5 rounded border border-dashed text-muted" style={{ background: 'rgba(166,124,82,0.04)', borderColor: 'var(--br)' }}>
+          <div className="text-center p-5 rounded border border-dashed text-muted" style={{ background: 'var(--bg-surface-theme)', borderColor: 'var(--border-theme)' }}>
             <div className="fs-1 mb-2">📋</div>
             <p className="mb-0">No registrations found in this category.</p>
           </div>
@@ -262,8 +262,8 @@ export default function AdminRegistrations() {
               key={reg._id}
               className="registration-card overflow-hidden"
               style={{
-                background: 'rgba(30, 21, 14, 0.45)',
-                border: '1px solid rgba(166, 124, 82, 0.15)',
+                background: 'var(--bg-surface-theme)',
+                border: '1px solid var(--border-theme)',
                 borderRadius: '16px',
               }}
             >
@@ -310,18 +310,18 @@ export default function AdminRegistrations() {
                     if (!val) return null;
 
                     return (
-                      <div key={field._id} className="d-flex align-items-start gap-3 p-3 border-bottom border-secondary small" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                      <div key={field._id} className="d-flex align-items-start gap-3 p-3 border-bottom small" style={{ borderColor: 'var(--border-theme)' }}>
                         <div className="text-uppercase fw-bold" style={{ width: '120px', color: 'var(--br)', fontSize: '0.71rem', letterSpacing: '0.8px' }}>
                           {field.label}
                         </div>
-                        <div className="flex-fill text-white">
+                        <div className="flex-fill">
                           {field.type === 'file' ? (
                             <a
                               href={val}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="btn btn-outline-secondary btn-sm"
-                              style={{ borderColor: 'var(--br)', color: 'var(--br)', fontSize: '0.75rem', padding: '4px 10px' }}
+                              style={{ borderColor: 'var(--border-theme)', color: 'var(--text-theme)', fontSize: '0.75rem', padding: '4px 10px' }}
                             >
                               <i className="bi bi-file-earmark"></i> View File
                             </a>
@@ -343,25 +343,25 @@ export default function AdminRegistrations() {
                   </div>
                   <div className="d-flex flex-column gap-3">
                     {reg.teamMembers.map((member, mIdx) => (
-                      <div key={mIdx} className="p-3 border rounded" style={{ background: 'rgba(255,255,255,0.02)', borderColor: 'rgba(166,124,82,0.15)' }}>
-                        <div className="small fw-bold text-uppercase mb-2 text-white border-bottom pb-1" style={{ fontSize: '0.71rem', letterSpacing: '1.2px' }}>
+                      <div key={mIdx} className="p-3 border rounded" style={{ background: 'var(--bg-base-theme)', borderColor: 'var(--border-theme)' }}>
+                        <div className="small fw-bold text-uppercase mb-2 border-bottom pb-1" style={{ fontSize: '0.71rem', letterSpacing: '1.2px', borderColor: 'var(--border-theme)' }}>
                           Member {mIdx + 1}
                         </div>
                         <div className="small">
                           <div className="d-flex gap-2 py-1">
                             <span className="text-muted fw-bold" style={{ width: '80px', fontSize: '0.68rem' }}>NAME</span>
-                            <span className="text-white fw-bold">{member.name}</span>
+                            <span className="fw-bold">{member.name}</span>
                           </div>
                           {member.email && (
                             <div className="d-flex gap-2 py-1">
                               <span className="text-muted fw-bold" style={{ width: '80px', fontSize: '0.68rem' }}>EMAIL</span>
-                              <span className="text-white">{member.email}</span>
+                              <span>{member.email}</span>
                             </div>
                           )}
                           {member.phone && (
                             <div className="d-flex gap-2 py-1">
                               <span className="text-muted fw-bold" style={{ width: '80px', fontSize: '0.68rem' }}>PHONE</span>
-                              <span className="text-white">{member.phone}</span>
+                              <span>{member.phone}</span>
                             </div>
                           )}
                         </div>
@@ -381,14 +381,14 @@ export default function AdminRegistrations() {
                     <img
                       src={reg.paymentScreenshot}
                       alt="Receipt"
-                      style={{ maxWidth: '220px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                      style={{ maxWidth: '220px', borderRadius: '8px', border: '1px solid var(--border-theme)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     />
                   </a>
                 </div>
               )}
 
               {/* Action Buttons */}
-              <div className="d-flex gap-2 p-3 flex-wrap align-items-center" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <div className="d-flex gap-2 p-3 flex-wrap align-items-center" style={{ background: 'var(--bg-base-theme)' }}>
                 {reg.status !== 'verified' && (
                   <button
                     onClick={() => handleVerify(reg._id)}

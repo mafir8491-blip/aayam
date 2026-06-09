@@ -95,7 +95,7 @@ export default function ReachOut() {
     <div className="reachout-wrapper container py-5">
       <div className="page-header text-center mb-4">
         <div className="section-label">Connect With Us</div>
-        <h1 className="page-title text-white" style={{ fontFamily: 'var(--font-display, serif)', color: 'var(--br)' }}>Reach Out</h1>
+        <h1 className="page-title" style={{ fontFamily: 'var(--font-display, serif)', color: 'var(--br)' }}>Reach Out</h1>
         <p className="page-subtitle text-muted mt-2">Have an idea, feedback, or collaboration in mind? We'd love to hear from you.</p>
       </div>
 
@@ -123,7 +123,7 @@ export default function ReachOut() {
         </div>
       </div>
 
-      <div className="p-4 mx-auto" style={{ maxWidth: '680px', background: 'rgba(30, 21, 14, 0.45)', border: '1px solid rgba(166, 124, 82, 0.25)', borderRadius: '12px', position: 'relative' }}>
+      <div className="p-4 mx-auto" style={{ maxWidth: '680px', background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px', position: 'relative' }}>
         <div style={{ height: '3px', background: 'var(--br)', position: 'absolute', top: 0, left: 0, right: 0, borderRadius: '12px 12px 0 0' }}></div>
 
         {success && (
@@ -143,12 +143,12 @@ export default function ReachOut() {
         )}
 
         {/* Form header */}
-        <div className="d-flex align-items-center gap-3 border-bottom pb-3 mb-4" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+        <div className="d-flex align-items-center gap-3 border-bottom pb-3 mb-4" style={{ borderColor: 'var(--border-theme)' }}>
           <div className="d-flex align-items-center justify-content-center text-white" style={{ width: '46px', height: '46px', borderRadius: '8px', background: 'linear-gradient(135deg, var(--br), var(--br-deep))', fontSize: '1.1rem', boxShadow: '0 6px 18px rgba(166,124,82,0.28)' }}>
             <i className="bi bi-send-fill"></i>
           </div>
           <div>
-            <div className="fw-bold text-white" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.1rem' }}>Send Us a Message</div>
+            <div className="fw-bold" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.1rem' }}>Send Us a Message</div>
             <div className="small text-muted">Fill in the details below and we'll be in touch.</div>
           </div>
         </div>
@@ -253,8 +253,8 @@ export default function ReachOut() {
                   <span
                     className="badge rounded-pill border px-3 py-2 small"
                     style={{
-                      borderColor: heardFrom === opt ? 'var(--br)' : 'rgba(255,255,255,0.1)',
-                      color: heardFrom === opt ? 'var(--br)' : 'var(--tx-muted)',
+                      borderColor: heardFrom === opt ? 'var(--br)' : 'var(--border-theme)',
+                      color: heardFrom === opt ? 'var(--br)' : 'var(--text-muted-theme)',
                       background: heardFrom === opt ? 'rgba(166,124,82,0.1)' : 'transparent',
                     }}
                   >

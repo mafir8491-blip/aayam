@@ -64,6 +64,13 @@
   --nav-h:      76px;
   --nav-h-sm:   64px;
   --drawer-w:   320px;
+
+  /* Theme-aware variables for React components */
+  --bg-surface-theme: var(--cream-alt);
+  --bg-base-theme:    var(--cream);
+  --border-theme:     var(--border-l);
+  --text-theme:       var(--tx);
+  --text-muted-theme: var(--tx-muted);
 }
 
 /* ════════════════════════════════════════
@@ -108,6 +115,13 @@ body::before {
 body.dark-mode {
   background: var(--dk-base);
   color: var(--dk-text);
+
+  /* Theme-aware overrides */
+  --bg-surface-theme: var(--dk-surface);
+  --bg-base-theme:    var(--dk-base);
+  --border-theme:     var(--border-d);
+  --text-theme:       var(--dk-text);
+  --text-muted-theme: var(--dk-muted);
 }
 body.dark-mode::before { opacity: 0.05; filter: brightness(0.4) grayscale(0.5); }
 
@@ -1602,4 +1616,94 @@ body.dark-mode .btn-admin-action {
 .btn-admin-action.btn-danger:hover {
   background: #c0392b;
   color: #fff !important;
+}
+
+/* ════════════════════════════════════════
+   ── STATUS SELECTION BOXES ──
+   ════════════════════════════════════════ */
+.status-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 1.5px solid var(--border-l);
+  background: var(--cream-alt);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+body.dark-mode .status-box {
+  border-color: var(--border-d);
+  background: var(--dk-surface);
+}
+.status-box:hover {
+  transform: translateY(-4px);
+  border-color: var(--br);
+  box-shadow: 0 8px 24px rgba(166, 124, 82, 0.12);
+}
+body.dark-mode .status-box:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.status-box.active {
+  background: linear-gradient(135deg, rgba(166, 124, 82, 0.12), rgba(201, 168, 76, 0.08)) !important;
+  border-color: var(--br);
+  box-shadow: 0 8px 24px rgba(166, 124, 82, 0.15);
+}
+body.dark-mode .status-box.active {
+  background: linear-gradient(135deg, rgba(230, 160, 90, 0.12), rgba(230, 160, 90, 0.05)) !important;
+  border-color: #e6a05a;
+}
+.status-box-icon {
+  font-size: 1.8rem;
+  color: var(--br);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.dark-mode .status-box-icon {
+  color: #e6a05a;
+}
+.live-pulse-icon i {
+  color: #27ae60 !important;
+  animation: livePulse 1.8s infinite;
+}
+@keyframes livePulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+.status-box-content {
+  flex: 1;
+}
+.status-box-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--tx) !important;
+  margin: 0 0 4px 0;
+}
+body.dark-mode .status-box-title {
+  color: var(--dk-text) !important;
+}
+.status-box-count {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--tx-muted);
+  margin: 0;
+}
+body.dark-mode .status-box-count {
+  color: var(--dk-muted);
+}
+.status-box-arrow {
+  font-size: 1rem;
+  color: var(--tx-muted);
+  opacity: 0.5;
+  transition: transform 0.2s ease;
+}
+.status-box:hover .status-box-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+  color: var(--br);
 }
