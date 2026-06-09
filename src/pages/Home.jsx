@@ -302,6 +302,85 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
         }
+
+        .teams-section-grid-new {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 20px;
+          margin-top: 24px;
+        }
+
+        @media (max-width: 1200px) {
+          .teams-section-grid-new {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .teams-section-grid-new {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+          }
+        }
+
+        .team-card-link-new {
+          text-decoration: none !important;
+          display: block;
+        }
+
+        .our-team-card-new {
+          background: rgba(30, 21, 14, 0.45);
+          border: 1.5px solid rgba(166, 124, 82, 0.16);
+          border-radius: 16px;
+          padding: 35px 15px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          height: 100%;
+        }
+
+        .our-team-card-new:hover {
+          transform: translateY(-6px);
+          border-color: rgba(166, 124, 82, 0.45);
+          box-shadow: 0 8px 30px rgba(166, 124, 82, 0.15);
+        }
+
+        .team-card-icon-new {
+          margin-bottom: 18px;
+          color: #a67c52;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 50px;
+          transition: transform 0.3s ease;
+        }
+
+        .our-team-card-new:hover .team-card-icon-new {
+          transform: scale(1.1);
+        }
+
+        .team-card-title-new {
+          font-family: var(--font-body, sans-serif);
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #fff;
+          margin: 0 0 2px;
+          line-height: 1.2;
+        }
+
+        .team-card-subtitle-new {
+          font-size: 0.76rem;
+          color: rgba(255, 255, 255, 0.45);
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
+          margin: 0;
+        }
       `}</style>
       {/* HERO SECTION */}
       <section
@@ -979,64 +1058,70 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="teams-section-grid">
-            <Link to="/team#core-committee" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
-                  <i className="bi bi-shield-check" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
-                </div>
-                <h3 className="team-card-title">Core</h3>
-                <p className="team-card-subtitle">Committee</p>
-              </div>
-            </Link>
-
-            <Link to="/team#management-team" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
+          <div className="teams-section-grid-new">
+            {/* Management Team */}
+            <Link to="/team#management" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
                   <i className="bi bi-people" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
                 </div>
-                <h3 className="team-card-title">Management</h3>
-                <p className="team-card-subtitle">Team</p>
+                <h3 className="team-card-title-new">Management</h3>
+                <p className="team-card-subtitle-new">Team</p>
               </div>
             </Link>
 
-            <Link to="/team#media-team" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
-                  <i className="bi bi-camera" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
+            {/* Creative Team */}
+            <Link to="/team#creative" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
+                  <i className="bi bi-palette" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
                 </div>
-                <h3 className="team-card-title">Media</h3>
-                <p className="team-card-subtitle">Team</p>
+                <h3 className="team-card-title-new">Creative</h3>
+                <p className="team-card-subtitle-new">Team</p>
               </div>
             </Link>
 
-            <Link to="/team#technical-and-creatives-team" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
+            {/* Technical Team */}
+            <Link to="/team#technical" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
                   <i className="bi bi-code-slash" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
                 </div>
-                <h3 className="team-card-title" style={{ wordBreak: 'break-word' }}>Technical &amp; Creatives</h3>
-                <p className="team-card-subtitle">Team</p>
+                <h3 className="team-card-title-new">Technical</h3>
+                <p className="team-card-subtitle-new">Team</p>
               </div>
             </Link>
 
-            <Link to="/team#sports-and-cultural-team" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
-                  <i className="bi bi-trophy" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
+            {/* Events Team */}
+            <Link to="/team#events" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
+                  <i className="bi bi-calendar-event" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
                 </div>
-                <h3 className="team-card-title" style={{ wordBreak: 'break-word' }}>Sports &amp; Cultural</h3>
-                <p className="team-card-subtitle">Team</p>
+                <h3 className="team-card-title-new">Events</h3>
+                <p className="team-card-subtitle-new">Team</p>
               </div>
             </Link>
 
-            <Link to="/team#communication-and-hospitality" className="team-card-link">
-              <div className="our-team-card">
-                <div className="team-card-icon">
-                  <i className="bi bi-handshake" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
+            {/* Design Team */}
+            <Link to="/team#design" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
+                  <i className="bi bi-pencil" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
                 </div>
-                <h3 className="team-card-title" style={{ wordBreak: 'break-word', fontSize: '0.95rem' }}>Communication &amp; Hospitality</h3>
-                <p className="team-card-subtitle">Team</p>
+                <h3 className="team-card-title-new">Design</h3>
+                <p className="team-card-subtitle-new">Team</p>
+              </div>
+            </Link>
+
+            {/* Media Team */}
+            <Link to="/team#media" className="team-card-link-new">
+              <div className="our-team-card-new">
+                <div className="team-card-icon-new">
+                  <i className="bi bi-camera" style={{ fontSize: '2.5rem', color: '#a67c52' }}></i>
+                </div>
+                <h3 className="team-card-title-new">Media</h3>
+                <p className="team-card-subtitle-new">Team</p>
               </div>
             </Link>
           </div>
