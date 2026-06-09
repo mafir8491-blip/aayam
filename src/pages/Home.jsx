@@ -383,21 +383,31 @@ export default function Home() {
         }
 
         /* ═══════════════════════════════════════
-           GEN Z COUNTDOWN BANNER (Brown & Gold Theme)
+           GEN Z COUNTDOWN BANNER (Theme-Aware)
            ═══════════════════════════════════════ */
         @keyframes hpbPulseGlow {
           0%, 100% {
-            box-shadow: 0 0 15px rgba(201, 168, 76, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-color: rgba(201, 168, 76, 0.3);
+            box-shadow: 0 6px 20px rgba(166, 124, 82, 0.08);
+            border-color: rgba(166, 124, 82, 0.25);
           }
           50% {
-            box-shadow: 0 0 30px rgba(201, 168, 76, 0.45), 0 10px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(166, 124, 82, 0.15);
+            border-color: rgba(166, 124, 82, 0.45);
+          }
+        }
+        @keyframes hpbPulseGlowDark {
+          0%, 100% {
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(201, 168, 76, 0.35);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(201, 168, 76, 0.40), 0 10px 40px rgba(0, 0, 0, 0.6);
             border-color: rgba(201, 168, 76, 0.65);
           }
         }
         @keyframes hpbBadgePulse {
-          0%, 100% { transform: scale(1); opacity: 0.9; }
-          50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
+          0%, 100% { transform: scale(1); opacity: 0.95; }
+          50% { transform: scale(1.04); opacity: 1; filter: brightness(1.1); }
         }
         @keyframes hpbTextShimmer {
           0% { background-position: 0% 50%; }
@@ -410,14 +420,15 @@ export default function Home() {
         }
         @keyframes orbDrift {
           0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(15px, -15px) scale(1.15); }
+          50% { transform: translate(12px, -12px) scale(1.1); }
         }
 
+        /* LIGHT MODE DEFAULT */
         .hpb-wrapper-new {
-          background: rgba(26, 17, 10, 0.75);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1.5px solid rgba(201, 168, 76, 0.35);
+          background: var(--bg-surface-theme);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1.5px solid rgba(166, 124, 82, 0.3);
           border-radius: 28px;
           padding: 36px 40px;
           position: relative;
@@ -425,7 +436,6 @@ export default function Home() {
           width: 100%;
           max-width: 680px;
           margin: 32px auto 16px;
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
           animation: hpbPulseGlow 3s ease-in-out infinite;
           display: flex;
           flex-direction: column;
@@ -446,7 +456,7 @@ export default function Home() {
           width: 90px;
           height: 90px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(166, 124, 82, 0.08) 0%, transparent 70%);
           pointer-events: none;
           animation: orbDrift 6s ease-in-out infinite alternate;
         }
@@ -458,7 +468,7 @@ export default function Home() {
           width: 120px;
           height: 120px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(166, 124, 82, 0.15) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
           pointer-events: none;
           animation: orbDrift 8s ease-in-out infinite alternate-reverse;
         }
@@ -467,9 +477,9 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: rgba(201, 168, 76, 0.12);
-          border: 1px solid rgba(201, 168, 76, 0.4);
-          color: #c9a84c;
+          background: rgba(166, 124, 82, 0.08);
+          border: 1px solid rgba(166, 124, 82, 0.25);
+          color: #a67c52;
           padding: 6px 16px;
           border-radius: 100px;
           font-size: 0.72rem;
@@ -482,17 +492,18 @@ export default function Home() {
 
         .hpb-badge-new i {
           font-size: 0.8rem;
-          color: #c9a84c;
+          color: #a67c52;
         }
 
         .hpb-heading-new {
           font-size: 1rem;
           font-weight: 700;
-          color: rgba(253, 248, 243, 0.7);
+          color: var(--text-theme);
           text-transform: uppercase;
           letter-spacing: 3px;
           margin: 0;
           line-height: 1.2;
+          opacity: 0.85;
         }
 
         .hpb-title-new {
@@ -501,7 +512,7 @@ export default function Home() {
           font-weight: 900;
           margin: 4px 0;
           line-height: 1.1;
-          background: linear-gradient(to right, #fff 20%, #c9a84c 50%, #a67c52 80%);
+          background: linear-gradient(to right, #3a2a1a 20%, #a67c52 50%, #c9a84c 80%);
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -511,7 +522,7 @@ export default function Home() {
 
         .hpb-desc-new {
           font-size: clamp(0.85rem, 1.8vw, 0.95rem);
-          color: rgba(253, 248, 243, 0.65);
+          color: var(--text-muted-theme);
           max-width: 500px;
           line-height: 1.6;
           margin: 0 0 10px;
@@ -527,8 +538,8 @@ export default function Home() {
         }
 
         .hpb-cd-box-new {
-          background: rgba(13, 10, 7, 0.5);
-          border: 1px solid rgba(201, 168, 76, 0.2);
+          background: rgba(166, 124, 82, 0.05);
+          border: 1px solid rgba(166, 124, 82, 0.18);
           border-radius: 16px;
           padding: 12px 16px;
           min-width: 72px;
@@ -540,23 +551,22 @@ export default function Home() {
         }
         
         .hpb-wrapper-new:hover .hpb-cd-box-new {
-          border-color: rgba(201, 168, 76, 0.45);
-          background: rgba(13, 10, 7, 0.7);
+          border-color: rgba(166, 124, 82, 0.3);
+          background: rgba(166, 124, 82, 0.08);
         }
 
         .hpb-cd-val-new {
           font-family: var(--font-display, 'Georgia', serif);
           font-size: clamp(1.6rem, 3.5vw, 2.2rem);
           font-weight: 900;
-          color: #fff;
+          color: var(--text-theme);
           line-height: 1;
           font-variant-numeric: tabular-nums;
-          text-shadow: 0 0 10px rgba(201, 168, 76, 0.3);
         }
 
         .hpb-cd-lbl-new {
           font-size: 0.6rem;
-          color: rgba(253, 248, 243, 0.45);
+          color: var(--text-muted-theme);
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 1.5px;
@@ -566,7 +576,7 @@ export default function Home() {
         .hpb-cd-divider-new {
           font-size: 1.6rem;
           font-weight: 700;
-          color: rgba(201, 168, 76, 0.5);
+          color: rgba(166, 124, 82, 0.5);
           margin-bottom: 22px;
         }
 
@@ -576,7 +586,7 @@ export default function Home() {
           gap: 8px;
           padding: 14px 36px;
           background: linear-gradient(135deg, #a67c52 0%, #c9a84c 100%);
-          color: #0d0a07 !important;
+          color: #fff !important;
           font-weight: 800;
           font-size: 0.95rem;
           border-radius: 100px;
@@ -585,12 +595,82 @@ export default function Home() {
           text-transform: uppercase;
           border: none;
           transition: transform 0.25s ease, box-shadow 0.25s ease;
-          box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+          box-shadow: 0 4px 15px rgba(166, 124, 82, 0.2);
           margin-top: 8px;
         }
 
         .hpb-btn-new:hover {
           transform: scale(1.05);
+          box-shadow: 0 6px 20px rgba(166, 124, 82, 0.35);
+        }
+
+        /* DARK MODE OVERRIDES */
+        body.dark-mode .hpb-wrapper-new {
+          background: rgba(26, 17, 10, 0.75);
+          border-color: rgba(201, 168, 76, 0.35);
+          animation: hpbPulseGlowDark 3s ease-in-out infinite;
+        }
+
+        body.dark-mode .hpb-orb-1 {
+          background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, transparent 70%);
+        }
+
+        body.dark-mode .hpb-orb-2 {
+          background: radial-gradient(circle, rgba(166, 124, 82, 0.12) 0%, transparent 70%);
+        }
+
+        body.dark-mode .hpb-badge-new {
+          background: rgba(201, 168, 76, 0.12);
+          border-color: rgba(201, 168, 76, 0.4);
+          color: #c9a84c;
+        }
+
+        body.dark-mode .hpb-badge-new i {
+          color: #c9a84c;
+        }
+
+        body.dark-mode .hpb-heading-new {
+          color: rgba(253, 248, 243, 0.7);
+        }
+
+        body.dark-mode .hpb-title-new {
+          background: linear-gradient(to right, #fff 20%, #c9a84c 50%, #a67c52 80%);
+          background-size: 200% auto;
+        }
+
+        body.dark-mode .hpb-desc-new {
+          color: rgba(253, 248, 243, 0.65);
+        }
+
+        body.dark-mode .hpb-cd-box-new {
+          background: rgba(13, 10, 7, 0.5);
+          border-color: rgba(201, 168, 76, 0.2);
+        }
+
+        body.dark-mode .hpb-wrapper-new:hover .hpb-cd-box-new {
+          border-color: rgba(201, 168, 76, 0.45);
+          background: rgba(13, 10, 7, 0.7);
+        }
+
+        body.dark-mode .hpb-cd-val-new {
+          color: #fff;
+          text-shadow: 0 0 10px rgba(201, 168, 76, 0.3);
+        }
+
+        body.dark-mode .hpb-cd-lbl-new {
+          color: rgba(253, 248, 243, 0.45);
+        }
+
+        body.dark-mode .hpb-cd-divider-new {
+          color: rgba(201, 168, 76, 0.5);
+        }
+
+        body.dark-mode .hpb-btn-new {
+          color: #0d0a07 !important;
+          box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+        }
+
+        body.dark-mode .hpb-btn-new:hover {
           animation: hpbBtnHoverGlow 2s infinite ease-in-out;
         }
 
