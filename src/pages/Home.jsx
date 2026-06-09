@@ -238,22 +238,21 @@ export default function Home() {
     <div className="home-wrapper">
       <style>{`
         .hero-editorial-card {
-          background: rgba(250, 246, 240, 0.95);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1.5px solid rgba(166, 124, 82, 0.25);
-          border-radius: 28px;
-          padding: clamp(30px, 5vw, 50px) clamp(20px, 4vw, 40px);
+          background: transparent;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          border: none;
+          border-radius: 0;
+          padding: 0;
           max-width: 820px;
           margin: 0 auto clamp(24px, 4vw, 40px);
-          box-shadow: 0 15px 45px rgba(62, 39, 35, 0.15);
-          transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+          box-shadow: none;
         }
 
         body.dark-mode .hero-editorial-card {
-          background: rgba(26, 18, 12, 0.93);
-          border-color: rgba(201, 168, 76, 0.25);
-          box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+          background: transparent;
+          border: none;
+          box-shadow: none;
         }
 
         .hero-uni-title {
@@ -262,7 +261,8 @@ export default function Home() {
           font-weight: 700;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: #3d3128;
+          color: #fdfaf6;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
           margin-bottom: 16px;
           transition: color 0.4s ease;
         }
@@ -308,7 +308,8 @@ export default function Home() {
           font-size: clamp(0.85rem, 2vw, 1.1rem);
           font-weight: 700;
           letter-spacing: 0.25em;
-          color: #9e7d5a;
+          color: #a27e58;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
           text-transform: uppercase;
           margin-bottom: 12px;
           transition: color 0.4s ease;
@@ -328,6 +329,7 @@ export default function Home() {
           font-size: clamp(3rem, 10vw, 7.5rem);
           font-weight: 800;
           color: #a27e58;
+          text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
           text-transform: uppercase;
           letter-spacing: 0.05em;
           line-height: 1.0;
@@ -345,7 +347,8 @@ export default function Home() {
           font-family: var(--font-body, 'DM Sans', sans-serif);
           font-size: clamp(0.85rem, 2vw, 1.05rem);
           font-weight: 700;
-          color: #9e7d5a;
+          color: #e8d9c5;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
           letter-spacing: 1px;
           margin-bottom: 18px;
           transition: color 0.4s ease;
@@ -357,7 +360,8 @@ export default function Home() {
         .hero-aayam-tagline {
           font-family: var(--font-body, 'DM Sans', sans-serif);
           font-size: clamp(0.85rem, 1.8vw, 1.05rem);
-          color: #8f7c6b;
+          color: #ffffff;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
           max-width: 620px;
           margin: 0 auto clamp(26px, 4vw, 42px);
           line-height: 1.75;
@@ -365,7 +369,7 @@ export default function Home() {
           transition: color 0.4s ease;
         }
         body.dark-mode .hero-aayam-tagline {
-          color: rgba(232, 217, 197, 0.75);
+          color: rgba(255, 255, 255, 0.95);
         }
 
         .hero-stats-new {
