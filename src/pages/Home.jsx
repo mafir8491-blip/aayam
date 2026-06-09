@@ -237,6 +237,137 @@ export default function Home() {
   return (
     <div className="home-wrapper">
       <style>{`
+        .hero-editorial-card {
+          background: rgba(250, 246, 240, 0.95);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1.5px solid rgba(166, 124, 82, 0.25);
+          border-radius: 28px;
+          padding: clamp(30px, 5vw, 50px) clamp(20px, 4vw, 40px);
+          max-width: 820px;
+          margin: 0 auto clamp(24px, 4vw, 40px);
+          box-shadow: 0 15px 45px rgba(62, 39, 35, 0.15);
+          transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        body.dark-mode .hero-editorial-card {
+          background: rgba(26, 18, 12, 0.93);
+          border-color: rgba(201, 168, 76, 0.25);
+          box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-uni-title {
+          font-family: var(--font-display, 'Playfair Display', serif);
+          font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+          font-weight: 700;
+          letter-spacing: 0.26em;
+          text-transform: uppercase;
+          color: #3d3128;
+          margin-bottom: 16px;
+          transition: color 0.4s ease;
+        }
+        body.dark-mode .hero-uni-title {
+          color: #e8d9c5;
+        }
+
+        .hero-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 20px;
+          border-radius: 100px;
+          background: #f4eee6;
+          border: 1px solid #dcd0c0;
+          color: #453327;
+          font-size: clamp(0.68rem, 1.8vw, 0.8rem);
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 28px;
+          transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+        body.dark-mode .hero-pill-badge {
+          background: rgba(201, 168, 76, 0.12);
+          border-color: rgba(201, 168, 76, 0.3);
+          color: #c9a84c;
+        }
+
+        .hero-pill-badge .badge-dot-gold {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #a27e58;
+          transition: background 0.4s ease;
+        }
+        body.dark-mode .hero-pill-badge .badge-dot-gold {
+          background: #c9a84c;
+        }
+
+        .hero-welcome {
+          font-family: var(--font-body, 'DM Sans', sans-serif);
+          font-size: clamp(0.85rem, 2vw, 1.1rem);
+          font-weight: 700;
+          letter-spacing: 0.25em;
+          color: #9e7d5a;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+          transition: color 0.4s ease;
+        }
+        body.dark-mode .hero-welcome {
+          color: #c9a84c;
+        }
+
+        .hero-aayam-container {
+          position: relative;
+          display: inline-block;
+          margin-bottom: 22px;
+        }
+
+        .hero-aayam-title {
+          font-family: var(--font-display, 'Playfair Display', serif);
+          font-size: clamp(3rem, 10vw, 7.5rem);
+          font-weight: 800;
+          color: #a27e58;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          line-height: 1.0;
+          margin: 0;
+          padding-bottom: 12px;
+          border-bottom: 3.5px double #a27e58;
+          transition: color 0.4s ease, border-color 0.4s ease;
+        }
+        body.dark-mode .hero-aayam-title {
+          color: #c9a84c;
+          border-bottom-color: #c9a84c;
+        }
+
+        .hero-aayam-sub {
+          font-family: var(--font-body, 'DM Sans', sans-serif);
+          font-size: clamp(0.85rem, 2vw, 1.05rem);
+          font-weight: 700;
+          color: #9e7d5a;
+          letter-spacing: 1px;
+          margin-bottom: 18px;
+          transition: color 0.4s ease;
+        }
+        body.dark-mode .hero-aayam-sub {
+          color: #e8d9c5;
+        }
+
+        .hero-aayam-tagline {
+          font-family: var(--font-body, 'DM Sans', sans-serif);
+          font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+          color: #8f7c6b;
+          max-width: 620px;
+          margin: 0 auto clamp(26px, 4vw, 42px);
+          line-height: 1.75;
+          font-weight: 500;
+          transition: color 0.4s ease;
+        }
+        body.dark-mode .hero-aayam-tagline {
+          color: rgba(232, 217, 197, 0.75);
+        }
+
         .hero-stats-new {
           background: rgba(18, 12, 8, 0.70);
           border: 1.5px solid rgba(166, 124, 82, 0.35);
@@ -714,112 +845,91 @@ export default function Home() {
         <div className="hero-grain" aria-hidden="true"></div>
 
         <div className="container hs-hero-inner text-center">
-          <div
-            style={{
-              fontFamily: "var(--font-display, 'Georgia', serif)",
-              fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
-              color: '#fff',
-              fontWeight: 400,
-              marginBottom: '12px',
-              letterSpacing: '0.5px',
-            }}
-          >
-            Welcome to
-          </div>
+          <div className="hero-editorial-card">
+            {/* KARNAVATI UNIVERSITY */}
+            <div className="hero-uni-title">KARNAVATI UNIVERSITY</div>
 
-          <h1
-            style={{
-              fontFamily: "var(--font-display, 'Georgia', serif)",
-              fontSize: 'clamp(2.4rem, 7.5vw, 6rem)',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '2px',
-              color: '#000000',
-              marginBottom: '18px',
-              lineHeight: 1.1,
-            }}
-          >
-            AAYAM COMMITTEE
-          </h1>
+            {/* Pill Badge */}
+            <div>
+              <div className="hero-pill-badge">
+                <span className="badge-dot-gold" />
+                <span>UIT &middot; UNITEDWORLD INSTITUTE OF TECHNOLOGY</span>
+              </div>
+            </div>
 
-          <div
-            style={{
-              fontSize: 'clamp(1.1rem, 3vw, 2.1rem)',
-              fontWeight: 700,
-              color: '#fff',
-              letterSpacing: '0.5px',
-              marginBottom: '18px',
-            }}
-          >
-            Shaping Ideas. Building Tomorrow.
-          </div>
+            {/* WELCOME TO */}
+            <div className="hero-welcome">WELCOME TO</div>
 
-          <p
-            style={{
-              fontSize: 'clamp(0.85rem, 1.8vw, 1.05rem)',
-              color: 'rgba(255,255,255,0.78)',
-              maxWidth: '680px',
-              margin: '0 auto clamp(26px, 4vw, 42px)',
-              lineHeight: 1.7,
-              fontWeight: 400,
-            }}
-          >
-            AAYAM Committee is the official student body of Unitedworld Institute of Technology. We organize, manage and execute technical, cultural and creative events.
-          </p>
+            {/* AAYAM with double underline */}
+            <div>
+              <div className="hero-aayam-container">
+                <h1 className="hero-aayam-title">AAYAM</h1>
+              </div>
+            </div>
 
-          <div
-            className="hero-cta-row"
-            style={{
-              display: 'flex',
-              gap: '16px',
-              justifyContent: 'center',
-              marginBottom: 'clamp(30px, 5vw, 52px)',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Link
-              to="/events"
-              className="hero-cta-primary"
+            {/* Subtitle / Hindi */}
+            <div className="hero-aayam-sub">आयाम &nbsp;&middot;&nbsp; Official UIT Students' Committee</div>
+
+            {/* Tagline */}
+            <p className="hero-aayam-tagline">
+              Where ideas become events, events become memories, and students become leaders.
+            </p>
+
+            {/* CTA row (buttons) */}
+            <div
+              className="hero-cta-row"
               style={{
-                background: '#a67c52',
-                color: '#120c08',
-                fontWeight: 700,
-                border: 'none',
-                padding: '12px 28px',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '0.95rem',
-                boxShadow: '0 6px 18px rgba(166,124,82,0.3)',
-                transition: 'transform 0.3s ease, background 0.3s ease',
+                display: 'flex',
+                gap: '16px',
+                justifyContent: 'center',
+                marginBottom: '0',
+                flexWrap: 'wrap',
               }}
             >
-              <span>Explore Events</span>
-              <i className="bi bi-arrow-right"></i>
-            </Link>
-            <a
-              href="#about"
-              className="hero-cta-secondary"
-              style={{
-                border: '1.5px solid #a67c52',
-                color: '#a67c52',
-                background: 'transparent',
-                fontWeight: 700,
-                padding: '11px 28px',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '0.95rem',
-                transition: 'transform 0.3s ease, border-color 0.3s ease',
-              }}
-            >
-              <span>Learn More</span>
-              <i className="bi bi-arrow-right"></i>
-            </a>
+              <Link
+                to="/events"
+                className="hero-cta-primary"
+                style={{
+                  background: '#a67c52',
+                  color: '#120c08',
+                  fontWeight: 700,
+                  border: 'none',
+                  padding: '12px 28px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '0.95rem',
+                  boxShadow: '0 6px 18px rgba(166,124,82,0.3)',
+                  transition: 'transform 0.3s ease, background 0.3s ease',
+                }}
+              >
+                <span>Explore Events</span>
+                <i className="bi bi-arrow-right"></i>
+              </Link>
+              <a
+                href="#about"
+                className="hero-cta-secondary"
+                style={{
+                  border: '1.5px solid #a67c52',
+                  color: '#a67c52',
+                  background: 'transparent',
+                  fontWeight: 700,
+                  padding: '11px 28px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '0.95rem',
+                  transition: 'transform 0.3s ease, border-color 0.3s ease',
+                }}
+              >
+                <span>Learn More</span>
+                <i className="bi bi-arrow-right"></i>
+              </a>
+            </div>
           </div>
 
           <div className="hero-stats-new">
