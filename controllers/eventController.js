@@ -309,6 +309,11 @@ exports.getEditEvent = async (req, res) => {
     const mainRegSub = subEventsRaw.find(sub => sub.description && sub.description.startsWith("[MAIN_REGISTRATION]"));
     const regularSubEvents = subEventsRaw.filter(sub => !(sub.description && sub.description.startsWith("[MAIN_REGISTRATION]")));
 
+    // Populate registrationCount for each sub-event
+    for (let sub of regularSubEvents) {
+      sub.registrationCount = await Registration.countDocuments({ subEventId: sub._id });
+    }
+
     const subEvents = [...regularSubEvents].sort((a, b) => {
       const dayA = a.dayNumber != null ? a.dayNumber : Infinity;
       const dayB = b.dayNumber != null ? b.dayNumber : Infinity;
@@ -1088,7 +1093,9 @@ exports.addFormField = async (req, res) => {
       placeholder:   placeholder || "",
       askForMembers: parseCheckbox(askForMembers) && type !== "file",
       options: type === "dropdown" || type === "checkbox"
-        ? options ? options.split(",").map(o => o.trim()) : []
+        ? (Array.isArray(options)
+            ? options.map(o => o.trim()).filter(Boolean)
+            : (options ? String(options).split(",").map(o => o.trim()).filter(Boolean) : []))
         : [],
       order: subEvent.formFields.length,
     };
@@ -1115,7 +1122,9 @@ exports.updateFormField = async (req, res) => {
     field.placeholder   = placeholder || "";
     field.askForMembers = parseCheckbox(askForMembers) && type !== "file";
     field.options = type === "dropdown" || type === "checkbox"
-      ? options ? options.split(",").map(o => o.trim()) : []
+      ? (Array.isArray(options)
+          ? options.map(o => o.trim()).filter(Boolean)
+          : (options ? String(options).split(",").map(o => o.trim()).filter(Boolean) : []))
       : [];
     await subEvent.save();
     res.json({ success: true, subEvent, redirect: `/events/edit/${subEvent.eventId}` });

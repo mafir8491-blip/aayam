@@ -272,7 +272,7 @@ export default function EventEdit() {
     setEditFieldLabel(field.label);
     setEditFieldType(field.type);
     setEditFieldPlaceholder(field.placeholder || '');
-    setEditFieldOptions(field.options ? field.options.join(', ') : '');
+    setEditFieldOptions(field.options ? (Array.isArray(field.options) ? field.options.join(', ') : String(field.options)) : '');
     setEditFieldRequired(field.required || false);
   };
 
@@ -674,7 +674,7 @@ export default function EventEdit() {
     setEditSubFieldLabel(field.label);
     setEditSubFieldType(field.type);
     setEditSubFieldPlaceholder(field.placeholder || '');
-    setEditSubFieldOptions(field.options ? field.options.join(', ') : '');
+    setEditSubFieldOptions(field.options ? (Array.isArray(field.options) ? field.options.join(', ') : String(field.options)) : '');
     setEditSubFieldRequired(field.required || false);
   };
 
@@ -1011,8 +1011,8 @@ export default function EventEdit() {
                             <span className="badge bg-secondary me-2">{field.type}</span>
                             <strong style={{color:"#3a2a1a"}}>{field.label}</strong>
                             {field.required && <span className="text-danger ms-1">*</span>}
-                            {field.options && field.options.length > 0 && (
-                              <div className="small text-muted mt-1">Options: {field.options.join(', ')}</div>
+                            {field.options && (Array.isArray(field.options) ? field.options : []).length > 0 && (
+                              <div className="small text-muted mt-1">Options: {(Array.isArray(field.options) ? field.options : []).join(', ')}</div>
                             )}
                           </div>
                           <div className="d-flex gap-1">
@@ -1514,8 +1514,8 @@ export default function EventEdit() {
                                   <span className="badge bg-secondary me-2">{field.type}</span>
                                   <strong style={{color:"#3a2a1a"}}>{field.label}</strong>
                                   {field.required && <span className="text-danger ms-1">*</span>}
-                                  {field.options && field.options.length > 0 && (
-                                    <div className="small text-muted mt-1">Options: {field.options.join(', ')}</div>
+                                  {field.options && (Array.isArray(field.options) ? field.options : []).length > 0 && (
+                                    <div className="small text-muted mt-1">Options: {(Array.isArray(field.options) ? field.options : []).join(', ')}</div>
                                   )}
                                 </div>
                                 <div className="d-flex gap-1">
