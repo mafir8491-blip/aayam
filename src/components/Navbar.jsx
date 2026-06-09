@@ -54,6 +54,20 @@ export default function Navbar() {
       });
   }, []);
 
+  const handleLogout = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const res = await fetch('/api/logout');
+      if (res.ok) {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.href = '/auth';
+      }
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+  };
+
   // Scroll handler for navbar background activation & scroll progress bar
   useEffect(() => {
     let ticking = false;
@@ -280,7 +294,7 @@ export default function Navbar() {
                         <div className="drop-divider"></div>
                       </>
                     )}
-                    <a className="drop-item drop-danger" href="/logout" role="menuitem">
+                    <a className="drop-item drop-danger" href="/logout" role="menuitem" onClick={handleLogout}>
                       <i className="bi bi-box-arrow-right"></i>
                       <span>Logout</span>
                     </a>
@@ -454,7 +468,7 @@ export default function Navbar() {
                     <i className="bi bi-shield-lock-fill"></i> Admin Dashboard
                   </Link>
                 )}
-                <a className="drawer-action-btn logout-btn" href="/logout">
+                <a className="drawer-action-btn logout-btn" href="/logout" onClick={(e) => { closeMobileMenu(); handleLogout(e); }}>
                   <i className="bi bi-box-arrow-right"></i> Logout
                 </a>
               </>

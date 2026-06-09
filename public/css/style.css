@@ -110,6 +110,10 @@ body::before {
   z-index: -2;
   pointer-events: none;
 }
+body:has(.home-wrapper)::before {
+  display: none !important;
+  content: none !important;
+}
 
 /* ── DARK MODE ── */
 body.dark-mode {

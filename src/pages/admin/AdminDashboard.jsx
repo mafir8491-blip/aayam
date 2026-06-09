@@ -80,6 +80,19 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleLogout = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const res = await fetch('/api/logout');
+      if (res.ok) {
+        localStorage.removeItem('user');
+        navigate('/auth');
+      }
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+  };
+
   useEffect(() => {
     checkAuthAndFetch();
     setSearchParams({ tab: activeTab });
@@ -401,7 +414,7 @@ export default function AdminDashboard() {
         <div className="border-top pt-3" style={{ borderColor: 'var(--border-theme)' }}>
           <div className="small text-muted mb-2">Logged in as:</div>
           <div className="small fw-bold mb-2">{user?.email?.split('@')[0]}</div>
-          <a href="/logout" className="btn btn-outline-danger btn-sm w-100">
+          <a href="/logout" className="btn btn-outline-danger btn-sm w-100" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right"></i> Logout
           </a>
         </div>
