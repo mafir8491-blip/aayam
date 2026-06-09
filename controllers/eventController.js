@@ -133,7 +133,10 @@ exports.getEventsPage = async (req, res) => {
     await Event.updateMany({ isPublic: { $exists: false } }, { $set: { isPublic: true } });
     await Event.updateMany({ isPublic: null }, { $set: { isPublic: true } });
 
-    const events = await Event.find({ isPublic: true }).sort({ startDate: 1 }).lean();
+    const user = req.session && req.session.user;
+    const isAdmin = user && (user.role === "admin" || user.role === "superadmin");
+    const query = isAdmin ? {} : { isPublic: true };
+    const events = await Event.find(query).sort({ startDate: 1 }).lean();
     const allSubs = await SubEvent.find({}).lean();
 
     events.forEach(e => {

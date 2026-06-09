@@ -57,6 +57,44 @@ export default function Events() {
     }
   };
 
+  const handleToggleVisibility = async (evtId) => {
+    try {
+      const res = await fetch(`/api/events/toggle-visibility/${evtId}`, { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to toggle visibility');
+      alert('Event visibility updated!');
+      fetchData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleMoveToPast = async (evtId) => {
+    if (!confirm('Are you sure you want to move this event to past events?')) return;
+    try {
+      const res = await fetch(`/api/events/move-to-past/${evtId}`, { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to move event');
+      alert('Event moved to past!');
+      fetchData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteEvent = async (evtId) => {
+    if (!confirm('Are you sure you want to permanently delete this event, all its sub-events, and all registrations? This cannot be undone.')) return;
+    try {
+      const res = await fetch(`/api/events/delete/${evtId}`, { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to delete event');
+      alert('Event deleted successfully.');
+      fetchData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     fetchUser();
@@ -461,16 +499,7 @@ export default function Events() {
           {displayedEvents.length > 0 ? (
             displayedEvents.map((evt) => (
               <div className="col-xl-3 col-lg-4 col-md-6 d-flex" key={evt._id}>
-                <div
-                  className="grid-event-card flex-fill d-flex flex-column"
-                  style={{
-                    background: 'rgba(30, 21, 14, 0.45)',
-                    border: '1px solid rgba(166, 124, 82, 0.15)',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                  }}
-                >
+                <div className="grid-event-card flex-fill d-flex flex-column">
                   <Link to={`/events/${evt._id}`} className="card-img-wrap" style={{ position: 'relative', display: 'block', height: '180px', overflow: 'hidden' }}>
                     {evt.bannerImage ? (
                       <img
@@ -503,18 +532,69 @@ export default function Events() {
                   </Link>
 
                   <div className="card-body-wrap p-4 d-flex flex-column flex-fill">
-                    <h3 className="h5 fw-bold mb-2" style={{ color: '#fff' }}>{evt.title}</h3>
+                    <h3 className="h5 fw-bold mb-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'between', gap: '8px', color: '#fff' }}>
+                      <Link to={`/events/${evt._id}`} style={{ textDecoration: 'none', color: '#fff' }}>{evt.title}</Link>
+                      {!evt.isPublic && isAdmin && (
+                        <span className="badge bg-warning text-dark" style={{ fontSize: '0.65rem' }}>🔒 Private</span>
+                      )}
+                    </h3>
                     <p className="text-muted small flex-fill mb-3">{evt.shortDescription || ''}</p>
 
-                    <div className="d-flex justify-content-between align-items-center mt-auto">
-                      <span className="small text-muted">
-                        <i className="bi bi-calendar3 me-1"></i>
-                        {new Date(evt.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    <div className="d-flex align-items-center gap-2 mb-3 text-muted small">
+                      <i className="bi bi-calendar3 text-warning"></i>
+                      <span>
+                        {new Date(evt.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
                       </span>
-                      <Link to={`/events/${evt._id}`} className="btn-details" style={{ textDecoration: 'none', color: 'var(--br)', fontWeight: 700 }}>
-                        Details <i className="bi bi-arrow-right-short"></i>
-                      </Link>
                     </div>
+
+                    <div className="d-flex gap-2 mt-auto">
+                      <Link to={`/events/${evt._id}`} className="btn-details-custom">
+                        View Details &rarr;
+                      </Link>
+                      {evt.isPublic && (
+                        evt.hasMainForm && evt.mainFormSubId ? (
+                          <Link to={`/register/${evt.mainFormSubId}`} className="btn-register-custom">
+                            Register <i className="bi bi-pencil-square"></i>
+                          </Link>
+                        ) : evt.registrationLink ? (
+                          <a href={evt.registrationLink} target="_blank" rel="noopener noreferrer" className="btn-register-custom">
+                            Register <i className="bi bi-box-arrow-up-right"></i>
+                          </a>
+                        ) : (
+                          <Link to={`/events/${evt._id}/register`} className="btn-register-custom">
+                            Register <i className="bi bi-pencil-square"></i>
+                          </Link>
+                        )
+                      )}
+                    </div>
+
+                    {isAdmin && (
+                      <div className="card-admin-row">
+                        <Link to={`/events/edit/${evt._id}`} className="btn-admin-action">
+                          ✏ Edit
+                        </Link>
+                        <button
+                          onClick={() => handleToggleVisibility(evt._id)}
+                          className="btn-admin-action btn-warn"
+                        >
+                          {evt.isPublic ? '🔒 Make Private' : '🌐 Make Public'}
+                        </button>
+                        {evt.type !== 'past' && (
+                          <button
+                            onClick={() => handleMoveToPast(evt._id)}
+                            className="btn-admin-action"
+                          >
+                            ⏳ Move to Past
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDeleteEvent(evt._id)}
+                          className="btn-admin-action btn-danger"
+                        >
+                          ✕ Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

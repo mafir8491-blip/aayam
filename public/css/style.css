@@ -1462,3 +1462,144 @@ body.dark-mode .form-control:focus, body.dark-mode .form-select:focus { backgrou
     display: none !important;
   }
 }
+
+/* ════════════════════════════════════════
+   ── EVENT CARD LAYOUTS & PILL BUTTONS ──
+   ════════════════════════════════════════ */
+.grid-event-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  border: 1px solid var(--border-l);
+  background: var(--cream-alt) !important;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+body.dark-mode .grid-event-card {
+  background: var(--dk-surface) !important;
+  border-color: var(--border-d);
+}
+.grid-event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(166,124,82,0.12);
+}
+body.dark-mode .grid-event-card:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+.btn-details-custom {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1.5px solid var(--border-l);
+  color: var(--tx-mid) !important;
+  background: transparent;
+  transition: all 0.22s ease;
+}
+.btn-details-custom:hover {
+  border-color: var(--br);
+  color: var(--br) !important;
+  background: rgba(166, 124, 82, 0.05);
+}
+body.dark-mode .btn-details-custom {
+  border-color: var(--border-d);
+  color: var(--dk-text) !important;
+}
+body.dark-mode .btn-details-custom:hover {
+  border-color: var(--br);
+  color: var(--br) !important;
+}
+
+.btn-register-custom {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: var(--br-deep);
+  border: 1.5px solid var(--br-deep);
+  color: #fff !important;
+  transition: all 0.22s ease;
+}
+.btn-register-custom:hover {
+  background: transparent;
+  color: var(--br-deep) !important;
+  border-color: var(--br-deep);
+}
+body.dark-mode .btn-register-custom {
+  background: var(--br);
+  border-color: var(--br);
+}
+body.dark-mode .btn-register-custom:hover {
+  background: transparent;
+  color: var(--br) !important;
+  border-color: var(--br);
+}
+
+.card-admin-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-l);
+  flex-wrap: wrap;
+}
+body.dark-mode .card-admin-row {
+  border-color: var(--border-d);
+}
+
+.btn-admin-action {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--border-l);
+  color: var(--tx-mid) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+body.dark-mode .btn-admin-action {
+  border-color: var(--border-d);
+  color: var(--dk-muted) !important;
+}
+.btn-admin-action:hover {
+  border-color: var(--br);
+  color: var(--br) !important;
+  background: rgba(166, 124, 82, 0.04);
+}
+.btn-admin-action.btn-warn {
+  color: #c0392b !important;
+  border-color: rgba(192, 57, 43, 0.22);
+}
+.btn-admin-action.btn-warn:hover {
+  background: rgba(192, 57, 43, 0.05);
+}
+.btn-admin-action.btn-danger {
+  color: #c0392b !important;
+  border-color: rgba(192, 57, 43, 0.22);
+  background: rgba(192, 57, 43, 0.04);
+}
+.btn-admin-action.btn-danger:hover {
+  background: #c0392b;
+  color: #fff !important;
+}
