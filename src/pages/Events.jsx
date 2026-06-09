@@ -408,7 +408,17 @@ export default function Events() {
       )}
 
       {/* Status Selection Boxes */}
-      <div className="status-selection-container" data-aos="fade-up">
+      <div
+        className="status-selection-container"
+        data-aos="fade-up"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '20px',
+          marginTop: '24px',
+          marginBottom: '36px',
+        }}
+      >
         <div
           className={`status-box ${selectedStatus === 'upcoming' ? 'active' : ''}`}
           id="box-upcoming"
@@ -416,15 +426,31 @@ export default function Events() {
             setSelectedStatus('upcoming');
             setSelectedCategory('all');
           }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '20px 24px',
+            borderRadius: '16px',
+            border: selectedStatus === 'upcoming'
+              ? '1.5px solid var(--br)'
+              : '1.5px solid var(--border-l, #ddd)',
+            background: selectedStatus === 'upcoming'
+              ? 'linear-gradient(135deg, rgba(166,124,82,0.12), rgba(201,168,76,0.08))'
+              : 'var(--cream-alt, #faf7f3)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: selectedStatus === 'upcoming' ? '0 8px 24px rgba(166,124,82,0.15)' : 'none',
+          }}
         >
-          <div className="status-box-icon">
+          <div className="status-box-icon" style={{ fontSize: '1.8rem', color: 'var(--br, #a67c52)', display: 'flex', alignItems: 'center' }}>
             <i className="bi bi-calendar2-week"></i>
           </div>
-          <div className="status-box-content">
-            <h3 className="status-box-title">Upcoming Events</h3>
-            <p className="status-box-count">{(data.upcomingEvents || []).length} Events</p>
+          <div className="status-box-content" style={{ flex: 1 }}>
+            <h3 className="status-box-title" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.05rem', fontWeight: 800, color: 'var(--tx, #3a2a1a)', margin: '0 0 4px 0' }}>Upcoming Events</h3>
+            <p className="status-box-count" style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--tx-muted, #888)', margin: 0 }}>{(data.upcomingEvents || []).length} Events</p>
           </div>
-          <div className="status-box-arrow">
+          <div className="status-box-arrow" style={{ fontSize: '1rem', color: 'var(--tx-muted, #888)', opacity: 0.5 }}>
             <i className="bi bi-chevron-right"></i>
           </div>
         </div>
@@ -436,15 +462,31 @@ export default function Events() {
             setSelectedStatus('live');
             setSelectedCategory('all');
           }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '20px 24px',
+            borderRadius: '16px',
+            border: selectedStatus === 'live'
+              ? '1.5px solid var(--br)'
+              : '1.5px solid var(--border-l, #ddd)',
+            background: selectedStatus === 'live'
+              ? 'linear-gradient(135deg, rgba(166,124,82,0.12), rgba(201,168,76,0.08))'
+              : 'var(--cream-alt, #faf7f3)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: selectedStatus === 'live' ? '0 8px 24px rgba(166,124,82,0.15)' : 'none',
+          }}
         >
-          <div className="status-box-icon live-pulse-icon">
-            <i className="bi bi-play-circle-fill"></i>
+          <div className="status-box-icon live-pulse-icon" style={{ fontSize: '1.8rem', display: 'flex', alignItems: 'center' }}>
+            <i className="bi bi-play-circle-fill" style={{ color: '#27ae60', animation: 'livePulse 1.8s infinite' }}></i>
           </div>
-          <div className="status-box-content">
-            <h3 className="status-box-title">Live Events</h3>
-            <p className="status-box-count">{(data.liveEvents || []).length} Events</p>
+          <div className="status-box-content" style={{ flex: 1 }}>
+            <h3 className="status-box-title" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.05rem', fontWeight: 800, color: 'var(--tx, #3a2a1a)', margin: '0 0 4px 0' }}>Live Events</h3>
+            <p className="status-box-count" style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--tx-muted, #888)', margin: 0 }}>{(data.liveEvents || []).length} Events</p>
           </div>
-          <div className="status-box-arrow">
+          <div className="status-box-arrow" style={{ fontSize: '1rem', color: 'var(--tx-muted, #888)', opacity: 0.5 }}>
             <i className="bi bi-chevron-right"></i>
           </div>
         </div>
@@ -456,15 +498,31 @@ export default function Events() {
             setSelectedStatus('past');
             setSelectedCategory('all');
           }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '20px 24px',
+            borderRadius: '16px',
+            border: selectedStatus === 'past'
+              ? '1.5px solid var(--br)'
+              : '1.5px solid var(--border-l, #ddd)',
+            background: selectedStatus === 'past'
+              ? 'linear-gradient(135deg, rgba(166,124,82,0.12), rgba(201,168,76,0.08))'
+              : 'var(--cream-alt, #faf7f3)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: selectedStatus === 'past' ? '0 8px 24px rgba(166,124,82,0.15)' : 'none',
+          }}
         >
-          <div className="status-box-icon">
+          <div className="status-box-icon" style={{ fontSize: '1.8rem', color: 'var(--br, #a67c52)', display: 'flex', alignItems: 'center' }}>
             <i className="bi bi-check-circle-fill"></i>
           </div>
-          <div className="status-box-content">
-            <h3 className="status-box-title">Past Events</h3>
-            <p className="status-box-count">{(data.pastEvents || []).length} Events</p>
+          <div className="status-box-content" style={{ flex: 1 }}>
+            <h3 className="status-box-title" style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.05rem', fontWeight: 800, color: 'var(--tx, #3a2a1a)', margin: '0 0 4px 0' }}>Past Events</h3>
+            <p className="status-box-count" style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--tx-muted, #888)', margin: 0 }}>{(data.pastEvents || []).length} Events</p>
           </div>
-          <div className="status-box-arrow">
+          <div className="status-box-arrow" style={{ fontSize: '1rem', color: 'var(--tx-muted, #888)', opacity: 0.5 }}>
             <i className="bi bi-chevron-right"></i>
           </div>
         </div>
@@ -472,12 +530,24 @@ export default function Events() {
 
       {/* Category filter tabs */}
       {selectedStatus && (
-        <div className="events-filter-bar d-flex justify-content-center gap-2 mb-4 flex-wrap">
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '24px', marginBottom: '36px' }}>
           {['all', 'Technical', 'Cultural', 'Sports', 'Workshop'].map((cat) => (
             <button
               key={cat}
               className={`filter-tab ${selectedCategory === cat ? 'active' : ''}`}
               onClick={() => setSelectedCategory(cat)}
+              style={{
+                fontFamily: 'var(--font-display, serif)',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                padding: '8px 20px',
+                borderRadius: '8px',
+                border: selectedCategory === cat ? '1px solid var(--br, #a67c52)' : '1px solid rgba(166,124,82,0.35)',
+                background: selectedCategory === cat ? 'var(--br, #a67c52)' : 'transparent',
+                color: selectedCategory === cat ? '#fff' : 'var(--tx-muted, #888)',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+              }}
             >
               {cat === 'all' ? 'All Categories' : cat}
             </button>
