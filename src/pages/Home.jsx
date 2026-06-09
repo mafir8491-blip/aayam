@@ -243,7 +243,7 @@ export default function Home() {
           border-radius: 18px;
           padding: 22px 30px;
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(3, 1fr);
           gap: 20px;
           max-width: 820px;
           margin: 0 auto;
@@ -253,7 +253,7 @@ export default function Home() {
 
         @media (max-width: 992px) {
           .hero-stats-new {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             padding: 20px;
             gap: 16px;
           }
@@ -533,19 +533,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            {/* Stat 3 */}
-            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
-              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
-                <i className="bi bi-trophy-fill"></i>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>15+</div>
-                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
-                  National Wins
-                </div>
-              </div>
-            </div>
-            {/* Stat 4 */}
+            {/* Stat 3 (UIT Home) */}
             <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
               <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
                 <i className="bi bi-building"></i>
