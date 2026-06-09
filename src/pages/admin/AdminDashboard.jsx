@@ -33,6 +33,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Settings Panel Form States
   const [profileEmail, setProfileEmail] = useState('');
@@ -88,6 +89,7 @@ export default function AdminDashboard() {
   const handleTabSelect = (tabName) => {
     setLoading(true);
     setActiveTab(tabName);
+    setMobileMenuOpen(false);
   };
 
   // Delete Action Helpers
@@ -253,14 +255,123 @@ export default function AdminDashboard() {
   } : null;
 
   return (
-    <div className="d-flex min-vh-100" style={{ background: 'var(--bg-base-theme)', color: 'var(--text-theme)' }}>
-      
+    <div className="admin-layout" style={{ background: 'var(--bg-base-theme)', color: 'var(--text-theme)' }}>
+      <style>{`
+        .admin-layout {
+          display: flex;
+          min-height: 100vh;
+        }
+        
+        .admin-mobile-header {
+          display: none;
+          background: var(--bg-surface-theme);
+          border-bottom: 1px solid var(--border-theme);
+          padding: 12px 20px;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .admin-sidebar {
+          width: 260px;
+          background: var(--bg-surface-theme);
+          border-right: 1px solid var(--border-theme);
+          height: 100vh;
+          position: sticky;
+          top: 0;
+          z-index: 999;
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-main-container {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+        }
+
+        @media (max-width: 991px) {
+          .admin-layout {
+            flex-direction: column;
+          }
+          
+          .admin-mobile-header {
+            display: flex;
+          }
+
+          .admin-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            height: 100vh;
+            transform: translateX(-100%);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+          }
+
+          .admin-sidebar.open {
+            transform: translateX(0);
+          }
+
+          .admin-sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 998;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: fadeIn 0.25s ease;
+          }
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
+
+      {/* MOBILE TOP BAR */}
+      <div className="admin-mobile-header">
+        <div className="d-flex align-items-center gap-2">
+          <img src="/images/aayam_img.jpg" alt="AAYAM" className="rounded" style={{ width: '28px', height: '28px', border: '1px solid var(--br)' }} />
+          <span style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1rem', fontWeight: 700, color: 'var(--br)', letterSpacing: '0.5px' }}>AAYAM CONTROL</span>
+        </div>
+        <button
+          className="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-center p-2"
+          onClick={() => setMobileMenuOpen(true)}
+          style={{ border: '1px solid var(--border-theme)', background: 'transparent' }}
+        >
+          <i className="bi bi-list fs-4" style={{ color: 'var(--text-theme)' }}></i>
+        </button>
+      </div>
+
+      {/* SIDEBAR OVERLAY */}
+      {mobileMenuOpen && (
+        <div className="admin-sidebar-overlay" onClick={() => setMobileMenuOpen(false)} />
+      )}
+
       {/* SIDEBAR NAVIGATION */}
-      <nav className="sidebar p-3 d-flex flex-column justify-content-between" style={{ width: '260px', background: 'var(--bg-surface-theme)', borderRight: '1px solid var(--border-theme)', height: '100vh', position: 'sticky', top: 0 }}>
+      <nav className={`admin-sidebar p-3 d-flex flex-column justify-content-between ${mobileMenuOpen ? 'open' : ''}`}>
         <div>
-          <div className="d-flex align-items-center gap-2 mb-4 border-bottom pb-3">
-            <img src="/images/aayam_img.jpg" alt="AAYAM" className="rounded" style={{ width: '32px', height: '32px', border: '1.5px solid var(--br)' }} />
-            <span style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--br)', letterSpacing: '1px' }}>AAYAM CONTROL</span>
+          <div className="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+            <div className="d-flex align-items-center gap-2">
+              <img src="/images/aayam_img.jpg" alt="AAYAM" className="rounded" style={{ width: '32px', height: '32px', border: '1.5px solid var(--br)' }} />
+              <span style={{ fontFamily: 'var(--font-display, serif)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--br)', letterSpacing: '1px' }}>AAYAM CONTROL</span>
+            </div>
+            {/* Close button for mobile menu */}
+            <button
+              className="btn btn-sm d-lg-none text-muted p-1"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ border: 'none', background: 'transparent' }}
+            >
+              <i className="bi bi-x-lg fs-5" style={{ color: 'var(--text-theme)' }}></i>
+            </button>
           </div>
 
           <ul className="nav flex-column gap-2">
@@ -297,7 +408,7 @@ export default function AdminDashboard() {
       </nav>
 
       {/* DASHBOARD CONTENT AREA */}
-      <main className="flex-fill p-4" style={{ overflowY: 'auto' }}>
+      <main className="admin-main-container p-4" style={{ overflowY: 'auto' }}>
         
         {/* STATS OVERVIEW CARDS */}
         {data && (
