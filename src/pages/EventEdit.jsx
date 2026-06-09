@@ -837,7 +837,7 @@ export default function EventEdit() {
           <i className="bi bi-arrow-left"></i> Back to Event
         </Link>
         <div className="section-label">Admin Console</div>
-        <h1 className="page-title fw-bold" style={{color:"#a67c52"}} style={{ fontFamily: 'var(--font-display, serif)', fontSize: '2.2rem' }}>Edit Event: {event.title}</h1>
+        <h1 className="page-title fw-bold" style={{color:"#a67c52", fontFamily: 'var(--font-display, serif)', fontSize: '2.2rem' }}>Edit Event: {event.title}</h1>
       </div>
 
       {/* SECTION 1 - EVENT DETAILS FORM */}
@@ -918,8 +918,8 @@ export default function EventEdit() {
             <div className="d-flex flex-column gap-2 mb-2">
               {customDetails.map((detail, idx) => (
                 <div key={idx} className="d-flex gap-2">
-                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Key (e.g. Fee)" value={detail.key} onChange={(e) => updateCustomDetailRow(idx, 'key', e.target.value)} style={{ flex: 1 }} />
-                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px"}} placeholder="Value (e.g. Free)" value={detail.value} onChange={(e) => updateCustomDetailRow(idx, 'value', e.target.value)} style={{ flex: 1 }} />
+                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px", flex: 1}} placeholder="Key (e.g. Fee)" value={detail.key} onChange={(e) => updateCustomDetailRow(idx, 'key', e.target.value)} />
+                  <input type="text" className="form-control" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8",borderRadius:"8px", flex: 1}} placeholder="Value (e.g. Free)" value={detail.value} onChange={(e) => updateCustomDetailRow(idx, 'value', e.target.value)} />
                   <button type="button" className="btn btn-danger" onClick={() => removeCustomDetailRow(idx)}>✕</button>
                 </div>
               ))}
@@ -1131,7 +1131,7 @@ export default function EventEdit() {
                             const newCols = parseInt(e.target.value) || 3;
                             setEditCardColsCount(newCols);
                             buildGrid('edit', newCols);
-                          }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} style={{ width: '60px' }} />
+                          }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8", width: '60px'}} />
                           <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => addRowToTable('edit')}>+ Row</button>
                         </div>
                         <div className="table-responsive">
@@ -1214,7 +1214,7 @@ export default function EventEdit() {
                   const newCols = parseInt(e.target.value) || 3;
                   setNewCardColsCount(newCols);
                   buildGrid('new', newCols);
-                }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8"}} style={{ width: '60px' }} />
+                }} className="form-control form-control-sm" style={{background:"#fff",color:"#3a2a1a",border:"1.5px solid #e0d5c8", width: '60px'}} />
                 <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => addRowToTable('new')}>+ Row</button>
               </div>
               <div className="table-responsive">

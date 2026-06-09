@@ -381,415 +381,464 @@ export default function Home() {
           letter-spacing: 0.8px;
           margin: 0;
         }
-      `}</style>
-      {/* ═══════════════════════════════════════
-          GEN Z HERO BANNER
-          ═══════════════════════════════════════ */}
-      <style>{`
-        @keyframes orbFloat1 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          33%      { transform: translate(40px,-60px) scale(1.12); }
-          66%      { transform: translate(-30px,40px) scale(0.92); }
+
+        /* ═══════════════════════════════════════
+           GEN Z COUNTDOWN BANNER (Brown & Gold Theme)
+           ═══════════════════════════════════════ */
+        @keyframes hpbPulseGlow {
+          0%, 100% {
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(201, 168, 76, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(201, 168, 76, 0.45), 0 10px 40px rgba(0, 0, 0, 0.6);
+            border-color: rgba(201, 168, 76, 0.65);
+          }
         }
-        @keyframes orbFloat2 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          33%      { transform: translate(-50px,30px) scale(1.08); }
-          66%      { transform: translate(60px,-50px) scale(0.95); }
+        @keyframes hpbBadgePulse {
+          0%, 100% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
         }
-        @keyframes orbFloat3 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          50%      { transform: translate(30px,50px) scale(1.15); }
+        @keyframes hpbTextShimmer {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
-        @keyframes tagDrift {
-          0%,100% { transform: translateY(0px) rotate(-2deg); }
-          50%      { transform: translateY(-12px) rotate(2deg); }
+        @keyframes hpbBtnHoverGlow {
+          0%, 100% { box-shadow: 0 0 10px rgba(166, 124, 82, 0.3); }
+          50% { box-shadow: 0 0 25px rgba(201, 168, 76, 0.6); }
         }
-        @keyframes tagDrift2 {
-          0%,100% { transform: translateY(0px) rotate(1deg); }
-          50%      { transform: translateY(-18px) rotate(-3deg); }
+        @keyframes orbDrift {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(15px, -15px) scale(1.15); }
         }
-        @keyframes tagDrift3 {
-          0%,100% { transform: translateY(0px) rotate(-1deg); }
-          50%      { transform: translateY(-8px) rotate(3deg); }
-        }
-        @keyframes slideUp {
-          from { opacity:0; transform:translateY(40px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        @keyframes lineGrow {
-          from { width: 0; }
-          to   { width: 100%; }
-        }
-        @keyframes pulseGlow {
-          0%,100% { box-shadow: 0 0 18px rgba(166,124,82,0.3); }
-          50%      { box-shadow: 0 0 42px rgba(166,124,82,0.65), 0 0 80px rgba(166,124,82,0.2); }
-        }
-        @keyframes counterUp {
-          from { opacity:0; transform:translateY(14px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        @keyframes scrollBounce {
-          0%,100% { transform:translateY(0) translateX(-50%); }
-          50%      { transform:translateY(8px) translateX(-50%); }
-        }
-        @keyframes shimmer {
-          0%   { background-position: -400px 0; }
-          100% { background-position: 400px 0; }
-        }
-        .hero-new-cta-primary {
-          background: linear-gradient(135deg, #a67c52, #c9a84c);
-          color: #0d0905;
-          font-weight: 800;
-          border: none;
-          padding: 14px 34px;
-          border-radius: 100px;
-          text-decoration: none;
-          display: inline-flex;
+
+        .hpb-wrapper-new {
+          background: rgba(26, 17, 10, 0.75);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1.5px solid rgba(201, 168, 76, 0.35);
+          border-radius: 28px;
+          padding: 36px 40px;
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          max-width: 680px;
+          margin: 32px auto 16px;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+          animation: hpbPulseGlow 3s ease-in-out infinite;
+          display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 10px;
-          font-size: 0.95rem;
-          letter-spacing: 0.3px;
-          animation: pulseGlow 2.5s ease-in-out infinite;
-          transition: transform 0.25s ease, opacity 0.25s ease;
+          text-align: center;
+          gap: 16px;
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .hero-new-cta-primary:hover { transform:scale(1.06); opacity:0.92; color:#0d0905; text-decoration:none; }
-        .hero-new-cta-secondary {
-          border: 2px solid rgba(166,124,82,0.6);
-          color: #e8d0b0;
-          background: rgba(166,124,82,0.07);
-          backdrop-filter: blur(6px);
-          font-weight: 700;
-          padding: 13px 32px;
-          border-radius: 100px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 0.95rem;
-          transition: all 0.28s ease;
+        
+        .hpb-wrapper-new:hover {
+          transform: translateY(-5px);
         }
-        .hero-new-cta-secondary:hover {
-          background: rgba(166,124,82,0.18);
-          border-color: #a67c52;
-          color: #fff;
-          text-decoration: none;
-          transform: scale(1.04);
+
+        .hpb-orb-1 {
+          position: absolute;
+          top: -20px;
+          right: -20px;
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
+          pointer-events: none;
+          animation: orbDrift 6s ease-in-out infinite alternate;
         }
-        .hero-tag {
+
+        .hpb-orb-2 {
+          position: absolute;
+          bottom: -30px;
+          left: -30px;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(166, 124, 82, 0.15) 0%, transparent 70%);
+          pointer-events: none;
+          animation: orbDrift 8s ease-in-out infinite alternate-reverse;
+        }
+
+        .hpb-badge-new {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 7px 16px;
+          background: rgba(201, 168, 76, 0.12);
+          border: 1px solid rgba(201, 168, 76, 0.4);
+          color: #c9a84c;
+          padding: 6px 16px;
           border-radius: 100px;
-          font-size: 0.75rem;
-          font-weight: 700;
+          font-size: 0.72rem;
+          font-weight: 800;
           text-transform: uppercase;
-          letter-spacing: 0.8px;
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          position: absolute;
-          white-space: nowrap;
-          user-select: none;
+          letter-spacing: 2px;
+          margin-bottom: 4px;
+          animation: hpbBadgePulse 2s infinite ease-in-out;
         }
-        .stat-card-new {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(166,124,82,0.2);
-          border-radius: 20px;
-          padding: 22px 28px;
-          text-align: center;
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          flex: 1;
-          min-width: 130px;
-          animation: counterUp 0.7s ease both;
-          transition: transform 0.3s ease, border-color 0.3s ease;
+
+        .hpb-badge-new i {
+          font-size: 0.8rem;
+          color: #c9a84c;
         }
-        .stat-card-new:hover {
-          transform: translateY(-6px);
-          border-color: rgba(166,124,82,0.55);
+
+        .hpb-heading-new {
+          font-size: 1rem;
+          font-weight: 700;
+          color: rgba(253, 248, 243, 0.7);
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          margin: 0;
+          line-height: 1.2;
         }
-        @media (max-width: 768px) {
-          .hero-tags-row { display: none !important; }
-          .hero-new-grid { grid-template-columns: 1fr !important; text-align: center; }
-          .hero-new-cta-row { justify-content: center !important; }
-          .hero-stats-strip { flex-wrap: wrap; gap: 12px !important; }
-          .stat-card-new { min-width: calc(50% - 6px); }
+
+        .hpb-title-new {
+          font-family: var(--font-display, 'Georgia', serif);
+          font-size: clamp(1.8rem, 4vw, 2.6rem);
+          font-weight: 900;
+          margin: 4px 0;
+          line-height: 1.1;
+          background: linear-gradient(to right, #fff 20%, #c9a84c 50%, #a67c52 80%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: hpbTextShimmer 4s linear infinite;
+        }
+
+        .hpb-desc-new {
+          font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+          color: rgba(253, 248, 243, 0.65);
+          max-width: 500px;
+          line-height: 1.6;
+          margin: 0 0 10px;
+        }
+
+        .hpb-countdown-grid-new {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          justify-content: center;
+          margin: 8px 0;
+          width: 100%;
+        }
+
+        .hpb-cd-box-new {
+          background: rgba(13, 10, 7, 0.5);
+          border: 1px solid rgba(201, 168, 76, 0.2);
+          border-radius: 16px;
+          padding: 12px 16px;
+          min-width: 72px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        
+        .hpb-wrapper-new:hover .hpb-cd-box-new {
+          border-color: rgba(201, 168, 76, 0.45);
+          background: rgba(13, 10, 7, 0.7);
+        }
+
+        .hpb-cd-val-new {
+          font-family: var(--font-display, 'Georgia', serif);
+          font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+          font-weight: 900;
+          color: #fff;
+          line-height: 1;
+          font-variant-numeric: tabular-nums;
+          text-shadow: 0 0 10px rgba(201, 168, 76, 0.3);
+        }
+
+        .hpb-cd-lbl-new {
+          font-size: 0.6rem;
+          color: rgba(253, 248, 243, 0.45);
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          margin-top: 6px;
+        }
+
+        .hpb-cd-divider-new {
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: rgba(201, 168, 76, 0.5);
+          margin-bottom: 22px;
+        }
+
+        .hpb-btn-new {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 36px;
+          background: linear-gradient(135deg, #a67c52 0%, #c9a84c 100%);
+          color: #0d0a07 !important;
+          font-weight: 800;
+          font-size: 0.95rem;
+          border-radius: 100px;
+          text-decoration: none !important;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          border: none;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+          margin-top: 8px;
+        }
+
+        .hpb-btn-new:hover {
+          transform: scale(1.05);
+          animation: hpbBtnHoverGlow 2s infinite ease-in-out;
+        }
+
+        @media (max-width: 576px) {
+          .hpb-wrapper-new {
+            padding: 28px 20px;
+            gap: 12px;
+            margin: 20px 12px 10px;
+          }
+          .hpb-cd-box-new {
+            min-width: 60px;
+            padding: 8px 10px;
+          }
+          .hpb-cd-divider-new {
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+          }
+          .hpb-btn-new {
+            padding: 12px 28px;
+            font-size: 0.85rem;
+            width: 100%;
+            justify-content: center;
+          }
         }
       `}</style>
-
+      {/* HERO SECTION */}
       <section
+        className="hs-hero"
         style={{
-          position: 'relative',
+          background: `linear-gradient(rgba(18, 12, 8, 0.78), rgba(18, 12, 8, 0.78)), url('/images/committee_hero.jpg') no-repeat center center`,
+          backgroundSize: 'cover',
           minHeight: '100vh',
-          background: 'linear-gradient(160deg, #0d0a07 0%, #1a1108 45%, #0f0c09 100%)',
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          overflow: 'hidden',
-          paddingTop: 'clamp(100px, 14vh, 160px)',
-          paddingBottom: 'clamp(60px, 10vh, 100px)',
+          position: 'relative',
+          paddingTop: 'clamp(80px, 12vh, 140px)',
+          paddingBottom: 'clamp(60px, 9vh, 100px)',
         }}
       >
-        {/* ── Ambient orbs ── */}
-        <div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none', overflow:'hidden' }}>
-          <div style={{
-            position:'absolute', top:'-10%', left:'-8%',
-            width:'clamp(300px,50vw,700px)', height:'clamp(300px,50vw,700px)',
-            borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(166,124,82,0.18) 0%, transparent 70%)',
-            animation:'orbFloat1 14s ease-in-out infinite',
-          }}/>
-          <div style={{
-            position:'absolute', bottom:'-15%', right:'-10%',
-            width:'clamp(250px,45vw,620px)', height:'clamp(250px,45vw,620px)',
-            borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 70%)',
-            animation:'orbFloat2 18s ease-in-out infinite',
-          }}/>
-          <div style={{
-            position:'absolute', top:'40%', left:'45%',
-            width:'clamp(150px,25vw,380px)', height:'clamp(150px,25vw,380px)',
-            borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(166,100,52,0.1) 0%, transparent 65%)',
-            animation:'orbFloat3 22s ease-in-out infinite',
-          }}/>
-          {/* Grid overlay */}
-          <div style={{
-            position:'absolute', inset:0,
-            backgroundImage:'linear-gradient(rgba(166,124,82,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(166,124,82,0.04) 1px, transparent 1px)',
-            backgroundSize:'60px 60px',
-          }}/>
-        </div>
+        <div className="hero-grain" aria-hidden="true"></div>
 
-        {/* ── Floating keyword tags ── */}
-        <div aria-hidden="true" className="hero-tags-row">
-          <span className="hero-tag" style={{
-            top:'18%', left:'4%',
-            background:'rgba(166,124,82,0.12)', border:'1px solid rgba(166,124,82,0.3)', color:'#c9a84c',
-            animation:'tagDrift 6s ease-in-out infinite',
-          }}>
-            <i className="bi bi-lightning-charge-fill"/> Technical
-          </span>
-          <span className="hero-tag" style={{
-            top:'28%', right:'5%',
-            background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.12)', color:'rgba(255,255,255,0.7)',
-            animation:'tagDrift2 8s ease-in-out infinite',
-          }}>
-            <i className="bi bi-music-note-beamed"/> Cultural
-          </span>
-          <span className="hero-tag" style={{
-            bottom:'28%', left:'3%',
-            background:'rgba(39,174,96,0.1)', border:'1px solid rgba(39,174,96,0.25)', color:'#5ddb8a',
-            animation:'tagDrift3 7s ease-in-out infinite',
-          }}>
-            <i className="bi bi-trophy-fill"/> Sports
-          </span>
-          <span className="hero-tag" style={{
-            bottom:'22%', right:'4%',
-            background:'rgba(108,99,255,0.1)', border:'1px solid rgba(108,99,255,0.25)', color:'#a89dff',
-            animation:'tagDrift 9s ease-in-out infinite 1s',
-          }}>
-            <i className="bi bi-tools"/> Workshops
-          </span>
-          <span className="hero-tag" style={{
-            top:'55%', right:'7%',
-            background:'rgba(255,100,100,0.08)', border:'1px solid rgba(255,100,100,0.2)', color:'#ff8a8a',
-            animation:'tagDrift2 10s ease-in-out infinite 0.5s',
-          }}>
-            <i className="bi bi-people-fill"/> Community
-          </span>
-        </div>
-
-        {/* ── Main content ── */}
-        <div className="container" style={{ position:'relative', zIndex:2, maxWidth:'1000px' }}>
-
-          {/* Eyebrow */}
-          <div style={{ textAlign:'center', marginBottom:'20px', animation:'slideUp 0.6s ease both' }}>
-            <span style={{
-              display:'inline-flex', alignItems:'center', gap:'8px',
-              padding:'6px 20px', borderRadius:'100px',
-              background:'rgba(166,124,82,0.12)', border:'1px solid rgba(166,124,82,0.35)',
-              fontSize:'0.72rem', fontWeight:800, textTransform:'uppercase', letterSpacing:'2.5px',
-              color:'#c9a84c',
-            }}>
-              <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#c9a84c', display:'inline-block', animation:'pulseGlow 1.8s infinite' }}/>
-              Official Student Committee · UIT
-            </span>
-          </div>
-
-          {/* Main headline */}
-          <div style={{ textAlign:'center', marginBottom:'16px', animation:'slideUp 0.7s ease 0.1s both' }}>
-            <h1 style={{
-              fontFamily:"'Playfair Display', Georgia, serif",
-              fontSize:'clamp(2.8rem, 9vw, 7.5rem)',
-              fontWeight:900,
-              lineHeight:1.0,
-              letterSpacing:'-1px',
-              margin:0,
-              color:'#fff',
-              position:'relative',
-              display:'inline-block',
-            }}>
-              <span style={{
-                background:'linear-gradient(135deg, #a67c52 0%, #c9a84c 40%, #e8d0b0 70%, #a67c52 100%)',
-                WebkitBackgroundClip:'text',
-                WebkitTextFillColor:'transparent',
-                backgroundClip:'text',
-                backgroundSize:'200%',
-              }}>
-                AAYAM
-              </span>
-            </h1>
-            <div style={{
-              fontSize:'clamp(0.8rem, 2.5vw, 1.15rem)',
-              fontWeight:700,
-              color:'rgba(255,255,255,0.35)',
-              letterSpacing:'clamp(4px, 3vw, 18px)',
-              textTransform:'uppercase',
-              marginTop:'2px',
-            }}>
-              COMMITTEE
-            </div>
-          </div>
-
-          {/* Animated underline */}
-          <div style={{ display:'flex', justifyContent:'center', marginBottom:'28px', animation:'slideUp 0.7s ease 0.15s both' }}>
-            <div style={{
-              height:'2px',
-              width:'120px',
-              background:'linear-gradient(90deg, transparent, #a67c52, #c9a84c, transparent)',
-              borderRadius:'2px',
-              animation:'lineGrow 1.2s ease 0.5s both',
-            }}/>
-          </div>
-
-          {/* Tagline */}
-          <p style={{
-            textAlign:'center',
-            fontSize:'clamp(1rem, 2.8vw, 1.5rem)',
-            fontWeight:700,
-            color:'rgba(255,255,255,0.85)',
-            marginBottom:'12px',
-            letterSpacing:'0.3px',
-            animation:'slideUp 0.7s ease 0.2s both',
-          }}>
-            Shaping Ideas.{' '}
-            <span style={{ color:'#c9a84c', fontStyle:'italic' }}>Building Tomorrow.</span>
-          </p>
-
-          <p style={{
-            textAlign:'center',
-            fontSize:'clamp(0.82rem, 1.6vw, 1rem)',
-            color:'rgba(255,255,255,0.5)',
-            maxWidth:'560px',
-            margin:'0 auto 36px',
-            lineHeight:1.75,
-            animation:'slideUp 0.7s ease 0.25s both',
-          }}>
-            The official student body of Unitedworld Institute of Technology — organizing technical, cultural &amp; creative events that define campus life.
-          </p>
-
-          {/* CTA buttons */}
+        <div className="container hs-hero-inner text-center">
           <div
-            className="hero-new-cta-row"
             style={{
-              display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap',
-              marginBottom:'56px',
-              animation:'slideUp 0.7s ease 0.3s both',
+              fontFamily: "var(--font-display, 'Georgia', serif)",
+              fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
+              color: '#fff',
+              fontWeight: 400,
+              marginBottom: '12px',
+              letterSpacing: '0.5px',
             }}
           >
-            <Link to="/events" className="hero-new-cta-primary">
-              Explore Events <i className="bi bi-arrow-right-circle-fill"/>
+            Welcome to
+          </div>
+
+          <h1
+            style={{
+              fontFamily: "var(--font-display, 'Georgia', serif)",
+              fontSize: 'clamp(2.4rem, 7.5vw, 6rem)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              color: '#a67c52',
+              marginBottom: '18px',
+              lineHeight: 1.1,
+            }}
+          >
+            AAYAM COMMITTEE
+          </h1>
+
+          <div
+            style={{
+              fontSize: 'clamp(1.1rem, 3vw, 2.1rem)',
+              fontWeight: 700,
+              color: '#fff',
+              letterSpacing: '0.5px',
+              marginBottom: '18px',
+            }}
+          >
+            Shaping Ideas. Building Tomorrow.
+          </div>
+
+          <p
+            style={{
+              fontSize: 'clamp(0.85rem, 1.8vw, 1.05rem)',
+              color: 'rgba(255,255,255,0.78)',
+              maxWidth: '680px',
+              margin: '0 auto clamp(26px, 4vw, 42px)',
+              lineHeight: 1.7,
+              fontWeight: 400,
+            }}
+          >
+            AAYAM Committee is the official student body of Unitedworld Institute of Technology. We organize, manage and execute technical, cultural and creative events.
+          </p>
+
+          <div
+            className="hero-cta-row"
+            style={{
+              display: 'flex',
+              gap: '16px',
+              justifyContent: 'center',
+              marginBottom: 'clamp(30px, 5vw, 52px)',
+              flexWrap: 'wrap',
+            }}
+          >
+            <Link
+              to="/events"
+              className="hero-cta-primary"
+              style={{
+                background: '#a67c52',
+                color: '#120c08',
+                fontWeight: 700,
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '0.95rem',
+                boxShadow: '0 6px 18px rgba(166,124,82,0.3)',
+                transition: 'transform 0.3s ease, background 0.3s ease',
+              }}
+            >
+              <span>Explore Events</span>
+              <i className="bi bi-arrow-right"></i>
             </Link>
-            <a href="#about" className="hero-new-cta-secondary">
-              Learn More <i className="bi bi-chevron-down"/>
+            <a
+              href="#about"
+              className="hero-cta-secondary"
+              style={{
+                border: '1.5px solid #a67c52',
+                color: '#a67c52',
+                background: 'transparent',
+                fontWeight: 700,
+                padding: '11px 28px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '0.95rem',
+                transition: 'transform 0.3s ease, border-color 0.3s ease',
+              }}
+            >
+              <span>Learn More</span>
+              <i className="bi bi-arrow-right"></i>
             </a>
           </div>
 
-          {/* Stats strip */}
-          <div
-            className="hero-stats-strip"
-            style={{
-              display:'flex', gap:'16px', justifyContent:'center',
-              animation:'slideUp 0.7s ease 0.4s both',
-            }}
-          >
-            {[
-              { icon:'bi-people-fill',          num:'40+',   label:'Team Members',      color:'#c9a84c' },
-              { icon:'bi-calendar-check-fill',   num:'25+',   label:'Events Organized',  color:'#c9a84c' },
-              { icon:'bi-trophy-fill',           num:'15+',   label:'National Wins',     color:'#5ddb8a' },
-              { icon:'bi-building',              num:'UIT',   label:'Our Home',          color:'#a89dff' },
-            ].map((s, i) => (
-              <div key={i} className="stat-card-new" style={{ animationDelay:`${0.45 + i*0.1}s` }}>
-                <div style={{ fontSize:'1.6rem', color:s.color, marginBottom:'8px' }}>
-                  <i className={`bi ${s.icon}`}/>
-                </div>
-                <div style={{ fontSize:'1.6rem', fontWeight:900, color:'#fff', lineHeight:1 }}>{s.num}</div>
-                <div style={{ fontSize:'0.65rem', fontWeight:700, color:'rgba(255,255,255,0.45)', textTransform:'uppercase', letterSpacing:'1px', marginTop:'4px' }}>{s.label}</div>
+          <div className="hero-stats-new">
+            {/* Stat 1 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left' }}>
+              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
+                <i className="bi bi-people-fill"></i>
               </div>
-            ))}
+              <div>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>40+</div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
+                  Team Members
+                </div>
+              </div>
+            </div>
+            {/* Stat 2 */}
+            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
+              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
+                <i className="bi bi-calendar-check-fill"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>25+</div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
+                  Events Organized
+                </div>
+              </div>
+            </div>
+            {/* Stat 3 (UIT Home) */}
+            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
+              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
+                <i className="bi bi-building"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>UIT</div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
+                  Our Home
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ── Scroll hint ── */}
-        <div aria-hidden="true" style={{
-          position:'absolute', bottom:'28px', left:'50%',
-          transform:'translateX(-50%)',
-          display:'flex', flexDirection:'column', alignItems:'center', gap:'8px',
-          animation:'scrollBounce 2.2s ease-in-out infinite',
-          opacity:0.45,
-        }}>
-          <div style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', color:'#a67c52' }}>Scroll</div>
-          <i className="bi bi-chevron-compact-down" style={{ fontSize:'1.2rem', color:'#a67c52' }}/>
+        <div className="hero-scroll-hint" aria-hidden="true">
+          <div className="scroll-mouse">
+            <div className="scroll-wheel"></div>
+          </div>
+          <span>Scroll</span>
         </div>
       </section>
 
       {/* REGISTER NOW PROMO BANNER */}
       {data.promo && data.promo.isActive && !countdown.expired && (
-        <div className="hpb-section" style={{ padding: 'clamp(32px, 5vw, 56px) 0 10px', display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <div className="hpb-wrapper" id="heroPromoBanner">
-            {data.promo.heading && data.promo.heading.trim() !== '' && (
-              <div className="hpb-sub-heading">{data.promo.heading}</div>
-            )}
+        <div className="hpb-section" style={{ padding: 'clamp(32px, 5vw, 56px) 16px 10px', display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <div className="hpb-wrapper-new" id="heroPromoBanner">
+            {/* Ambient glows */}
+            <div className="hpb-orb-1" aria-hidden="true" />
+            <div className="hpb-orb-2" aria-hidden="true" />
 
-            <div className="hpb-top-row">
-              <span className="hpb-fire">🔥</span>
-              <span className="hpb-register-heading">{data.promo.title}</span>
-              <span className="hpb-fire">🔥</span>
+            <div className="hpb-badge-new">
+              <i className="bi bi-fire" />
+              <span>{data.promo.label || 'REGISTER NOW'}</span>
             </div>
 
-            <div className="hpb-event-title">{data.promo.label || 'REGISTER NOW'}</div>
+            {data.promo.heading && data.promo.heading.trim() !== '' && (
+              <div className="hpb-heading-new">{data.promo.heading}</div>
+            )}
 
-            {data.promo.description && <div className="hpb-event-desc">{data.promo.description}</div>}
+            <h2 className="hpb-title-new">{data.promo.title}</h2>
+
+            {data.promo.description && <p className="hpb-desc-new">{data.promo.description}</p>}
 
             {data.promo.eventDate && (
-              <div className="hpb-countdown-row" id="heroCountdown">
-                <div className="hpb-cd-block">
-                  <span className="hpb-cd-num">{countdown.days}</span>
-                  <span className="hpb-cd-label">DAYS</span>
+              <div className="hpb-countdown-grid-new" id="heroCountdown">
+                <div className="hpb-cd-box-new">
+                  <span className="hpb-cd-val-new">{countdown.days}</span>
+                  <span className="hpb-cd-lbl-new">DAYS</span>
                 </div>
-                <span className="hpb-cd-colon">:</span>
-                <div className="hpb-cd-block">
-                  <span className="hpb-cd-num">{countdown.hours}</span>
-                  <span className="hpb-cd-label">HRS</span>
+                <span className="hpb-cd-divider-new">:</span>
+                <div className="hpb-cd-box-new">
+                  <span className="hpb-cd-val-new">{countdown.hours}</span>
+                  <span className="hpb-cd-lbl-new">HOURS</span>
                 </div>
-                <span className="hpb-cd-colon">:</span>
-                <div className="hpb-cd-block">
-                  <span className="hpb-cd-num">{countdown.mins}</span>
-                  <span className="hpb-cd-label">MIN</span>
+                <span className="hpb-cd-divider-new">:</span>
+                <div className="hpb-cd-box-new">
+                  <span className="hpb-cd-val-new">{countdown.mins}</span>
+                  <span className="hpb-cd-lbl-new">MINS</span>
                 </div>
-                <span className="hpb-cd-colon">:</span>
-                <div className="hpb-cd-block">
-                  <span className="hpb-cd-num">{countdown.secs}</span>
-                  <span className="hpb-cd-label">SEC</span>
+                <span className="hpb-cd-divider-new">:</span>
+                <div className="hpb-cd-box-new">
+                  <span className="hpb-cd-val-new">{countdown.secs}</span>
+                  <span className="hpb-cd-lbl-new">SECS</span>
                 </div>
               </div>
             )}
 
             {data.promo.link && data.promo.link.trim() !== '' && (
-              <a href={data.promo.link} target="_blank" rel="noopener noreferrer" className="hpb-cta-btn">
-                Register Now &rarr;
+              <a href={data.promo.link} target="_blank" rel="noopener noreferrer" className="hpb-btn-new">
+                <span>Register Now</span>
+                <i className="bi bi-arrow-right-short" style={{ fontSize: '1.2rem' }} />
               </a>
             )}
           </div>
