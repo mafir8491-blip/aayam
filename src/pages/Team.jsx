@@ -168,8 +168,8 @@ export default function Team() {
               {section.members && section.members.length > 0 ? (
                 section.members.map((member, mi) => (
                   <div className="col-xl-2 col-lg-3 col-md-4 col-6 text-center" key={member._id}>
-                    <div className="team-member-card p-3" style={{ background: 'var(--bg-surface-theme)', border: '1px solid var(--border-theme)', borderRadius: '12px' }}>
-                      <div className="team-member-img-wrap mb-3 mx-auto" style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden' }}>
+                    <div className="team-member-card p-2" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                      <div className="team-member-img-wrap mb-3 mx-auto" style={{ width: '120px', height: '120px', borderRadius: '12px', overflow: 'hidden' }}>
                         <img
                           src={member.image}
                           alt={member.name}
