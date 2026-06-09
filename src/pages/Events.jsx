@@ -13,7 +13,7 @@ export default function Events() {
   const [error, setError] = useState(null);
 
   // Filter States
-  const [selectedStatus, setSelectedStatus] = useState('upcoming'); // 'upcoming', 'live', 'past'
+  const [selectedStatus, setSelectedStatus] = useState(null); // null, 'upcoming', 'live', 'past'
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Admin Add Event Form States
