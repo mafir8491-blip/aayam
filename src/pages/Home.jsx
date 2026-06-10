@@ -67,6 +67,10 @@ export default function Home() {
   useEffect(() => {
     fetchData();
     fetchUser();
+    document.body.classList.add('home-page-body');
+    return () => {
+      document.body.classList.remove('home-page-body');
+    };
   }, []);
 
   // Countdown logic
@@ -237,6 +241,11 @@ export default function Home() {
   return (
     <div className="home-wrapper">
       <style>{`
+        body.home-page-body::before {
+          display: none !important;
+          content: none !important;
+        }
+
         .hero-editorial-card {
           background: transparent;
           backdrop-filter: none;
@@ -261,13 +270,12 @@ export default function Home() {
           font-weight: 700;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: #fdfaf6;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+          color: #453327;
           margin-bottom: 16px;
           transition: color 0.4s ease;
         }
         body.dark-mode .hero-uni-title {
-          color: #e8d9c5;
+          color: var(--dk-text);
         }
 
         .hero-pill-badge {
@@ -308,14 +316,13 @@ export default function Home() {
           font-size: clamp(0.85rem, 2vw, 1.1rem);
           font-weight: 700;
           letter-spacing: 0.25em;
-          color: #a27e58;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+          color: #8c6a55;
           text-transform: uppercase;
           margin-bottom: 12px;
           transition: color 0.4s ease;
         }
         body.dark-mode .hero-welcome {
-          color: #c9a84c;
+          color: var(--dk-muted);
         }
 
         .hero-aayam-container {
@@ -328,40 +335,37 @@ export default function Home() {
           font-family: var(--font-display, 'Playfair Display', serif);
           font-size: clamp(3rem, 10vw, 7.5rem);
           font-weight: 800;
-          color: #a27e58;
-          text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
+          color: var(--br);
           text-transform: uppercase;
           letter-spacing: 0.05em;
           line-height: 1.0;
           margin: 0;
           padding-bottom: 12px;
-          border-bottom: 3.5px double #a27e58;
+          border-bottom: 3.5px double var(--br);
           transition: color 0.4s ease, border-color 0.4s ease;
         }
         body.dark-mode .hero-aayam-title {
-          color: #c9a84c;
-          border-bottom-color: #c9a84c;
+          color: var(--gold);
+          border-bottom-color: var(--gold);
         }
 
         .hero-aayam-sub {
           font-family: var(--font-body, 'DM Sans', sans-serif);
           font-size: clamp(0.85rem, 2vw, 1.05rem);
           font-weight: 700;
-          color: #e8d9c5;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+          color: #8c6a55;
           letter-spacing: 1px;
           margin-bottom: 18px;
           transition: color 0.4s ease;
         }
         body.dark-mode .hero-aayam-sub {
-          color: #e8d9c5;
+          color: var(--dk-text);
         }
 
         .hero-aayam-tagline {
           font-family: var(--font-body, 'DM Sans', sans-serif);
           font-size: clamp(0.85rem, 1.8vw, 1.05rem);
-          color: #ffffff;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+          color: var(--tx-mid);
           max-width: 620px;
           margin: 0 auto clamp(26px, 4vw, 42px);
           line-height: 1.75;
@@ -369,42 +373,65 @@ export default function Home() {
           transition: color 0.4s ease;
         }
         body.dark-mode .hero-aayam-tagline {
-          color: rgba(255, 255, 255, 0.95);
+          color: rgba(255, 255, 255, 0.9);
         }
 
-        .hero-stats-new {
-          background: rgba(18, 12, 8, 0.70);
-          border: 1.5px solid rgba(166, 124, 82, 0.35);
-          border-radius: 18px;
-          padding: 22px 30px;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          max-width: 820px;
-          margin: 0 auto;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+        .hero-cta-primary {
+          background: #6c4f37;
+          color: #fff !important;
+          font-weight: 700;
+          border: none;
+          padding: 12.5px 32px;
+          border-radius: 100px;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.95rem;
+          box-shadow: 0 4px 12px rgba(108, 79, 55, 0.15);
+          transition: all 0.3s ease;
+        }
+        .hero-cta-primary:hover {
+          background: #563f2c;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(108, 79, 55, 0.3) !important;
+        }
+        body.dark-mode .hero-cta-primary {
+          background: var(--gold);
+          color: #0d0a07 !important;
+          box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+        }
+        body.dark-mode .hero-cta-primary:hover {
+          background: #b5943b;
+          box-shadow: 0 8px 24px rgba(201, 168, 76, 0.4) !important;
         }
 
-        @media (max-width: 992px) {
-          .hero-stats-new {
-            grid-template-columns: repeat(3, 1fr);
-            padding: 20px;
-            gap: 16px;
-          }
-          
-          .hero-stat-item-new {
-            border-left: none !important;
-            padding-left: 0 !important;
-          }
+        .hero-cta-secondary {
+          border: 1.5px solid rgba(108, 79, 55, 0.4);
+          color: #6c4f37;
+          background: transparent;
+          font-weight: 700;
+          padding: 11px 32px;
+          border-radius: 100px;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
         }
-
-        @media (max-width: 576px) {
-          .hero-stats-new {
-            grid-template-columns: 1fr;
-            padding: 16px;
-            gap: 12px;
-          }
+        .hero-cta-secondary:hover {
+          border-color: #6c4f37;
+          background: rgba(108, 79, 55, 0.04);
+          transform: translateY(-2px);
+        }
+        body.dark-mode .hero-cta-secondary {
+          border-color: rgba(201, 168, 76, 0.4);
+          color: var(--gold);
+        }
+        body.dark-mode .hero-cta-secondary:hover {
+          border-color: var(--gold);
+          background: rgba(201, 168, 76, 0.08);
         }
 
         .upcoming-events-grid {
@@ -832,22 +859,7 @@ export default function Home() {
         }
       `}</style>
       {/* HERO SECTION */}
-      <section
-        className="hs-hero"
-        style={{
-          background: `url('/images/committee_hero_new.jpg') no-repeat center center`,
-          backgroundSize: 'cover',
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          paddingTop: 'clamp(80px, 12vh, 140px)',
-          paddingBottom: 'clamp(60px, 9vh, 100px)',
-        }}
-      >
-        <div className="hero-grain" aria-hidden="true"></div>
-
+      <section className="hs-hero" style={{ minHeight: '100vh' }}>
         <div className="container hs-hero-inner text-center">
           <div className="hero-editorial-card">
             {/* KARNAVATI UNIVERSITY */}
@@ -890,97 +902,15 @@ export default function Home() {
                 flexWrap: 'wrap',
               }}
             >
-              <Link
-                to="/events"
-                className="hero-cta-primary"
-                style={{
-                  background: '#a67c52',
-                  color: '#120c08',
-                  fontWeight: 700,
-                  border: 'none',
-                  padding: '12px 28px',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  fontSize: '0.95rem',
-                  boxShadow: '0 6px 18px rgba(166,124,82,0.3)',
-                  transition: 'transform 0.3s ease, background 0.3s ease',
-                }}
-              >
+              <Link to="/events" className="hero-cta-primary">
                 <span>Explore Events</span>
                 <i className="bi bi-arrow-right"></i>
               </Link>
-              <a
-                href="#about"
-                className="hero-cta-secondary"
-                style={{
-                  border: '1.5px solid #a67c52',
-                  color: '#a67c52',
-                  background: 'transparent',
-                  fontWeight: 700,
-                  padding: '11px 28px',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  fontSize: '0.95rem',
-                  transition: 'transform 0.3s ease, border-color 0.3s ease',
-                }}
-              >
-                <span>Learn More</span>
-                <i className="bi bi-arrow-right"></i>
-              </a>
+              <Link to="/team" className="hero-cta-secondary">
+                <span>Meet Our Team</span>
+              </Link>
             </div>
           </div>
-
-          <div className="hero-stats-new">
-            {/* Stat 1 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left' }}>
-              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
-                <i className="bi bi-people-fill"></i>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>40+</div>
-                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
-                  Team Members
-                </div>
-              </div>
-            </div>
-            {/* Stat 2 */}
-            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
-              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
-                <i className="bi bi-calendar-check-fill"></i>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>25+</div>
-                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
-                  Events Organized
-                </div>
-              </div>
-            </div>
-            {/* Stat 3 (UIT Home) */}
-            <div className="hero-stat-item-new" style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', textAlign: 'left', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}>
-              <div style={{ fontSize: '2.2rem', color: '#a67c52', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
-                <i className="bi bi-building"></i>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>UIT</div>
-                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '2px' }}>
-                  Our Home
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="hero-scroll-hint" aria-hidden="true">
-          <div className="scroll-mouse">
-            <div className="scroll-wheel"></div>
-          </div>
-          <span>Scroll</span>
         </div>
       </section>
 
